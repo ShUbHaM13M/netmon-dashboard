@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
+@layer base {
+  h1 {
+    line-height: 120%;
+    @apply font-semibold text-5xl;
+  }
+  h2 {
+    line-height: 120%;
+    @apply font-semibold text-4xl;
+  }
+  h3 {
+    line-height: 120%;
+    @apply font-semibold text-2xl;
+  }
+  h4 {
+    line-height: 120%;
+    @apply font-semibold text-xl;
+  }
+  h5 {
+    line-height: 120%;
+    @apply font-semibold text-sm;
+  }
+  h6 {
+    line-height: 120%;
+    font-weight: 600;
+    font-size: 13px;
+  }
+}
+
+@layer utilities {
+  /* Gradients */
+  .gradient-main {
+    background: linear-gradient(105.97deg, #F37821 40.34%, #CA2501 85.3%);
+  }
+  .chart-gradient-orange {
+    background: linear-gradient(180deg, #F37821 0%, rgba(243, 120, 33, 0.8) 0.01%, rgba(243, 120, 33, 0) 100%);
+  }
+  .chart-gradient-dark-blue {
+    background: linear-gradient(180deg, rgba(48, 83, 191, 0.8) 0%, rgba(48, 83, 191, 0) 100%);
+  }
+  .chart-gradient-sky-blue {
+    background: linear-gradient(180deg, rgba(25, 176, 254, 0.8) 0%, rgba(25, 176, 254, 0) 100%);
+  }
+
+  /* CAPS */
+  .caps-1 {
+    letter-spacing: 0.04em;
+    line-height: 120%;
+    @apply font-normal uppercase text-sm;
+  }
+  .caps-1-bold {
+    letter-spacing: 0.04em;
+    line-height: 120%;
+    @apply font-semibold uppercase text-sm;
+  }
+
+  .caps-2 {
+    letter-spacing: 0.04em;
+    line-height: 120%;
+    @apply font-normal uppercase text-xs;
+  }
+  .caps-2-bold {
+    letter-spacing: 0.04em;
+    line-height: 120%;
+    @apply font-semibold uppercase text-xs;
+  }
+  
+  .caps-3 {
+    letter-spacing: 0.04em;
+    line-height: 120%;
+    font-size: 0.625em;
+    @apply font-normal uppercase;
+  }
+  .caps-3-bold {
+    letter-spacing: 0.04em;
+    line-height: 120%;
+    font-size: 0.625em;
+    @apply font-semibold uppercase;
+  }
+
+  /* Body */
+  .body-1 {
+    line-height: 120%;
+    @apply text-xl;
+  }
+  .body-2 {
+    line-height: 120%;
+    font-size: 18px;
+  }
+  .body-3 {
+    line-height: 120%;
+    @apply text-base;
+  }
+  .body-4 {
+    line-height: 120%;
+    @apply text-sm;
+  }
+  .body-5 {
+    line-height: 120%;
+    @apply text-xs;
+  }
+  .body-6 {
+    line-height: 120%;
+    font-size: 0.625em;
+  }
+}
