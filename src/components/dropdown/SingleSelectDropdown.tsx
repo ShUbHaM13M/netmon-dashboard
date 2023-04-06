@@ -14,7 +14,8 @@ interface IDropdownProps {
   options: IDropdownOption[];
   defaultValue: IDropdownOption;
   width?: number;
-  onValueChange: React.Dispatch<React.SetStateAction<IDropdownOption>>;
+  onValueChange: (value: IDropdownOption) => void;
+  disabled?: boolean;
 }
 
 const SingleSelectDropdown = ({
@@ -23,6 +24,7 @@ const SingleSelectDropdown = ({
   label,
   width,
   onValueChange,
+  disabled,
 }: IDropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<IDropdownOption>(defaultValue || options[0]);
   const [modalFullScreen, setModalFullScreen] = useState(false);
@@ -30,6 +32,7 @@ const SingleSelectDropdown = ({
   const [filteredOptions, setFilteredOptions] = useState(options);
   const [query, setQuery] = useState('');
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const mobileModalRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
@@ -51,8 +54,19 @@ const SingleSelectDropdown = ({
   );
 
   useEffect(() => {
-    document.addEventListener('click', clickOutsideHandler);
-    return () => document.removeEventListener('click', clickOutsideHandler);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileModalRef.current && mobileModalRef.current.contains(event.target as Node)) {
+        event.preventDefault();
+        return;
+      }
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        clickOutsideHandler && clickOutsideHandler();
+      }
+    };
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
   }, [clickOutsideHandler]);
 
   const onSearchInput = useCallback(
@@ -83,8 +97,9 @@ const SingleSelectDropdown = ({
       <button
         type='button'
         onClick={toggleDropdown}
+        disabled={disabled}
         className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-sm items-center font-normal hover:bg-[#3E404D]
-        transition-colors duration-200 ease-out'
+        transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light'
       >
         {selectedOption.label}
         <IconDropdownArrow rotate={showDropdown} />
@@ -127,6 +142,7 @@ const SingleSelectDropdown = ({
       {/* Creating a portal for mobile dropdown */}
       {createPortal(
         <DropDownModal
+          ref={mobileModalRef}
           fullScreen={modalFullScreen}
           setFullScreen={setModalFullScreen}
           title={label}

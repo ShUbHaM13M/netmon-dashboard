@@ -15,7 +15,8 @@ interface IDropdownProps {
   defaultValue: IMultiSelectDropdownOption;
   width?: number;
   placeholder?: string;
-  onValueChange: React.Dispatch<React.SetStateAction<IMultiSelectDropdownOption[]>>;
+  onValueChange: (values: IMultiSelectDropdownOption[]) => void;
+  disabled?: boolean;
 }
 
 const MultiSelectDropdown = ({
@@ -25,6 +26,7 @@ const MultiSelectDropdown = ({
   width,
   placeholder,
   onValueChange,
+  disabled,
 }: IDropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<IMultiSelectDropdownOption[]>(
     [defaultValue] || [options[0]],
@@ -33,6 +35,7 @@ const MultiSelectDropdown = ({
   const [filteredOptions, setFilteredOptions] = useState(options);
   const [query, setQuery] = useState('');
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const mobileModalRef = useRef<HTMLDivElement | null>(null);
 
   const [modalFullScreen, setModalFullScreen] = useState(false);
 
@@ -53,8 +56,19 @@ const MultiSelectDropdown = ({
   }, []);
 
   useEffect(() => {
-    document.addEventListener('click', clickOutsideHandler);
-    return () => document.removeEventListener('click', clickOutsideHandler);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileModalRef.current && mobileModalRef.current.contains(event.target as Node)) {
+        event.preventDefault();
+        return;
+      }
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        clickOutsideHandler();
+      }
+    };
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
   }, [clickOutsideHandler]);
 
   const onOptionClick = useCallback(
@@ -102,9 +116,10 @@ const MultiSelectDropdown = ({
       <button
         title={selectedOptionLabel ? selectedOptionLabel : placeholder || 'Select an option'}
         type='button'
+        disabled={disabled}
         onClick={toggleDropdown}
-        className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-sm items-center font-normal hover:bg-[#3E404D]
-				transition-colors duration-200 ease-out'
+        className={`bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-sm items-center font-normal hover:bg-[#3E404D]
+				transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light`}
       >
         <span className='w-4/5 truncate text-left'>
           {selectedOptionLabel ? selectedOptionLabel : placeholder || 'Select an option'}
@@ -162,6 +177,7 @@ const MultiSelectDropdown = ({
       {/* Mobile dropdown */}
       {createPortal(
         <DropDownModal
+          ref={mobileModalRef}
           fullScreen={modalFullScreen}
           setFullScreen={setModalFullScreen}
           title={label}
