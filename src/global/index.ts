@@ -9,3 +9,9 @@ export enum DeviceReachability {
   REACHABLE = 'REACHABLE',
   UNREACHABLE = 'UNREACHABLE',
 }
+
+export type TableDataType = 'STATUS' | 'NUMBER' | 'STRING';
+
+export type TableRowItemType = { value: any; type: TableDataType; criticality?: Criticality };
+
+export type TableRowDataType = Array<TableRowItemType>;

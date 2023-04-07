@@ -5,6 +5,9 @@ import ToggleButton from './toggle-button/ToggleButton';
 import StatPanelContainer from './panels/StatPanelContainer';
 import Status from './panels/Status';
 import DeviceStatus from './panels/DeviceStatus';
+import Checkbox from './checkbox/Checkbox';
+import ApplicationGraph from './panels/ApplicationGraph';
+import Table from './table/Table';
 
 export {
   SingleSelectDropdown,
@@ -14,4 +17,7 @@ export {
   StatPanelContainer,
   Status,
   DeviceStatus,
+  Checkbox,
+  ApplicationGraph,
+  Table,
 };

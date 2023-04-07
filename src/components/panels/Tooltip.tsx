@@ -12,7 +12,7 @@ const Tooltip = ({ title, description, show }: ITooltipProps) => {
       }}
       className={`text-icon-white
       flex flex-col items-start 
-      absolute -left-2 top-full min-h-fit
+      absolute -left-2 top-full min-h-fit z-20
       transition-opacity duration-150 ease-out
       ${show ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
       `}
