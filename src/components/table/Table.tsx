@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { TableRowDataType } from '../../global';
+import { TableHeadType, TableRowDataType } from '../../global';
 import TableHeadItem from './TableHeadItem';
 import TableRowItem from './TableRowItem';
 
 interface ITableProps {
-  headers: string[];
+  headers: TableHeadType[];
   data: TableRowDataType[];
 }
 
@@ -17,8 +17,8 @@ const Table = ({ headers, data }: ITableProps) => {
         <table className='min-w-full text-left font-light'>
           <thead className='font-semibold'>
             <tr>
-              {headers.map((label) => (
-                <TableHeadItem key={label} label={label} />
+              {headers.map((data) => (
+                <TableHeadItem key={data.label} {...data} setSortedList={setFilteredData} />
               ))}
             </tr>
           </thead>

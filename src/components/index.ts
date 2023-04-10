@@ -8,6 +8,9 @@ import DeviceStatus from './panels/DeviceStatus';
 import Checkbox from './checkbox/Checkbox';
 import ApplicationGraph from './panels/ApplicationGraph';
 import Table from './table/Table';
+import StackedGraph from './panels/StackedGraph';
+import Nav from './nav/Nav';
+import Datepicker from './datapicker/Datepicker';
 
 export {
   SingleSelectDropdown,
@@ -20,4 +23,7 @@ export {
   Checkbox,
   ApplicationGraph,
   Table,
+  StackedGraph,
+  Nav,
+  Datepicker,
 };

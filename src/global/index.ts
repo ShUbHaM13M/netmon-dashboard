@@ -12,6 +12,12 @@ export enum DeviceReachability {
 
 export type TableDataType = 'STATUS' | 'NUMBER' | 'STRING';
 
+export type TableHeadType = {
+  label: string;
+  dataType: TableDataType;
+  sortable?: boolean;
+};
+
 export type TableRowItemType = { value: any; type: TableDataType; criticality?: Criticality };
 
 export type TableRowDataType = Array<TableRowItemType>;
