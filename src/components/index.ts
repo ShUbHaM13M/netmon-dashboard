@@ -11,6 +11,9 @@ import Table from './table/Table';
 import StackedGraph from './panels/StackedGraph';
 import Nav from './nav/Nav';
 import Datepicker from './datapicker/Datepicker';
+import BreadCrumb from './nav/Breadcrumb';
+import TabContainer from './tab/TabContainer';
+import Tab from './tab/Tab';
 
 export {
   SingleSelectDropdown,
@@ -26,4 +29,7 @@ export {
   StackedGraph,
   Nav,
   Datepicker,
+  BreadCrumb,
+  TabContainer,
+  Tab,
 };

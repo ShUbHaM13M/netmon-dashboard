@@ -1,40 +1,23 @@
-import { MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
-import { TableHeadType, TableRowDataType } from '../../global';
+import { useEffect, useRef, useState } from 'react';
+import { TableHeadType } from '../../global';
 
 interface ITableHeadItemProps extends TableHeadType {
-  setSortedList: React.Dispatch<React.SetStateAction<TableRowDataType[]>>;
+  onSortOptionClick: (dataType: string, columnName: string, order: string) => void;
+  sortingOptions?: { label: string }[] | null;
 }
 
-const sortingOptions = [{ label: 'ASC' }, { label: 'DESC' }];
+const defaultSortingOptions = [{ label: 'ASC' }, { label: 'DESC' }];
 
-const TableHeadItem = ({ label, sortable, dataType, setSortedList }: ITableHeadItemProps) => {
+const TableHeadItem = ({
+  title,
+  sortable = true,
+  dataType,
+  onSortOptionClick,
+  sortingOptions,
+}: ITableHeadItemProps) => {
   const [showOptions, setShowOptions] = useState(false);
   const containerRef = useRef<HTMLTableHeaderCellElement | null>(null);
-
-  const onSortOptionClicked = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      const sortType = e.currentTarget.getAttribute('data-sort-type');
-
-      if (!sortType) return;
-
-      switch (dataType) {
-        case 'STATUS':
-          break;
-        case 'NUMBER':
-          switch (sortType) {
-            case 'ASC':
-              // TODO: Not yet implemented
-              break;
-          }
-          break;
-        case 'STRING':
-          break;
-        default:
-          break;
-      }
-    },
-    [dataType],
-  );
+  const options = sortingOptions || defaultSortingOptions;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,7 +43,7 @@ const TableHeadItem = ({ label, sortable, dataType, setSortedList }: ITableHeadI
         ${showOptions ? 'text-icon-white bg-card-light' : 'text-icon-grey bg-transparent'}`}
     >
       <span className={`flex justify-between items-center gap-2.5`}>
-        {label}
+        {title}
         {sortable ? (
           <svg
             width='18'
@@ -83,14 +66,13 @@ const TableHeadItem = ({ label, sortable, dataType, setSortedList }: ITableHeadI
         )}
       </span>
       {showOptions ? (
-        <div className='absolute top-full -translate-y-1 left-0 w-44 bg-card-light flex flex-col text-left'>
-          {sortingOptions.map((option, index) => (
+        <div className='absolute top-full -translate-y-1 left-0 w-44 bg-card-light flex flex-col text-left z-30'>
+          {options.map((option, index) => (
             <button
-              onClick={onSortOptionClicked}
+              onClick={() => onSortOptionClick(dataType, title, option.label)}
               className={`px-4 py-3 text-left border-b text-sm text-icon-grey hover:bg-card-dark hover:text-icon-white transition-colors ease-out duration-150 ${
-                index === sortingOptions.length - 1 ? 'border-transparent' : 'border-icon-dark-grey'
+                index === options.length - 1 ? 'border-transparent' : 'border-icon-dark-grey'
               }`}
-              data-sort-type={option.label}
               key={option.label}
             >
               {option.label}

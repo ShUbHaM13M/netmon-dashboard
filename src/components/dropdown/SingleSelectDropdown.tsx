@@ -11,11 +11,13 @@ export interface IDropdownOption {
 
 interface IDropdownProps {
   label: string;
+  showSearchbar?: boolean;
   options: IDropdownOption[];
   defaultValue: IDropdownOption;
   width?: number;
   onValueChange: (value: IDropdownOption) => void;
   disabled?: boolean;
+  showLabelInDesktop?: boolean;
 }
 
 const SingleSelectDropdown = ({
@@ -25,6 +27,8 @@ const SingleSelectDropdown = ({
   width,
   onValueChange,
   disabled,
+  showSearchbar = true,
+  showLabelInDesktop = true,
 }: IDropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<IDropdownOption>(defaultValue || options[0]);
   const [modalFullScreen, setModalFullScreen] = useState(false);
@@ -89,16 +93,16 @@ const SingleSelectDropdown = ({
     <div
       ref={containerRef}
       style={{
-        width: width || 140,
+        width: width,
       }}
       className='flex flex-col text-white place-items-start gap-2.5 relative'
     >
-      <label className='caps-1 text-icon-dark-grey'>{label}</label>
+      {showLabelInDesktop ? <label className='caps-1 text-icon-dark-grey'>{label}</label> : ''}
       <button
         type='button'
         onClick={toggleDropdown}
         disabled={disabled}
-        className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-sm items-center font-normal hover:bg-[#3E404D]
+        className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-xs sm:text-sm items-center font-normal hover:bg-[#3E404D]
         transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light'
       >
         {selectedOption.label}
@@ -106,21 +110,23 @@ const SingleSelectDropdown = ({
       </button>
       {showDropdown ? (
         <div
-          style={{
-            height: 172,
-          }}
-          className='flex-col bg-card-grey rounded-lg w-full p-2.5 pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex'
+          className={`flex-col bg-card-grey rounded-lg w-full pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex 
+          ${showSearchbar ? 'p-2.5' : 'p-0'}`}
         >
-          <div className='bg-card-light px-2 py-2.5 rounded-sm border-disabled border flex gap-1 items-center'>
-            <IconSearch />
-            <input
-              className='bg-transparent w-full focus:outline-none text-sm'
-              type='text'
-              onInput={onSearchInput}
-              onChange={(e) => setQuery(e.currentTarget.value)}
-              value={query}
-            />
-          </div>
+          {showSearchbar ? (
+            <div className='bg-card-light px-2 py-2.5 rounded-sm border-disabled border flex gap-1 items-center'>
+              <IconSearch />
+              <input
+                className='bg-transparent w-full focus:outline-none text-sm'
+                type='text'
+                onInput={onSearchInput}
+                onChange={(e) => setQuery(e.currentTarget.value)}
+                value={query}
+              />
+            </div>
+          ) : (
+            ''
+          )}
 
           <div className='overflow-y-auto hide-scrollbar'>
             {filteredOptions.map((item) => {
@@ -149,24 +155,28 @@ const SingleSelectDropdown = ({
           setShowModal={setShowDropdown}
           showModal={showDropdown}
         >
-          <div className='px-2 py-2.5 rounded-sm border-disabled border flex gap-1 items-center bg-card-light'>
-            <IconSearch />
-            <input
-              onClick={() => setModalFullScreen(true)}
-              className='bg-transparent w-full focus:outline-none text-sm text-white'
-              type='text'
-              onInput={onSearchInput}
-              onChange={(e) => setQuery(e.currentTarget.value)}
-              value={query}
-            />
-          </div>
+          {showSearchbar ? (
+            <div className='px-2 py-2.5 rounded-sm border-disabled border flex gap-1 items-center bg-card-light'>
+              <IconSearch />
+              <input
+                onClick={() => setModalFullScreen(true)}
+                className='bg-transparent w-full focus:outline-none text-sm text-white'
+                type='text'
+                onInput={onSearchInput}
+                onChange={(e) => setQuery(e.currentTarget.value)}
+                value={query}
+              />
+            </div>
+          ) : (
+            ''
+          )}
 
           <div className='overflow-y-auto hide-scrollbar flex flex-col gap-1.5'>
             {filteredOptions.map((item) => {
               return (
                 <DropDownOption
                   onClick={() => onOptionClick(item)}
-                  label={item.value}
+                  label={item.label}
                   isSelected={selectedOption.value === item.value}
                   key={item.value}
                   bgTransparent

@@ -10,14 +10,14 @@ export enum DeviceReachability {
   UNREACHABLE = 'UNREACHABLE',
 }
 
-export type TableDataType = 'STATUS' | 'NUMBER' | 'STRING';
+export type TableDataType = 'STATUS' | 'NUMBER' | 'STRING' | string;
 
 export type TableHeadType = {
-  label: string;
+  title: string;
   dataType: TableDataType;
   sortable?: boolean;
 };
 
 export type TableRowItemType = { value: any; type: TableDataType; criticality?: Criticality };
 
-export type TableRowDataType = Array<TableRowItemType>;
+export type TableRowDataType = { [key: string]: TableRowItemType }[];

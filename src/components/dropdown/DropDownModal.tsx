@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useEffect } from 'react';
 import { IconClose } from '../../assets/icons';
 import Button from '../button/Button';
 
@@ -15,6 +15,15 @@ const DropDownModal = forwardRef<HTMLDivElement, IDropDownModal>(function DropDo
   props,
   ref,
 ) {
+  useEffect(() => {
+    if (props.showModal) {
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+
+    document.body.style.overflow = 'auto';
+  }, [props.showModal]);
+
   if (props.showModal) {
     return (
       <div
@@ -27,7 +36,7 @@ const DropDownModal = forwardRef<HTMLDivElement, IDropDownModal>(function DropDo
           e.stopPropagation();
           props.setShowModal(false);
         }}
-        className={`fixed top-0 left-0 h-screen w-full bg-black bg-opacity-25 block sm:hidden ${
+        className={`fixed top-0 left-0 h-screen w-full bg-[#2E2F33CC] z-30 block sm:hidden ${
           props.showModal ? 'opacity-100' : 'opacity-0'
         }`}
       >

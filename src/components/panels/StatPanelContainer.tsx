@@ -15,22 +15,9 @@ const StatPanelContainer = ({
   showError = false,
 }: IStatPanelProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setShowTooltip(false);
-      }
-    };
-    document.addEventListener('click', handleClickOutside, true);
-    return () => {
-      document.removeEventListener('click', handleClickOutside, true);
-    };
-  }, []);
 
   return (
-    <div ref={containerRef} style={{ minWidth: 326 }} className='rounded-xl bg-card-grey'>
+    <div style={{ minWidth: 326 }} className='rounded-xl bg-card-grey'>
       <div
         className='flex justify-between items-center gap-0.5 w-full
       px-4 py-3
@@ -54,7 +41,12 @@ const StatPanelContainer = ({
                 strokeLinejoin='round'
               />
             </svg>
-            <Tooltip show={showTooltip} title={label} description={description} />
+            <Tooltip
+              setShow={setShowTooltip}
+              show={showTooltip}
+              title={label}
+              description={description}
+            />
           </button>
 
           <div>{label}</div>

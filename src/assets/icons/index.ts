@@ -10,6 +10,13 @@ import IconCalendar from './calendar';
 import IconArrowDown from './arrow-down';
 import IconRefresh from './refresh';
 import IconSignout from './signout';
+import IconHam from './ham';
+import IconOverview from './overview';
+import IconLinkUtitlization from './link-utilisation';
+import IconWanStatus from './wan-status';
+import IconDeviceStatus from './device-status';
+import IconAppUsage from './app-usage';
+
 export {
   IconDropdownArrow,
   IconSearch,
@@ -23,4 +30,10 @@ export {
   IconArrowDown,
   IconRefresh,
   IconSignout,
+  IconHam,
+  IconOverview,
+  IconWanStatus,
+  IconDeviceStatus,
+  IconAppUsage,
+  IconLinkUtitlization,
 };

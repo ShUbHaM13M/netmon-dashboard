@@ -1,7 +1,10 @@
-import { IconArrowDown, IconRefresh, IconSignout } from '../../assets/icons';
+import { useEffect, useState } from 'react';
+import { IconArrowDown, IconHam, IconRefresh, IconSignout } from '../../assets/icons';
 import Logo from '../../assets/images/logo.svg';
 import Datepicker from '../datapicker/Datepicker';
+import SingleSelectDropdown, { IDropdownOption } from '../dropdown/SingleSelectDropdown';
 import NotificationAlert from './NotificationAlert';
+import SideMenu from './SideMenu';
 
 interface INavProps {
   client: string;
@@ -22,27 +25,36 @@ const navLinks = [
   },
 ];
 
+const autoRefreshOptions: IDropdownOption[] = [
+  { label: '3 m', value: '3' },
+  { label: '5 m', value: '5' },
+  { label: '8 m', value: '8' },
+  { label: '12 m', value: '12' },
+];
+
 const Nav = ({ client }: INavProps) => {
+  const [showSideMenu, setShowSideMenu] = useState(false);
+
+  useEffect(() => {
+    if (showSideMenu) {
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+
+    document.body.style.overflow = 'auto';
+  }, [showSideMenu]);
+
   return (
     <header className='bg-card-grey text-icon-white'>
       <nav className='flex px-4 sm:px-8 py-3 sm:py-0 sm:justify-center w-full'>
         <img className='py-3 hidden md:block' src={Logo} alt='Inniti' />
 
-        <button title='Toggle menu' className='block sm:hidden mr-1.5'>
-          <svg
-            width='32'
-            height='32'
-            viewBox='0 0 32 32'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              d='M6.5 10.5H24.5M6.5 15.5H24.5M6.5 20.5H24.5'
-              stroke='#FEFEFE'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            />
-          </svg>
+        <button
+          title='Toggle menu'
+          className='block sm:hidden mr-1.5'
+          onClick={() => setShowSideMenu(true)}
+        >
+          <IconHam />
         </button>
 
         <div className='flex flex-col gap-1.5 sm:gap-2 border-l-2 sm:border-x-2 border-card-light sm:ml-6 px-1.5 sm:px-3 sm:py-2.5 my-1'>
@@ -62,16 +74,26 @@ const Nav = ({ client }: INavProps) => {
             </div>
           ))}
         </div>
-        <div className='flex px-1.5 sm:px-2 sm:my-1 sm:py-2.5 border-l-0 border-r-2 sm:border-x-2 border-card-light items-center'>
+        <div className='flex px-1.5 sm:px-2 sm:my-1 ml-auto sm:ml-0 sm:py-2.5 border-l-0 border-r-2 sm:border-x-2 border-card-light items-center'>
           <NotificationAlert totalCriticalAlerts={9} />
         </div>
 
         <Datepicker />
 
-        <div className='flex items-center border-l-2 sm:border-x-2 border-card-light sm:my-1 px-1.5'>
+        <div className='flex items-center gap-1 sm:gap-2 border-l-2 sm:border-x-2 border-card-light sm:my-1 px-1.5'>
           <button>
             <IconRefresh />
           </button>
+          <div className='w-[60px] sm:w-[70px]'>
+            <SingleSelectDropdown
+              label='Refresh rate'
+              showLabelInDesktop={false}
+              showSearchbar={false}
+              onValueChange={(value) => console.log(value)}
+              options={autoRefreshOptions}
+              defaultValue={autoRefreshOptions[0]}
+            />
+          </div>
         </div>
 
         <div className='hidden md:flex px-4 items-center'>
@@ -80,6 +102,7 @@ const Nav = ({ client }: INavProps) => {
           </button>
         </div>
       </nav>
+      <SideMenu navLinks={navLinks} setShowMenu={setShowSideMenu} showMenu={showSideMenu} />
     </header>
   );
 };

@@ -150,4 +150,12 @@ body {
     line-height: 120%;
     font-size: 0.625em;
   }
+
+  .hide-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

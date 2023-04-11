@@ -1,12 +1,19 @@
 import { IconCritical, IconSafe } from '../../assets/icons';
-import { Criticality, TableRowItemType } from '../../global';
+import { Criticality } from '../../global';
 
 interface ITableRowItemProps {
   showBorder?: boolean;
-  data: TableRowItemType[];
+  data: any[];
+  showStatusChip?: boolean;
 }
 
-const TableRowItemFormatter = ({ data }: { data: TableRowItemType }) => {
+const TableRowItemFormatter = ({
+  data,
+  showStatusChip = false,
+}: {
+  data: any;
+  showStatusChip: boolean;
+}) => {
   switch (data.type) {
     case 'STATUS':
       return (
@@ -34,7 +41,7 @@ const TableRowItemFormatter = ({ data }: { data: TableRowItemType }) => {
   }
 };
 
-const TableRowItem = ({ showBorder = false, data }: ITableRowItemProps) => {
+const TableRowItem = ({ showBorder = false, data, showStatusChip = false }: ITableRowItemProps) => {
   return (
     <tr
       className={` ${
@@ -43,9 +50,9 @@ const TableRowItem = ({ showBorder = false, data }: ITableRowItemProps) => {
           : 'bg-transparent border-b border-transparent'
       }`}
     >
-      {data.map((item) => (
-        <td className='whitespace-nowrap px-4 py-2' key={item.value}>
-          <TableRowItemFormatter data={item} />
+      {Object.entries(data).map(([key, value]) => (
+        <td className='whitespace-nowrap px-4 py-2' key={key}>
+          <TableRowItemFormatter data={value} showStatusChip={showStatusChip} />
         </td>
       ))}
     </tr>

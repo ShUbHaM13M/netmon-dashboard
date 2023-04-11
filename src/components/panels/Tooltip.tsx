@@ -1,12 +1,30 @@
+import { useEffect, useRef } from 'react';
+
 interface ITooltipProps {
   title: string;
   description: string;
   show: boolean;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Tooltip = ({ title, description, show }: ITooltipProps) => {
+const Tooltip = ({ title, description, show, setShow }: ITooltipProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShow(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, [setShow]);
+
   return (
     <div
+      ref={containerRef}
       style={{
         width: 230,
       }}
