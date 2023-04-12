@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Tooltip from './Tooltip';
 
 interface IStatPanelProps {
@@ -17,7 +17,7 @@ const StatPanelContainer = ({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div style={{ minWidth: 326 }} className='rounded-xl bg-card-grey'>
+    <div style={{ minWidth: 326 }} className='rounded-xl bg-card-grey min-h-full flex flex-col'>
       <div
         className='flex justify-between items-center gap-0.5 w-full
       px-4 py-3

@@ -45,7 +45,7 @@ const Nav = ({ client }: INavProps) => {
   }, [showSideMenu]);
 
   return (
-    <header className='bg-card-grey text-icon-white'>
+    <header className='bg-card-grey text-icon-white w-full'>
       <nav className='flex px-4 sm:px-8 py-3 sm:py-0 sm:justify-center w-full'>
         <img className='py-3 hidden md:block' src={Logo} alt='Inniti' />
 

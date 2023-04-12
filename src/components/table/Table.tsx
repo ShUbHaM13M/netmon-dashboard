@@ -62,7 +62,7 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
 
   return (
     <div
-      className={`h-full text-icon-white text-sm relative overflow-x-auto ${
+      className={`min-h-full flex-1 text-icon-white text-sm relative overflow-x-auto ${
         data.length ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
     >
