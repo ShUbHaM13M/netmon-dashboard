@@ -26,10 +26,10 @@ const navLinks = [
 ];
 
 const autoRefreshOptions: IDropdownOption[] = [
-  { label: '3 m', value: '3' },
-  { label: '5 m', value: '5' },
-  { label: '8 m', value: '8' },
-  { label: '12 m', value: '12' },
+  { Text: '3 m', Value: '3' },
+  { Text: '5 m', Value: '5' },
+  { Text: '8 m', Value: '8' },
+  { Text: '12 m', Value: '12' },
 ];
 
 const Nav = ({ client }: INavProps) => {

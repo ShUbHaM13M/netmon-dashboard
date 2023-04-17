@@ -52,6 +52,21 @@ const deviceDownDetails = {
       update_time: { value: 'f7b59sksikekwlasasds', type: 'STRING' },
       last_update: { value: 'f7b59sksikekwlasasds', type: 'STRING' },
     },
+    {
+      reachability: { value: 'Reachable', type: 'STATUS', criticality: Criticality.SAFE },
+      hostname: { value: 'vsmart', type: 'STRING' },
+      system_ip: { value: '10.10.1.5', type: 'STRING' },
+      sitename: { value: 'Main DC', type: 'STRING' },
+      device_model: { value: 'vsmart', type: 'STRING' },
+      bfd_sessions: { value: '-', type: 'STRING' },
+      omp_peers: { value: '10.10.1.17', type: 'STRING' },
+      control: { value: 6, type: 'NUMBER' },
+      version: { value: '20.4.2', type: 'STRING' },
+      chassis_no: { value: 'f7b59sksikekwlasasds', type: 'STRING' },
+      serial_no: { value: 'f7b59sksikekwlasasds', type: 'STRING' },
+      update_time: { value: 'f7b59sksikekwlasasds', type: 'STRING' },
+      last_update: { value: 'f7b59sksikekwlasasds', type: 'STRING' },
+    },
   ],
 };
 

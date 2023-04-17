@@ -5,15 +5,15 @@ import { createPortal } from 'react-dom';
 import DropDownModal from './DropDownModal';
 
 export interface IDropdownOption {
-  label: string;
-  value: string;
+  Text: string;
+  Value: any;
 }
 
 interface IDropdownProps {
   label: string;
   showSearchbar?: boolean;
   options: IDropdownOption[];
-  defaultValue: IDropdownOption;
+  defaultValue?: IDropdownOption;
   width?: number;
   onValueChange: (value: IDropdownOption) => void;
   disabled?: boolean;
@@ -79,7 +79,7 @@ const SingleSelectDropdown = ({
       if (value) {
         setFilteredOptions(
           options.filter((item) => {
-            return item.label.includes(value) || item.value.includes(value);
+            return item.Text.includes(value) || item.Value.includes(value);
           }),
         );
         return;
@@ -103,13 +103,16 @@ const SingleSelectDropdown = ({
         onClick={toggleDropdown}
         disabled={disabled}
         className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-xs sm:text-sm items-center font-normal hover:bg-[#3E404D]
-        transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light'
+        stroke-icon-grey transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light disabled:text-icon-dark-grey disabled:stroke-icon-dark-grey'
       >
-        {selectedOption.label}
+        {selectedOption.Text}
         <IconDropdownArrow rotate={showDropdown} />
       </button>
       {showDropdown ? (
         <div
+          style={{
+            maxHeight: 210,
+          }}
           className={`flex-col bg-card-grey rounded-lg w-full pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex 
           ${showSearchbar ? 'p-2.5' : 'p-0'}`}
         >
@@ -128,14 +131,14 @@ const SingleSelectDropdown = ({
             ''
           )}
 
-          <div className='overflow-y-auto hide-scrollbar'>
+          <div className='overflow-y-auto hide-scrollbar z-30'>
             {filteredOptions.map((item) => {
               return (
                 <DropDownOption
                   onClick={() => onOptionClick(item)}
-                  label={item.label}
-                  isSelected={selectedOption.value === item.value}
-                  key={item.value}
+                  label={item.Text}
+                  isSelected={selectedOption.Value === item.Value}
+                  key={item.Value}
                 />
               );
             })}
@@ -176,9 +179,9 @@ const SingleSelectDropdown = ({
               return (
                 <DropDownOption
                   onClick={() => onOptionClick(item)}
-                  label={item.label}
-                  isSelected={selectedOption.value === item.value}
-                  key={item.value}
+                  label={item.Text}
+                  isSelected={selectedOption.Value === item.Value}
+                  key={item.Value}
                   bgTransparent
                 />
               );

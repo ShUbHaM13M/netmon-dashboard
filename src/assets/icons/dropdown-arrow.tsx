@@ -10,7 +10,7 @@ export default function IconDropdownArrow({ rotate }: { rotate: boolean }) {
     >
       <path
         d='M14.5 10.5L11.5 13.5L8.5 10.5'
-        stroke='#9CA3B3'
+        stroke='inherit'
         strokeLinecap='round'
         strokeLinejoin='round'
       />

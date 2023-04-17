@@ -14,32 +14,32 @@ const cpuLoadUsageData = {
   ],
   data: [
     {
-      '1_min': { value: 1.69, type: 'NUMBER' },
-      '5_min': { value: 1.0, type: 'NUMBER' },
-      '15_min': { value: 1.04, type: 'NUMBER' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      '1_min': { value: 1.69 },
+      '5_min': { value: 1.0 },
+      '15_min': { value: 1.04 },
+      hostname: { value: 'site2-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
     {
-      '1_min': { value: 1.69, type: 'NUMBER' },
-      '5_min': { value: 1.0, type: 'NUMBER' },
-      '15_min': { value: 1.04, type: 'NUMBER' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      '1_min': { value: 1.69 },
+      '5_min': { value: 1.0 },
+      '15_min': { value: 1.04 },
+      hostname: { value: 'site2-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
     {
-      '1_min': { value: 1.69, type: 'NUMBER' },
-      '5_min': { value: 1.0, type: 'NUMBER' },
-      '15_min': { value: 1.04, type: 'NUMBER' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      '1_min': { value: 1.69 },
+      '5_min': { value: 1.0 },
+      '15_min': { value: 1.04 },
+      hostname: { value: 'site2-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
     {
-      '1_min': { value: 1.69, type: 'NUMBER' },
-      '5_min': { value: 1.0, type: 'NUMBER' },
-      '15_min': { value: 1.04, type: 'NUMBER' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      '1_min': { value: 1.69 },
+      '5_min': { value: 1.0 },
+      '15_min': { value: 1.04 },
+      hostname: { value: 'site2-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
   ],
 };
@@ -56,6 +56,7 @@ const CPULoadUsagePanel = () => {
           title: 'All good here',
           subtitle: 'No link down',
         }}
+        showStatus={false}
       ></Table>
     </StatPanelContainer>
   );

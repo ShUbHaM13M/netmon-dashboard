@@ -12,24 +12,24 @@ const cpuUsageData = {
   ],
   data: [
     {
-      user_cpu: { value: '13.4%', type: 'STRING' },
-      hostname: { value: 'dc-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      user_cpu: { value: '13.4%' },
+      hostname: { value: 'dc-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
     {
-      user_cpu: { value: '15.6%', type: 'STRING' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      user_cpu: { value: '15.6%' },
+      hostname: { value: 'site2-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
     {
-      user_cpu: { value: '13.4%', type: 'STRING' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      user_cpu: { value: '13.4%' },
+      hostname: { value: 'site2-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
     {
-      user_cpu: { value: '15.6%', type: 'STRING' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
+      user_cpu: { value: '15.6%' },
+      hostname: { value: 'site2-cedge01' },
+      last_updated: { value: '2023-03-21 19_01:32.143' },
     },
   ],
 };
@@ -46,6 +46,7 @@ const CPU_UsagePanel = () => {
           title: 'All good here',
           subtitle: 'No link down',
         }}
+        showStatus={false}
       ></Table>
     </StatPanelContainer>
   );

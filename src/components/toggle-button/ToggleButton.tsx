@@ -25,7 +25,7 @@ const ToggleButton = ({ label, defaultValue = false, onValueChange }: IToggleBut
       </p>
 
       <button
-        className={`relative h-3 w-5 border rounded-full ${
+        className={`relative h-3 sm:h-[13px] w-5 border rounded-full ${
           active ? 'border-brand-orange' : 'border-icon-grey'
         }`}
         onClick={onToggleClick}

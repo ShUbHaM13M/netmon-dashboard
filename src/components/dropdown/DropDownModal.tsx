@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 import { IconClose } from '../../assets/icons';
 import Button from '../button/Button';
 
@@ -15,15 +15,6 @@ const DropDownModal = forwardRef<HTMLDivElement, IDropDownModal>(function DropDo
   props,
   ref,
 ) {
-  useEffect(() => {
-    if (props.showModal) {
-      document.body.style.overflow = 'hidden';
-      return;
-    }
-
-    document.body.style.overflow = 'auto';
-  }, [props.showModal]);
-
   if (props.showModal) {
     return (
       <div

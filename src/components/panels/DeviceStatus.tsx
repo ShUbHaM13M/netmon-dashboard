@@ -1,18 +1,15 @@
-import { DeviceReachability } from '../../global';
-
 interface IDeviceStatusProps {
   label: string;
-  data: {
-    reachability: DeviceReachability;
-    name: string;
-  }[];
+  reachableDevices: number;
+  unReachableDevices: number;
 }
 
-const DeviceStatus = ({ label, data }: IDeviceStatusProps) => {
-  const totalDevices = data.length;
-  const reachableDevices = data.filter(
-    (device) => device.reachability == DeviceReachability.REACHABLE,
-  ).length;
+const DeviceStatus = ({
+  label,
+  reachableDevices,
+  unReachableDevices: unreachableDevices,
+}: IDeviceStatusProps) => {
+  const totalDevices = reachableDevices + unreachableDevices;
   const reachableDevicesPercentage = (reachableDevices * 100) / totalDevices;
   const unReachableDevicesPercentage = ((totalDevices - reachableDevices) * 100) / totalDevices;
 

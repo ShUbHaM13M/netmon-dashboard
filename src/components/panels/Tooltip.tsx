@@ -29,10 +29,10 @@ const Tooltip = ({ title, description, show, setShow }: ITooltipProps) => {
         width: 230,
       }}
       className={`text-icon-white
-      flex flex-col items-start 
+      flex-col items-start 
       absolute -left-2 top-full min-h-fit z-20
       transition-opacity duration-150 ease-out
-      ${show ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
+      ${show ? 'flex' : 'hidden'}
       `}
     >
       <svg
