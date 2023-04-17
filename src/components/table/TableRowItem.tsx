@@ -1,20 +1,23 @@
 import { IconCritical, IconSafe } from '../../assets/icons';
-import { Criticality } from '../../global';
+import { Criticality, TableDataType } from '../../global';
 
 interface ITableRowItemProps {
   showBorder?: boolean;
   data: any[];
   showStatusChip?: boolean;
+  showStatus?: boolean;
 }
 
 const TableRowItemFormatter = ({
   data,
   showStatusChip = false,
+  dataType,
 }: {
   data: any;
   showStatusChip: boolean;
+  dataType: TableDataType;
 }) => {
-  switch (data.type) {
+  switch (dataType) {
     case 'STATUS':
       return (
         <span
@@ -65,7 +68,12 @@ const TableRowItemFormatter = ({
   }
 };
 
-const TableRowItem = ({ showBorder = false, data, showStatusChip = false }: ITableRowItemProps) => {
+const TableRowItem = ({
+  showBorder = false,
+  data,
+  showStatusChip = false,
+  showStatus = true,
+}: ITableRowItemProps) => {
   return (
     <tr
       className={` ${
@@ -74,9 +82,13 @@ const TableRowItem = ({ showBorder = false, data, showStatusChip = false }: ITab
           : 'bg-transparent border-b border-transparent'
       }`}
     >
-      {Object.entries(data).map(([key, value]) => (
+      {Object.entries(data).map(([key, value], index) => (
         <td className='whitespace-nowrap px-4 py-2' key={key}>
-          <TableRowItemFormatter data={value} showStatusChip={showStatusChip} />
+          <TableRowItemFormatter
+            dataType={showStatus && index === 0 ? 'STATUS' : 'NUMBER'}
+            data={value}
+            showStatusChip={showStatusChip}
+          />
         </td>
       ))}
     </tr>

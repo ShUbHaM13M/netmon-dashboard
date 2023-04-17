@@ -7,29 +7,27 @@ interface ITableProps {
   headers: TableHeadType[];
   data: any[];
   showStatusChip?: boolean;
+  showStatus?: boolean;
   emptyStateData: {
     icon: string;
     title: string;
     subtitle: string;
   };
-  statusTypes?:
-    | {
-        label: string;
-      }[]
-    | null;
 }
 
-const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: ITableProps) => {
+const Table = ({ headers, data, emptyStateData, showStatusChip, showStatus }: ITableProps) => {
   const [filteredData, setFilteredData] = useState(data);
 
   const onSortOptionClick = useCallback(
     (dataType: string, columnName: string, order: string) => {
+      if (!order) {
+        setFilteredData(data);
+        return;
+      }
       switch (dataType) {
-        case 'STATUS':
-          break;
         case 'NUMBER':
           setFilteredData([
-            ...filteredData.sort((row, next) => {
+            ...data.sort((row, next) => {
               const a = row[columnName].value,
                 b = next[columnName].value;
               if (order === 'ASC') return a - b;
@@ -37,9 +35,9 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
             }),
           ]);
           break;
-        case 'STRING':
+        default:
           setFilteredData([
-            ...filteredData.sort((row, next) => {
+            ...data.sort((row, next) => {
               const a = next[columnName].value,
                 b = row[columnName].value;
               if (order === 'ASC') {
@@ -53,16 +51,14 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
             }),
           ]);
           break;
-        default:
-          break;
       }
     },
-    [filteredData],
+    [data],
   );
 
   return (
     <div
-      className={`min-h-full flex-1 text-icon-white text-sm relative overflow-x-auto ${
+      className={`h-full flex-1 text-icon-white text-sm relative overflow-x-auto ${
         data.length ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
     >
@@ -71,12 +67,7 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
           <thead className='font-semibold'>
             <tr>
               {headers.map((data) => (
-                <TableHeadItem
-                  key={data.title}
-                  {...data}
-                  onSortOptionClick={onSortOptionClick}
-                  sortingOptions={data.dataType === 'STATUS' ? statusTypes : null}
-                />
+                <TableHeadItem key={data.title} {...data} onSortOptionClick={onSortOptionClick} />
               ))}
             </tr>
           </thead>
@@ -88,6 +79,7 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
                   data={row}
                   key={index}
                   showBorder={index % 2 === 0}
+                  showStatus={showStatus}
                 />
               ))}
             </tbody>
