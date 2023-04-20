@@ -7,6 +7,27 @@ body {
 }
 
 @layer base {
+  @font-face {
+    font-family: 'Nunito';
+    src: local('Nunito'), local('nunito'), url('/src/assets/fonts/Nunito/Nunito-Light.ttf');
+    font-weight: 300;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Nunito';
+    src: local('Nunito'), local('nunito'), url('/src/assets/fonts/Nunito/Nunito-Regular.ttf');
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Nunito';
+    src: local('Nunito'), local('nunito'), url('/src/assets/fonts/Nunito/Nunito-SemiBold.ttf');
+    font-weight: 600;
+    font-display: swap;
+  }
+
   h1 {
     line-height: 120%;
     @apply font-semibold text-5xl;
