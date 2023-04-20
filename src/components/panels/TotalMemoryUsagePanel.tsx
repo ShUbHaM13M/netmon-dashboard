@@ -1,61 +1,30 @@
 import StatPanelContainer from './StatPanelContainer';
 import Like from '../../assets/images/like.svg';
 import Table from '../table/Table';
-
-const cpuLoadUsageData = {
-  title: 'Total Memory Usage',
-  sub_title: 'Today: 09:00:00 to 21:00:00',
-  columns: [
-    { title: 'mem_util', dataType: 'STRING' },
-    { title: 'hostname', dataType: 'STRING' },
-    { title: 'last_update', dataType: 'STRING' },
-  ],
-  data: [
-    {
-      mem_util: { value: '13.4%' },
-      hostname: { value: 'dc-cedge01' },
-      last_updated: { value: '2023-03-21 19_01:32.143' },
-    },
-    {
-      mem_util: { value: '15.6%' },
-      hostname: { value: 'site2-cedge01' },
-      last_updated: { value: '2023-03-21 19_01:32.143' },
-    },
-    {
-      mem_util: { value: '15.6%' },
-      hostname: { value: 'site2-cedge01' },
-      last_updated: { value: '2023-03-21 19_01:32.143' },
-    },
-    {
-      mem_util: { value: '15.6%' },
-      hostname: { value: 'site2-cedge01' },
-      last_updated: { value: '2023-03-21 19_01:32.143' },
-    },
-    {
-      mem_util: { value: '15.6%' },
-      hostname: { value: 'site2-cedge01' },
-      last_updated: { value: '2023-03-21 19_01:32.143' },
-    },
-    {
-      mem_util: { value: '15.6%' },
-      hostname: { value: 'site2-cedge01' },
-      last_updated: { value: '2023-03-21 19_01:32.143' },
-    },
-    {
-      mem_util: { value: '15.6%' },
-      hostname: { value: 'site2-cedge01' },
-      last_updated: { value: '2023-03-21 19_01:32.143' },
-    },
-  ],
-};
+import { useUserContext } from '../../context/UserContext';
+import { API_URL, FetchPanelData, headers } from '../../global';
+import useFetch from '../../hooks/useFetch';
 
 const TotalMemoryUsagePanel = () => {
+  const { refetch } = useUserContext();
+  const memoryUsageURL = `${API_URL}/panel/device/mem/usage?ver=v2`;
+
+  const { data: memoryUsageData } = useFetch<FetchPanelData>(
+    memoryUsageURL,
+    {
+      headers,
+    },
+    refetch,
+  );
+
+  if (!memoryUsageData) return null;
+
   return (
-    <StatPanelContainer description='Data about total memory usage' label={cpuLoadUsageData.title}>
+    <StatPanelContainer description='Data about total memory usage' label={memoryUsageData.title}>
       <div className='mt-6 sm:mt-[26px]'></div>
       <Table
-        data={cpuLoadUsageData.data}
-        headers={cpuLoadUsageData.columns}
+        data={memoryUsageData.data}
+        headers={memoryUsageData.columns}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

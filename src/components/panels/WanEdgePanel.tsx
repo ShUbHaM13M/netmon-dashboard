@@ -2,13 +2,19 @@ import DeviceStatus from './DeviceStatus';
 import StatPanelContainer from './StatPanelContainer';
 import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
+import { useUserContext } from '../../context/UserContext';
 
 const wanEdgePanelURL = `${API_URL}/panel/device/connection/summary?device-type=vedge&ver=v2`;
 
 const WanEdgePanel = () => {
-  const { data: wanEdgePanelData } = useFetch<FetchPanelData>(wanEdgePanelURL, {
-    headers,
-  });
+  const { refetch } = useUserContext();
+  const { data: wanEdgePanelData } = useFetch<FetchPanelData>(
+    wanEdgePanelURL,
+    {
+      headers,
+    },
+    refetch,
+  );
 
   if (!wanEdgePanelData) return null;
 

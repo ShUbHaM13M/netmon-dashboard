@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { TableHeadType } from '../../global';
 import TableHeadItem from './TableHeadItem';
 import TableRowItem from './TableRowItem';
@@ -13,23 +13,34 @@ interface ITableProps {
     title: string;
     subtitle: string;
   };
+  status?: { [key: string]: string };
+  showPercentage?: boolean;
 }
 
-const Table = ({ headers, data, emptyStateData, showStatusChip, showStatus }: ITableProps) => {
+const Table = ({
+  headers,
+  data,
+  emptyStateData,
+  showStatusChip,
+  showStatus,
+  status,
+  showPercentage = false,
+}: ITableProps) => {
   const [filteredData, setFilteredData] = useState(data);
+  const cachedData = useRef(data);
 
   const onSortOptionClick = useCallback(
-    (dataType: string, columnName: string, order: string) => {
+    (data_type: string, columnName: string, order: string) => {
       if (!order) {
-        setFilteredData(data);
+        setFilteredData(cachedData.current);
         return;
       }
-      switch (dataType) {
+      switch (data_type) {
         case 'NUMBER':
           setFilteredData([
             ...data.sort((row, next) => {
-              const a = row[columnName].value,
-                b = next[columnName].value;
+              const a = row[columnName],
+                b = next[columnName];
               if (order === 'ASC') return a - b;
               else return b - a;
             }),
@@ -38,8 +49,8 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, showStatus }: IT
         default:
           setFilteredData([
             ...data.sort((row, next) => {
-              const a = next[columnName].value,
-                b = row[columnName].value;
+              const a = next[columnName],
+                b = row[columnName];
               if (order === 'ASC') {
                 if (a < b) return 1;
                 if (a > b) return -1;
@@ -80,6 +91,9 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, showStatus }: IT
                   key={index}
                   showBorder={index % 2 === 0}
                   showStatus={showStatus}
+                  status={status}
+                  showPercentage={showPercentage}
+                  data_type={headers[index]?.data_type.toUpperCase()}
                 />
               ))}
             </tbody>

@@ -10,7 +10,7 @@ interface ISideMenuProps {
 const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
   return (
     <div
-      className={`flex flex-col sm:hidden h-[100dvh] w-full bg-card-dark p-4
+      className={`flex flex-col lg:hidden h-[100dvh] w-full bg-card-dark p-4
 			fixed inset-0
 			z-30
 			transition-transform ease-out duration-200
@@ -30,7 +30,7 @@ const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
         {navLinks.map((link) => (
           <div
             key={link.label}
-            className='px-1.5 py-[17px] flex text-icon-grey stroke-icon-white uppercase text-sm cursor-pointer items-center justify-between
+            className='px-1.5 py-[17px] flex text-icon-grey stroke-icon-white uppercase text-lg cursor-pointer items-center justify-between
             hover:stroke-brand-orange hover:text-brand-orange 
             transition-colors ease-out duration-150 
             border-b border-icon-dark-grey border-opacity-50 last:border-transparent'
@@ -43,7 +43,7 @@ const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
 
       <hr className='my-3 border-icon-grey bg-icon-grey opacity-50' />
 
-      <button className='flex uppercase text-icon-white px-2 py-5 gap-2 font-semibold text-sm items-center'>
+      <button className='flex uppercase text-icon-white px-2 py-5 gap-2 font-semibold text-lg items-center'>
         <IconSignout /> Logout
       </button>
     </div>

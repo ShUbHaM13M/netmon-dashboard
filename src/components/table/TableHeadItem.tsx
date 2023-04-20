@@ -8,7 +8,8 @@ interface ITableHeadItemProps extends TableHeadType {
 const TableHeadItem = ({
   title,
   sortable = true,
-  dataType,
+  data_type,
+  property,
   onSortOptionClick,
 }: ITableHeadItemProps) => {
   const containerRef = useRef<HTMLTableHeaderCellElement | null>(null);
@@ -23,8 +24,8 @@ const TableHeadItem = ({
     else if (currentSortOption === 'DESC') sortOrder = '';
 
     setCurrentSortOption(sortOrder);
-    onSortOptionClick(dataType, title, sortOrder);
-  }, [currentSortOption, dataType, onSortOptionClick, sortable, title]);
+    onSortOptionClick(data_type, property, sortOrder);
+  }, [currentSortOption, data_type, onSortOptionClick, sortable, property]);
 
   return (
     <th
@@ -33,7 +34,7 @@ const TableHeadItem = ({
       scope='col'
       className={'px-4 py-3 caps-2 cursor-pointer relative transition-colors ease-out duration-150'}
     >
-      <span className={`flex justify-between items-center gap-2.5`}>
+      <span className='caps-2-bold flex justify-between items-center gap-2.5 text-icon-grey'>
         {title}
         {sortable ? (
           <svg

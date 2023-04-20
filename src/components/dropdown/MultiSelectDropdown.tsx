@@ -41,9 +41,9 @@ const MultiSelectDropdown = ({
 
   const selectedOptionLabel = selectedOption.reduce((acc, curr) => {
     if (acc) {
-      return `${acc}, ${curr.Text}`;
+      return `${acc}, ${curr?.Text}`;
     }
-    return curr.Text;
+    return curr?.Text;
   }, '');
 
   const toggleDropdown = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

@@ -1,33 +1,24 @@
 import StatPanelContainer from './StatPanelContainer';
 import Table from '../table/Table';
 import Like from '../../assets/images/like.svg';
-
-const data = {
-  columns: [
-    { title: 'tunnel', dataType: 'STRING' },
-    { title: 'ms', dataType: 'NUMBER' },
-  ],
-  data: [
-    {
-      tunnel: { value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll' },
-      ms: { value: 2 },
-    },
-    {
-      tunnel: { value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll' },
-      ms: { value: 1.2 },
-    },
-    {
-      tunnel: { value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll' },
-      ms: { value: 1 },
-    },
-    {
-      tunnel: { value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll' },
-      ms: { value: 2.2 },
-    },
-  ],
-};
+import { API_URL, FetchPanelData, headers } from '../../global';
+import useFetch from '../../hooks/useFetch';
+import { useUserContext } from '../../context/UserContext';
 
 const TunnelJitterPanel = () => {
+  const { refetch } = useUserContext();
+  const tunnelJitterURL = `${API_URL}/approute/tunnels/summary?type=jitter&limit=10&ver=v2`;
+
+  const { data: tunnelJitterData } = useFetch<FetchPanelData>(
+    tunnelJitterURL,
+    {
+      headers,
+    },
+    refetch,
+  );
+
+  if (!tunnelJitterData) return null;
+
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
@@ -35,8 +26,8 @@ const TunnelJitterPanel = () => {
     >
       <div className='mt-4'></div>
       <Table
-        headers={data.columns}
-        data={data.data}
+        headers={tunnelJitterData.columns}
+        data={tunnelJitterData.data}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

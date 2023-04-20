@@ -105,7 +105,7 @@ const SingleSelectDropdown = ({
         className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-xs sm:text-sm items-center font-normal hover:bg-[#3E404D]
         stroke-icon-grey transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light disabled:text-icon-dark-grey disabled:stroke-icon-dark-grey'
       >
-        {selectedOption.Text}
+        {selectedOption?.Text}
         <IconDropdownArrow rotate={showDropdown} />
       </button>
       {showDropdown ? (

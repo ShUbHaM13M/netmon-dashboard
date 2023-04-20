@@ -1,3 +1,4 @@
+import { useUserContext } from '../../context/UserContext';
 import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 import StackedGraph from './StackedGraph';
@@ -6,9 +7,14 @@ import StatPanelContainer from './StatPanelContainer';
 const certificatePanelURL = `${API_URL}/panel/device/certificate/summary?ver=v2`;
 
 const CertificatePanel = () => {
-  const { data: certificatePanelData } = useFetch<FetchPanelData>(certificatePanelURL, {
-    headers,
-  });
+  const { refetch } = useUserContext();
+  const { data: certificatePanelData } = useFetch<FetchPanelData>(
+    certificatePanelURL,
+    {
+      headers,
+    },
+    refetch,
+  );
 
   if (!certificatePanelData) return null;
 

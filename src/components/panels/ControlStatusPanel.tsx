@@ -1,25 +1,43 @@
-import { Criticality } from '../../global';
 import StatPanelContainer from './StatPanelContainer';
+import { API_URL, FetchPanelData, headers, stringToCriticality } from '../../global';
+import useFetch from '../../hooks/useFetch';
 import Status from './Status';
+import { useUserContext } from '../../context/UserContext';
+
+const controlStatusURL = `${API_URL}/panel/control/summary?ver=v2`;
 
 const ControlStatusPanel = () => {
+  const { refetch } = useUserContext();
+  const { data: controlStatusData } = useFetch<FetchPanelData>(
+    controlStatusURL,
+    {
+      headers,
+    },
+    refetch,
+  );
+
+  if (!controlStatusData) return null;
+
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
       label='Control Status'
-      showError
+      showError={!!controlStatusData.data.find((d) => d.name === 'Control down')?.count}
     >
       <div className='flex flex-col sm:flex-row w-full pt-4 sm:pt-6 px-4 py-4 gap-3 sm:gap-4'>
-        <div className='flex-1'>
-          <Status label='Control up' value={3} criticality={Criticality.SAFE} />
-        </div>
-
-        <div className='flex-1'>
-          <Status label='PARTIAL' value={0} criticality={Criticality.MAJOR} />
-        </div>
-        <div className='flex-1'>
-          <Status label='control down' value={2} criticality={Criticality.CRITICAL} />
-        </div>
+        {controlStatusData.data.map((d) => {
+          return (
+            <div className='flex-1' key={d.name}>
+              <Status
+                label={d.name}
+                value={d.count}
+                criticality={stringToCriticality(
+                  controlStatusData.status.find((status) => status.value === d.name)?.criticality,
+                )}
+              />
+            </div>
+          );
+        })}
       </div>
     </StatPanelContainer>
   );

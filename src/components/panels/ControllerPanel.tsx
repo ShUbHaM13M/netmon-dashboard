@@ -1,3 +1,4 @@
+import { useUserContext } from '../../context/UserContext';
 import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 import DeviceStatus from './DeviceStatus';
@@ -6,9 +7,14 @@ import StatPanelContainer from './StatPanelContainer';
 const controllerPanelURL = `${API_URL}/panel/device/connection/summary?device-type=controllers&ver=v2`;
 
 const ControllerPanel = () => {
-  const { data: controllerPanelData } = useFetch<FetchPanelData>(controllerPanelURL, {
-    headers,
-  });
+  const { refetch } = useUserContext();
+  const { data: controllerPanelData } = useFetch<FetchPanelData>(
+    controllerPanelURL,
+    {
+      headers,
+    },
+    refetch,
+  );
 
   if (!controllerPanelData) return null;
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function convertValue(valueInMB: number): string {
   const TB = valueInMB / (1000 * 1000);
@@ -7,7 +7,7 @@ function convertValue(valueInMB: number): string {
   if (TB >= 1) {
     return `${TB.toFixed(0)} TB`;
   } else if (GB >= 1) {
-    return `${GB.toFixed(2).replace('.', '')} GB`;
+    return `${GB.toFixed(2)} GB`;
   } else {
     return `${valueInMB} MB`;
   }
@@ -15,7 +15,7 @@ function convertValue(valueInMB: number): string {
 
 function getWidth(unit: string, value: number, maxValue: number): number {
   if (unit === 'GB' || unit === 'MB') {
-    return value / (maxValue / 100);
+    return value / maxValue;
   }
   return value / maxValue;
 }
@@ -28,9 +28,9 @@ interface IApplicationGraphProps {
   }[];
 }
 
-const ApplicationGraph = ({ data }: IApplicationGraphProps) => {
-  const maxValue = useMemo(() => Math.max(...data.map((data) => data.value)), [data]);
+const maxValue = 1000000;
 
+const ApplicationGraph = ({ data }: IApplicationGraphProps) => {
   return (
     <div className='flex flex-col gap-6 text-white text-xs uppercase p-4'>
       {data.map((data) => {
@@ -102,7 +102,7 @@ const GraphBarItem = ({ name, value, width }: IGraphBarItemProps) => {
         </div>
         <p
           style={{
-            minWidth: '6ch',
+            minWidth: '10ch',
           }}
           className='text-xs'
         >

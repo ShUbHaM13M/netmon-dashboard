@@ -1,35 +1,24 @@
 import StatPanelContainer from './StatPanelContainer';
 import Table from '../table/Table';
 import Like from '../../assets/images/like.svg';
-
-const data = {
-  columns: [
-    { title: 'tunnel', dataType: 'STRING' },
-    { title: 'ms', dataType: 'NUMBER' },
-  ],
-  data: [
-    {
-      tunnel: {
-        value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll',
-      },
-      ms: { value: 2 },
-    },
-    {
-      tunnel: { value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll' },
-      ms: { value: 1.2 },
-    },
-    {
-      tunnel: { value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll' },
-      ms: { value: 1 },
-    },
-    {
-      tunnel: { value: 'site3-vedge01:public-internet-dc-cedge01:public-internetll' },
-      ms: { value: 2.2 },
-    },
-  ],
-};
+import { API_URL, FetchPanelData, headers } from '../../global';
+import useFetch from '../../hooks/useFetch';
+import { useUserContext } from '../../context/UserContext';
 
 const TunnelLatencyPanel = () => {
+  const { refetch } = useUserContext();
+  const tunnelLatencyURL = `${API_URL}/approute/tunnels/summary?type=latency&limit=10&ver=v2`;
+
+  const { data: tunnelLatencyData } = useFetch<FetchPanelData>(
+    tunnelLatencyURL,
+    {
+      headers,
+    },
+    refetch,
+  );
+
+  if (!tunnelLatencyData) return null;
+
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
@@ -37,8 +26,8 @@ const TunnelLatencyPanel = () => {
     >
       <div className='mt-4'></div>
       <Table
-        headers={data.columns}
-        data={data.data}
+        headers={tunnelLatencyData.columns}
+        data={tunnelLatencyData.data}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

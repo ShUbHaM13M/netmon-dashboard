@@ -8,6 +8,7 @@ interface ITabContainerProps {
 }
 
 const autoplayOptions = [
+  { Text: '10 s', Value: 10 },
   { Text: '60 s', Value: 60 },
   { Text: '120 s', Value: 120 },
   { Text: '160 s', Value: 160 },
@@ -36,10 +37,10 @@ const TabContainer = ({ children }: ITabContainerProps) => {
 
   return (
     <div className='text-icon-white w-full'>
-      <div className='flex flex-col md:flex-row justify-between sm:items-center mb-4 sm:mb-6 border-b-0 sm:border-b border-card-light'>
+      <div className='flex flex-col md:flex-row justify-between md:items-center mb-4 md:mb-6 border-b-0 md:border-b border-card-light'>
         <div
           className='flex flex-1 relative gap-4 hide-scroll items-center overflow-x-auto 
-				border-b border-card-light sm:border-0'
+				border-b border-card-light md:border-0'
         >
           {children.map((tab, index) => {
             return (
@@ -53,7 +54,7 @@ const TabContainer = ({ children }: ITabContainerProps) => {
             );
           })}
         </div>
-        <div className='flex items-center gap-2 mt-4 sm:mt-0 border-l-0 sm:border-l border-card-light px-2'>
+        <div className='flex items-center gap-2 mt-4 md:mt-0 border-l-0 md:border-l border-card-light px-2'>
           <ToggleButton
             label='Autoplay'
             defaultValue={enableAutoplay}
