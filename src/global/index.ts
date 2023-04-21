@@ -69,3 +69,11 @@ export interface FetchPanelData {
   data: { [key: string]: any }[];
   status: { [key: string]: any }[];
 }
+
+export function getFormatedDate(timeInEpoch: number) {
+  const date = new Date(timeInEpoch);
+  const formattedDate = `${date.getFullYear()}-${date.getMonth() - 1}-${date.getDate()} ${new Date(
+    timeInEpoch,
+  ).toLocaleTimeString('en-GB')}`;
+  return formattedDate;
+}

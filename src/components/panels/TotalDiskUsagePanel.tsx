@@ -2,7 +2,7 @@ import StatPanelContainer from './StatPanelContainer';
 import Like from '../../assets/images/like.svg';
 import Table from '../table/Table';
 import { useUserContext } from '../../context/UserContext';
-import { API_URL, FetchPanelData, headers } from '../../global';
+import { API_URL, FetchPanelData, getFormatedDate, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 
 const TotalDiskUsagePanel = () => {
@@ -19,11 +19,18 @@ const TotalDiskUsagePanel = () => {
 
   if (!diskUsageData) return null;
 
+  const data = diskUsageData.data.map((d) => {
+    return {
+      ...d,
+      last_updated: getFormatedDate(d.last_updated),
+    };
+  });
+
   return (
     <StatPanelContainer description='Data about total disk usage' label={diskUsageData.title}>
       <div className='mt-6 sm:mt-[26px]'></div>
       <Table
-        data={diskUsageData.data}
+        data={data}
         headers={diskUsageData.columns}
         emptyStateData={{
           icon: Like,
