@@ -38,6 +38,10 @@ const SingleSelectDropdown = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mobileModalRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    setFilteredOptions(options);
+  }, [options]);
+
   const toggleDropdown = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setShowDropdown((prev) => !prev);

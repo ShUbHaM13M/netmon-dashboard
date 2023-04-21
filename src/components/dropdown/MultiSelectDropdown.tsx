@@ -29,7 +29,7 @@ const MultiSelectDropdown = ({
   disabled,
 }: IDropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<IMultiSelectDropdownOption[]>(
-    defaultValue ? [defaultValue] : [options[0]],
+    defaultValue ? [defaultValue] : [],
   );
   const [showDropdown, setShowDropdown] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState(options);
@@ -38,6 +38,10 @@ const MultiSelectDropdown = ({
   const mobileModalRef = useRef<HTMLDivElement | null>(null);
 
   const [modalFullScreen, setModalFullScreen] = useState(false);
+
+  useEffect(() => {
+    setFilteredOptions(options);
+  }, [options]);
 
   const selectedOptionLabel = selectedOption.reduce((acc, curr) => {
     if (acc) {
@@ -118,7 +122,7 @@ const MultiSelectDropdown = ({
         type='button'
         disabled={disabled}
         onClick={toggleDropdown}
-        className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-xs sm:text-sm items-center font-normal hover:bg-[#3E404D]
+        className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-sm items-center font-normal hover:bg-[#3E404D]
         stroke-icon-grey transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light disabled:text-icon-dark-grey disabled:stroke-icon-dark-grey'
       >
         <span className='w-4/5 truncate text-left'>
