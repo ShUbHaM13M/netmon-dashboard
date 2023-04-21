@@ -7,17 +7,20 @@ function convertValue(valueInMB: number): string {
   if (TB >= 1) {
     return `${TB.toFixed(0)} TB`;
   } else if (GB >= 1) {
-    return `${GB.toFixed(2).replace('.', '')} GB`;
+    return `${GB.toFixed(2)} GB`;
   } else {
     return `${valueInMB} MB`;
   }
 }
 
 function getWidth(unit: string, value: number, maxValue: number): number {
-  if (unit === 'GB' || unit === 'MB') {
-    return value / (maxValue / 100);
+  if (unit === 'MB') {
+    return value / maxValue;
   }
-  return value / maxValue;
+  if (unit == 'GB') {
+    return value / 1000 / maxValue;
+  }
+  return value / 10000 / maxValue;
 }
 
 interface IApplicationGraphProps {
@@ -29,10 +32,10 @@ interface IApplicationGraphProps {
 }
 
 const ApplicationGraph = ({ data }: IApplicationGraphProps) => {
-  const maxValue = useMemo(() => Math.max(...data.map((data) => data.value)), [data]);
+  const maxValue = useMemo(() => Math.max(...data.map((d) => d.value)), [data]);
 
   return (
-    <div className='flex flex-col gap-6 text-white text-xs uppercase p-4'>
+    <div className='flex flex-col gap-6 text-white text-xs uppercase p-4 overflow-y-auto'>
       {data.map((data) => {
         return (
           <GraphBarItem
@@ -58,7 +61,7 @@ const GraphBarItem = ({ name, value, width }: IGraphBarItemProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setInitialWidth(width - 0.5);
+      setInitialWidth(width);
     }, 0);
   }, [width]);
 
@@ -102,7 +105,7 @@ const GraphBarItem = ({ name, value, width }: IGraphBarItemProps) => {
         </div>
         <p
           style={{
-            minWidth: '6ch',
+            minWidth: '10ch',
           }}
           className='text-xs'
         >

@@ -1,51 +1,44 @@
 import StatPanelContainer from './StatPanelContainer';
 import Like from '../../assets/images/like.svg';
 import Table from '../table/Table';
-
-const cpuUsageData = {
-  title: 'Top CPU Usage',
-  sub_title: 'Today: 09:00:00 to 21:00:00',
-  columns: [
-    { title: 'user_cpu', dataType: 'STRING' },
-    { title: 'hostname', dataType: 'STRING' },
-    { title: 'last_updated', dataType: 'STRING' },
-  ],
-  data: [
-    {
-      user_cpu: { value: '13.4%', type: 'STRING' },
-      hostname: { value: 'dc-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
-    },
-    {
-      user_cpu: { value: '15.6%', type: 'STRING' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
-    },
-    {
-      user_cpu: { value: '13.4%', type: 'STRING' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
-    },
-    {
-      user_cpu: { value: '15.6%', type: 'STRING' },
-      hostname: { value: 'site2-cedge01', type: 'STRING' },
-      last_updated: { value: '2023-03-21 19_01:32.143', type: 'STRING' },
-    },
-  ],
-};
+import { useUserContext } from '../../context/UserContext';
+import { API_URL, FetchPanelData, getFormatedDate, headers } from '../../global';
+import useFetch from '../../hooks/useFetch';
 
 const CPU_UsagePanel = () => {
+  const { refetch } = useUserContext();
+  const cpuUsageURL = `${API_URL}/panel/device/cpu/usage?ver=v2`;
+
+  const { data: cpuUsageData } = useFetch<FetchPanelData>(
+    cpuUsageURL,
+    {
+      headers,
+    },
+    refetch,
+  );
+
+  if (!cpuUsageData) return null;
+
+  const data = cpuUsageData.data.map((d) => {
+    return {
+      ...d,
+      last_updated: getFormatedDate(d.last_updated),
+    };
+  });
+
   return (
     <StatPanelContainer description='Data about top CPU Usage' label={cpuUsageData.title}>
       <div className='mt-6 sm:mt-[26px]'></div>
       <Table
-        data={cpuUsageData.data}
+        data={data}
         headers={cpuUsageData.columns}
         emptyStateData={{
           icon: Like,
           title: 'All good here',
           subtitle: 'No link down',
         }}
+        showStatus={false}
+        showPercentage
       ></Table>
     </StatPanelContainer>
   );

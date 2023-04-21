@@ -1,5 +1,3 @@
-import { IconArrowDown } from '../../assets/icons';
-
 interface IBreadCrumbProps {
   links: {
     label: string;

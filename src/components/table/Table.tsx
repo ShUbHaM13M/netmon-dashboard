@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { TableHeadType } from '../../global';
 import TableHeadItem from './TableHeadItem';
 import TableRowItem from './TableRowItem';
@@ -7,41 +7,50 @@ interface ITableProps {
   headers: TableHeadType[];
   data: any[];
   showStatusChip?: boolean;
+  showStatus?: boolean;
   emptyStateData: {
     icon: string;
     title: string;
     subtitle: string;
   };
-  statusTypes?:
-    | {
-        label: string;
-      }[]
-    | null;
+  status?: { [key: string]: string };
+  showPercentage?: boolean;
 }
 
-const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: ITableProps) => {
+const Table = ({
+  headers,
+  data,
+  emptyStateData,
+  showStatusChip,
+  showStatus,
+  status,
+  showPercentage = false,
+}: ITableProps) => {
   const [filteredData, setFilteredData] = useState(data);
+  const cachedData = useRef(data);
 
   const onSortOptionClick = useCallback(
-    (dataType: string, columnName: string, order: string) => {
-      switch (dataType) {
-        case 'STATUS':
-          break;
+    (data_type: string, columnName: string, order: string) => {
+      if (!order) {
+        setFilteredData(cachedData.current);
+        return;
+      }
+      switch (data_type) {
         case 'NUMBER':
           setFilteredData([
-            ...filteredData.sort((row, next) => {
-              const a = row[columnName].value,
-                b = next[columnName].value;
+            ...data.sort((row, next) => {
+              const a = row[columnName],
+                b = next[columnName];
               if (order === 'ASC') return a - b;
               else return b - a;
             }),
           ]);
           break;
-        case 'STRING':
+        default:
           setFilteredData([
-            ...filteredData.sort((row, next) => {
-              const a = next[columnName].value,
-                b = row[columnName].value;
+            ...data.sort((row, next) => {
+              const a = next[columnName],
+                b = row[columnName];
               if (order === 'ASC') {
                 if (a < b) return 1;
                 if (a > b) return -1;
@@ -53,16 +62,14 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
             }),
           ]);
           break;
-        default:
-          break;
       }
     },
-    [filteredData],
+    [data],
   );
 
   return (
     <div
-      className={`min-h-full flex-1 text-icon-white text-sm relative overflow-x-auto ${
+      className={`h-full flex-1 text-icon-white text-sm relative overflow-x-auto ${
         data.length ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
     >
@@ -71,12 +78,7 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
           <thead className='font-semibold'>
             <tr>
               {headers.map((data) => (
-                <TableHeadItem
-                  key={data.title}
-                  {...data}
-                  onSortOptionClick={onSortOptionClick}
-                  sortingOptions={data.dataType === 'STATUS' ? statusTypes : null}
-                />
+                <TableHeadItem key={data.title} {...data} onSortOptionClick={onSortOptionClick} />
               ))}
             </tr>
           </thead>
@@ -88,6 +90,10 @@ const Table = ({ headers, data, emptyStateData, showStatusChip, statusTypes }: I
                   data={row}
                   key={index}
                   showBorder={index % 2 === 0}
+                  showStatus={showStatus}
+                  status={status}
+                  showPercentage={showPercentage}
+                  data_type={headers[index]?.data_type.toUpperCase()}
                 />
               ))}
             </tbody>

@@ -25,7 +25,7 @@ const NotificationAlert = ({ totalCriticalAlerts }: INotificationAlertProps) => 
 
   return (
     <div ref={containerRef} className='z-20'>
-      <button className='block sm:hidden' onClick={() => setShow((prev) => !prev)}>
+      <button className='block md:hidden' onClick={() => setShow((prev) => !prev)}>
         <svg
           width='32'
           height='32'
@@ -76,11 +76,11 @@ const NotificationAlert = ({ totalCriticalAlerts }: INotificationAlertProps) => 
       </button>
 
       <div
-        className={`absolute top-16 left-0 sm:static w-full flex flex-col 
-        gap-2 p-4 sm:p-0 border-t sm:border-t-0 border-card-light bg-card-grey
+        className={`absolute top-16 left-0 md:static w-full flex flex-col 
+        gap-2 p-4 md:p-0 border-t sm:border-t-0 border-card-light bg-card-grey
         ${show ? 'block' : 'hidden md:block'}`}
       >
-        <div className='flex sm:hidden gap-0.5 items-center justify-between'>
+        <div className='flex md:hidden gap-0.5 items-center justify-between'>
           <div className='flex items-center'>
             <IconInfo />
             <span className='caps-1 text-icon-dark-grey'>Active alarms</span>
@@ -90,8 +90,8 @@ const NotificationAlert = ({ totalCriticalAlerts }: INotificationAlertProps) => 
           <IconAlertCritical />
         </div>
 
-        <div className='py-2 px-3 sm:w-48 rounded-sm bg-card-light flex gap-2.5 items-center justify-between'>
-          <div className='relative h-2 w-[156px] sm:w-full'>
+        <div className='py-2 px-3 md:w-48 rounded-sm bg-card-light flex gap-2.5 items-center justify-between'>
+          <div className='relative h-2 w-[156px] md:w-full'>
             <div className='absolute top-0 left-0 w-full h-full border border-status-medium rounded-full'></div>
             <div className='absolute top-0 left-0 w-3/4 h-full border border-status-major rounded-full'></div>
             <div
@@ -104,7 +104,7 @@ const NotificationAlert = ({ totalCriticalAlerts }: INotificationAlertProps) => 
           <div className='flex gap-1 items-center'>
             <span className='w-1.5 h-1.5 rounded-full bg-status-critical'></span>
             <h6 className='text-status-critical'>Critical</h6>
-            <span className='text-sm font-semibold text-icon-white'>{totalCriticalAlerts}</span>
+            <span className='text-md font-semibold text-icon-white'>{totalCriticalAlerts}</span>
           </div>
         </div>
       </div>

@@ -5,14 +5,14 @@ import { createPortal } from 'react-dom';
 import DropDownModal from './DropDownModal';
 
 export interface IMultiSelectDropdownOption {
-  label: string;
-  value: string;
+  Text: string;
+  Value: any;
 }
 
 interface IDropdownProps {
   label: string;
   options: IMultiSelectDropdownOption[];
-  defaultValue: IMultiSelectDropdownOption;
+  defaultValue?: IMultiSelectDropdownOption;
   width?: number;
   placeholder?: string;
   onValueChange: (values: IMultiSelectDropdownOption[]) => void;
@@ -29,7 +29,7 @@ const MultiSelectDropdown = ({
   disabled,
 }: IDropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<IMultiSelectDropdownOption[]>(
-    [defaultValue] || [options[0]],
+    defaultValue ? [defaultValue] : [],
   );
   const [showDropdown, setShowDropdown] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState(options);
@@ -39,11 +39,15 @@ const MultiSelectDropdown = ({
 
   const [modalFullScreen, setModalFullScreen] = useState(false);
 
+  useEffect(() => {
+    setFilteredOptions(options);
+  }, [options]);
+
   const selectedOptionLabel = selectedOption.reduce((acc, curr) => {
     if (acc) {
-      return `${acc}, ${curr.label}`;
+      return `${acc}, ${curr?.Text}`;
     }
-    return curr.label;
+    return curr?.Text;
   }, '');
 
   const toggleDropdown = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -94,7 +98,7 @@ const MultiSelectDropdown = ({
       if (value) {
         setFilteredOptions(
           options.filter((item) => {
-            return item.label.includes(value) || item.value.includes(value);
+            return item.Text.includes(value) || item.Value.includes(value);
           }),
         );
         return;
@@ -108,7 +112,7 @@ const MultiSelectDropdown = ({
     <div
       ref={containerRef}
       style={{
-        width: width || 140,
+        width: width,
       }}
       className='flex flex-col text-white place-items-start gap-2.5 relative'
     >
@@ -118,8 +122,8 @@ const MultiSelectDropdown = ({
         type='button'
         disabled={disabled}
         onClick={toggleDropdown}
-        className={`bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-sm items-center font-normal hover:bg-[#3E404D]
-				transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light`}
+        className='bg-card-light rounded-sm py-1 pl-2 text-icon-grey w-full flex justify-between text-sm items-center font-normal hover:bg-[#3E404D]
+        stroke-icon-grey transition-colors duration-200 ease-out disabled:bg-opacity-50 disabled:bg-card-light disabled:text-icon-dark-grey disabled:stroke-icon-dark-grey'
       >
         <span className='w-4/5 truncate text-left'>
           {selectedOptionLabel ? selectedOptionLabel : placeholder || 'Select an option'}
@@ -161,8 +165,8 @@ const MultiSelectDropdown = ({
               return (
                 <DropDownOption
                   onClick={() => onOptionClick(item)}
-                  key={item.label}
-                  label={item.label}
+                  key={item.Text}
+                  label={item.Text}
                   isSelected={selectedOption.includes(item)}
                   showCheckbox
                 />
@@ -211,9 +215,9 @@ const MultiSelectDropdown = ({
               return (
                 <DropDownOption
                   onClick={() => onOptionClick(item)}
-                  label={item.label}
+                  label={item.Text}
                   isSelected={selectedOption.includes(item)}
-                  key={item.value}
+                  key={item.Value}
                   bgTransparent
                   showCheckbox
                 />

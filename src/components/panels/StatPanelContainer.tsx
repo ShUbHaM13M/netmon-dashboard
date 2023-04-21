@@ -3,6 +3,7 @@ import Tooltip from './Tooltip';
 
 interface IStatPanelProps {
   label: string;
+  subtitle?: string;
   description: string;
   children: React.ReactNode;
   showError?: boolean;
@@ -10,6 +11,7 @@ interface IStatPanelProps {
 
 const StatPanelContainer = ({
   label,
+  subtitle,
   description,
   children,
   showError = false,
@@ -17,7 +19,7 @@ const StatPanelContainer = ({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div style={{ minWidth: 326 }} className='rounded-xl bg-card-grey min-h-full flex flex-col'>
+    <div className='rounded-xl bg-card-grey h-full flex flex-col'>
       <div
         className='flex justify-between items-center gap-0.5 w-full
       px-4 py-3
@@ -89,6 +91,14 @@ const StatPanelContainer = ({
         )}
       </div>
       <hr className='border-card-light' />
+      {subtitle ? (
+        <div className='p-4 flex gap-1 items-center'>
+          <span className='caps-2-bold text-icon-dark-grey'>Duration</span>
+          <h6 className='text-icon-grey'>{subtitle}</h6>
+        </div>
+      ) : (
+        ''
+      )}
       {children}
     </div>
   );
