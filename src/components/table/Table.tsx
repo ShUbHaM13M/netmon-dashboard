@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { TableHeadType } from '../../global';
 import TableHeadItem from './TableHeadItem';
 import TableRowItem from './TableRowItem';
@@ -28,6 +28,11 @@ const Table = ({
 }: ITableProps) => {
   const [filteredData, setFilteredData] = useState(data);
   const cachedData = useRef(data);
+
+  useEffect(() => {
+    cachedData.current = data;
+    setFilteredData(data);
+  }, [data]);
 
   const onSortOptionClick = useCallback(
     (data_type: string, columnName: string, order: string) => {
@@ -93,7 +98,7 @@ const Table = ({
                   showStatus={showStatus}
                   status={status}
                   showPercentage={showPercentage}
-                  data_type={headers[index]?.data_type.toUpperCase()}
+                  headers={headers}
                 />
               ))}
             </tbody>
