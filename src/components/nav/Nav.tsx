@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IconArrowDown, IconHam, IconRefresh, IconSignout } from '../../assets/icons';
+import { IconHam, IconRefresh, IconSignout } from '../../assets/icons';
 import Logo from '../../assets/images/logo.svg';
 import Datepicker from '../datapicker/Datepicker';
 import SingleSelectDropdown, { IDropdownOption } from '../dropdown/SingleSelectDropdown';
@@ -8,21 +8,9 @@ import SideMenu from './SideMenu';
 import useFetch from '../../hooks/useFetch';
 import { API_URL, FetchData, headers } from '../../global';
 import { useUserContext } from '../../context/UserContext';
-
-const navLinks = [
-  {
-    label: 'Monitoring',
-  },
-  {
-    label: 'Reporting',
-  },
-  {
-    label: 'Static Data',
-  },
-  {
-    label: 'User guide',
-  },
-];
+import { routes } from '../../dashboards';
+import NavLink from './NavLink';
+import { useLocation } from 'wouter';
 
 const autoRefreshOptions: IDropdownOption[] = [
   { Text: '1 m', Value: 1 },
@@ -36,15 +24,12 @@ const URL = `${API_URL}/vars?name=config&filter-value=cust_shortname`;
 
 const Nav = () => {
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const { refetch, setRefetch, setRefetchInterval } = useUserContext();
+  const { setRefetch, setRefetchInterval } = useUserContext();
+  const [location] = useLocation();
 
-  const { data: clientData } = useFetch<FetchData[]>(
-    URL,
-    {
-      headers,
-    },
-    refetch,
-  );
+  const { data: clientData } = useFetch<FetchData[]>(URL, {
+    headers,
+  });
 
   useEffect(() => {
     if (showSideMenu) {
@@ -73,16 +58,8 @@ const Nav = () => {
           <span className='text-icon-grey text-[10px] xl:text-xs'>24/4/23, 16:23</span>
         </div>
         <div className='hidden xl:flex self-center'>
-          {navLinks.map((link) => (
-            <div
-              className='px-1.5 py-[17px] flex text-icon-grey stroke-icon-white uppercase text-sm cursor-pointer items-center
-              hover:stroke-brand-orange hover:text-brand-orange 
-              transition-colors ease-out duration-150'
-              key={link.label}
-            >
-              <span>{link.label}</span>
-              <IconArrowDown />
-            </div>
+          {routes.map((link) => (
+            <NavLink key={link.label} {...link} selected={location.includes(link.url)} />
           ))}
         </div>
         <div className='flex px-1.5 xl:px-2 sm:my-1 ml-auto sm:ml-0 sm:py-2.5 border-l-0 border-r-2 xl:border-x-2 border-card-light items-center'>
@@ -113,7 +90,7 @@ const Nav = () => {
           </button>
         </div>
       </nav>
-      <SideMenu navLinks={navLinks} setShowMenu={setShowSideMenu} showMenu={showSideMenu} />
+      <SideMenu navLinks={routes} setShowMenu={setShowSideMenu} showMenu={showSideMenu} />
     </header>
   );
 };
