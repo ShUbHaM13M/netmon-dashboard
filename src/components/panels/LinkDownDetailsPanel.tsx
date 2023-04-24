@@ -1,9 +1,11 @@
-import Table from '../table/Table';
+import Table from '../table/NewTable';
 import Like from '../../assets/images/like.svg';
 import StatPanelContainer from './StatPanelContainer';
 import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 import { useUserContext } from '../../context/UserContext';
+import StatusFormatter from '../formatter/StatusFormatter';
+import DurationFormatter from '../formatter/DurationFormatter';
 
 const LinkDownDetailsPanel = () => {
   const { refetch } = useUserContext();
@@ -42,8 +44,7 @@ const LinkDownDetailsPanel = () => {
           title: 'All good here',
           subtitle: 'No link down',
         }}
-        showStatusChip
-        status={status}
+        columnFormatters={{ status: StatusFormatter, downtime: DurationFormatter }}
       ></Table>
     </StatPanelContainer>
   );

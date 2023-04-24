@@ -28,7 +28,7 @@ import {
 } from '../../../components';
 import LinkUtilisationTab from './LinkUtilisationTab';
 
-const Dashboard_1 = () => {
+const NoCView = () => {
   return (
     <TabContainer>
       <Tab icon={<IconOverview />} title='Overview'>
@@ -111,4 +111,4 @@ const Dashboard_1 = () => {
   );
 };
 
-export default Dashboard_1;
+export default NoCView;

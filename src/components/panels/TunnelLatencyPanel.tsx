@@ -1,7 +1,7 @@
 import StatPanelContainer from './StatPanelContainer';
-import Table from '../table/Table';
+import Table from '../table/NewTable';
 import Like from '../../assets/images/like.svg';
-import { API_URL, FetchPanelData, getFormatedDate, headers } from '../../global';
+import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 import { useUserContext } from '../../context/UserContext';
 
@@ -19,13 +19,6 @@ const TunnelLatencyPanel = () => {
 
   if (!tunnelLatencyData) return null;
 
-  const data = tunnelLatencyData.data.map((d) => {
-    return {
-      ...d,
-      summary_time: getFormatedDate(d.summary_time),
-    };
-  });
-
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
@@ -33,14 +26,17 @@ const TunnelLatencyPanel = () => {
     >
       <div className='mt-4'></div>
       <Table
-        headers={tunnelLatencyData.columns}
-        data={data}
+        headers={[
+          tunnelLatencyData.columns[2],
+          tunnelLatencyData.columns[1],
+          tunnelLatencyData.columns[0],
+        ]}
+        data={tunnelLatencyData.data}
         emptyStateData={{
           icon: Like,
           title: 'All good here',
           subtitle: 'No link down',
         }}
-        showStatus={false}
       />
     </StatPanelContainer>
   );

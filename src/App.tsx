@@ -1,5 +1,5 @@
 import { BreadCrumb, Nav } from './components';
-import Dashboard_1 from './dashboards/monitoring/dashboard-1';
+import NoCView from './dashboards/monitoring/dashboard-1';
 import UserContextProvider from './context/UserContext';
 
 function App() {
@@ -11,12 +11,12 @@ function App() {
           <BreadCrumb
             links={[
               { label: 'Monitoring', url: '' },
-              { label: 'Dashboard 1', url: '' },
+              { label: 'NoC View', url: '' },
             ]}
           />
         </div>
         <div className='px-4 sm:px-8'>
-          <Dashboard_1 />
+          <NoCView />
         </div>
       </div>
     </UserContextProvider>
