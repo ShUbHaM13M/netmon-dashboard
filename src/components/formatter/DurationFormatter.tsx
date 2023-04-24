@@ -1,4 +1,4 @@
-import { Row } from '../table/NewTable';
+import { Row } from '../table/Table';
 
 const DurationFormatter = (minutes: any, _dataType: string, _row: Row) => {
   const week = 7 * 24 * 60;
