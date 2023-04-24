@@ -8,14 +8,14 @@ export type RouteType = {
   url: string;
   sublinks?: RouteType[];
   Component?: LazyExoticComponent<() => JSX.Element>;
-  index?: boolean;
 };
 
+// All routes defined here
 export const routes: RouteType[] = [
   {
     label: 'Monitoring',
     url: '/monitoring',
-    index: true,
+    // Lazy loading the components for
     Component: lazy(() => import('./monitoring/dashboard-1')),
     sublinks: [
       {
@@ -127,19 +127,21 @@ const Dashboards = () => {
       <div className='px-4 sm:px-8'>
         <Switch>
           {routes.map(({ Component, ...route }) => {
-            if (route.sublinks) {
-              return (
-                <Fragment key={route.label}>
-                  <Route path={route.url}>
-                    {Component ? (
-                      <Component />
-                    ) : (
-                      <h2 className='text-icon-white'>Not Yet implemented.</h2>
-                    )}
-                  </Route>
-                  {route.sublinks.map((subLink) => {
+            return (
+              <Fragment key={route.label}>
+                <Route path={route.url}>
+                  {/* Currently checking if component is null as not all the routes are defined */}
+                  {Component ? (
+                    <Component />
+                  ) : (
+                    <h2 className='text-icon-white'>Not Yet implemented.</h2>
+                  )}
+                </Route>
+                {route.sublinks &&
+                  route.sublinks.map((subLink) => {
                     return (
                       <Route key={subLink.label} path={route.url + subLink.url}>
+                        {/* Currently checking if component is null as not all the routes are defined */}
                         {subLink.Component ? (
                           <subLink.Component />
                         ) : (
@@ -148,19 +150,10 @@ const Dashboards = () => {
                       </Route>
                     );
                   })}
-                </Fragment>
-              );
-            }
-            return (
-              <Route path={route.url} key={route.label}>
-                {Component ? (
-                  <Component />
-                ) : (
-                  <h2 className='text-icon-white'>Not Yet implemented</h2>
-                )}
-              </Route>
+              </Fragment>
             );
           })}
+          {/* 404 page if routes not defined */}
           <Route path='/:rest*'>
             {(params) => (
               <h3 className='text-icon-white'>{`Error 404, the page ${params.rest} does not exist!`}</h3>
