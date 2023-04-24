@@ -2,6 +2,7 @@ import { IconCritical, IconSafe } from '../../assets/icons';
 import {
   Criticality,
   TableDataType,
+  TableHeadType,
   getCriticalityFromValue,
   stringToCriticality,
 } from '../../global';
@@ -13,7 +14,7 @@ interface ITableRowItemProps {
   showStatus?: boolean;
   status?: { [key: string]: string };
   showPercentage?: boolean;
-  data_type?: string;
+  headers?: TableHeadType[];
 }
 
 const TableRowItemFormatter = ({
@@ -72,8 +73,10 @@ const TableRowItemFormatter = ({
     case 'INT':
       return <>{data.value}</>;
     case 'FLOAT':
-      return <>{data.value}</>;
+      return <span>{(data.value as number).toFixed(2)}</span>;
     case 'STRING':
+      return <>{data.value}</>;
+    case 'EPOCH_MS':
       return <>{data.value}</>;
     default:
       return <>{data.value}</>;
@@ -87,7 +90,7 @@ const TableRowItem = ({
   showStatus = true,
   status,
   showPercentage = false,
-  data_type,
+  headers,
 }: ITableRowItemProps) => {
   return (
     <tr
@@ -98,6 +101,7 @@ const TableRowItem = ({
       }`}
     >
       {Object.entries(data).map(([key, value], index) => {
+        const data_type = headers?.find((h) => key === h.property)?.data_type.toUpperCase();
         return (
           <td className='whitespace-nowrap px-4 py-2' key={key}>
             <TableRowItemFormatter

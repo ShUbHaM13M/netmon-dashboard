@@ -39,6 +39,7 @@ const SingleSelectDropdown = ({
   const mobileModalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    setSelectedOption(options[0]);
     setFilteredOptions(options);
   }, [options]);
 
@@ -184,7 +185,7 @@ const SingleSelectDropdown = ({
                 <DropDownOption
                   onClick={() => onOptionClick(item)}
                   label={item.Text}
-                  isSelected={selectedOption.Value === item.Value}
+                  isSelected={selectedOption?.Value === item.Value}
                   key={item.Value}
                   bgTransparent
                 />
