@@ -1,5 +1,5 @@
 import StatPanelContainer from './StatPanelContainer';
-import Table from '../table/NewTable';
+import Table from '../table/Table';
 import Like from '../../assets/images/like.svg';
 import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';

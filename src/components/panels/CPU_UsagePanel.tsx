@@ -19,26 +19,17 @@ const CPU_UsagePanel = () => {
 
   if (!cpuUsageData) return null;
 
-  const data = cpuUsageData.data.map((d) => {
-    return {
-      ...d,
-      last_updated: getFormatedDate(d.last_updated),
-    };
-  });
-
   return (
     <StatPanelContainer description='Data about top CPU Usage' label={cpuUsageData.title}>
-      <div className='mt-6 sm:mt-[26px]'></div>
+      <div className='mt-4'></div>
       <Table
-        data={data}
+        data={cpuUsageData.data}
         headers={cpuUsageData.columns}
         emptyStateData={{
           icon: Like,
           title: 'All good here',
           subtitle: 'No link down',
         }}
-        showStatus={false}
-        showPercentage
       ></Table>
     </StatPanelContainer>
   );

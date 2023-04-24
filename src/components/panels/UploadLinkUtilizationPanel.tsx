@@ -4,6 +4,7 @@ import Like from '../../assets/images/like.svg';
 import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 import { useUserContext } from '../../context/UserContext';
+import PercentFormatter from '../formatter/PercentFormatter';
 
 const UploadLinkUtilizationPanel = ({ percentile }: { percentile: number }) => {
   const { refetch } = useUserContext();
@@ -38,8 +39,7 @@ const UploadLinkUtilizationPanel = ({ percentile }: { percentile: number }) => {
           title: 'All good here',
           subtitle: 'No link down',
         }}
-        showStatusChip={false}
-        showPercentage
+        columnFormatters={{ pct_util: PercentFormatter }}
       ></Table>
     </StatPanelContainer>
   );
