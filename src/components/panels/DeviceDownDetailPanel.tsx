@@ -1,9 +1,10 @@
 import { API_URL, FetchPanelData, headers } from '../../global';
-import Table from '../table/Table';
+import Table from '../table/NewTable';
 import StatPanelContainer from './StatPanelContainer';
 import Like from '../../assets/images/like.svg';
 import useFetch from '../../hooks/useFetch';
 import { useUserContext } from '../../context/UserContext';
+import StatusFormatter from '../formatter/StatusFormatter';
 
 const DeviceDownDetailPanel = () => {
   const { refetch } = useUserContext();
@@ -40,10 +41,9 @@ const DeviceDownDetailPanel = () => {
         emptyStateData={{
           icon: Like,
           title: 'All good here',
-          subtitle: 'No link down',
+          subtitle: 'No device down',
         }}
-        showStatusChip
-        status={status}
+        columnFormatters={{ reachability: StatusFormatter }}
       ></Table>
     </StatPanelContainer>
   );
