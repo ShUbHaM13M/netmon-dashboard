@@ -59,7 +59,11 @@ const Nav = () => {
         </div>
         <div className='hidden xl:flex self-center'>
           {routes.map((link) => (
-            <NavLink key={link.label} {...link} selected={location.includes(link.url)} />
+            <NavLink
+              key={link.label}
+              {...link}
+              selected={location.includes(typeof link.url === 'string' ? link.url : link.url[1])}
+            />
           ))}
         </div>
         <div className='flex px-1.5 xl:px-2 sm:my-1 ml-auto sm:ml-0 sm:py-2.5 border-l-0 border-r-2 xl:border-x-2 border-card-light items-center'>

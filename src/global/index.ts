@@ -1,3 +1,6 @@
+import { MatcherFn, Path } from 'wouter';
+import makeMatcher from 'wouter/matcher';
+
 export enum Criticality {
   SAFE = '#00BF54',
   MEDIUM = '#FAC848',
@@ -86,3 +89,14 @@ export const dateFormatter = new Intl.DateTimeFormat('en', {
   minute: '2-digit',
   hour12: false,
 });
+
+const defaultMatcher = makeMatcher();
+
+export const multipathMatcher: MatcherFn = (patterns: Path, path: Path) => {
+  for (const pattern of [patterns].flat()) {
+    const [match, params] = defaultMatcher(pattern, path);
+    if (match) return [match, params];
+  }
+
+  return [false, null];
+};

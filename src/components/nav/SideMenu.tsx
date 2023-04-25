@@ -48,7 +48,10 @@ const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
                   : 'text-icon-grey stroke-icon-white'
               }`}
             >
-              <Link href={route.url} onClick={() => setShowMenu(false)}>
+              <Link
+                href={typeof route.url === 'string' ? route.url : route.url[1]}
+                onClick={() => setShowMenu(false)}
+              >
                 {route.label}
               </Link>
 
@@ -75,7 +78,9 @@ const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
                   <Link
                     onClick={() => setShowMenu(false)}
                     className='pl-4 pr-2 py-3 text-icon-grey text-sm w-full'
-                    href={`${route.url}${subLink.url}`}
+                    href={`${typeof route.url === 'string' ? route.url : route.url[1]}${
+                      subLink.url
+                    }`}
                     key={subLink.label}
                   >
                     {subLink.label}

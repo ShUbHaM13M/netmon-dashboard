@@ -27,7 +27,7 @@ const NavLink = ({ label, url, sublinks, selected }: NavLinkProps) => {
       transition-colors ease-out duration-150
       ${selected ? 'text-brand-orange stroke-brand-orange' : 'text-icon-grey stroke-icon-white'}`}
     >
-      <Link className='uppercase' href={url}>
+      <Link className='uppercase' href={typeof url === 'string' ? url : url[1]}>
         {label}
       </Link>
       <button
@@ -56,7 +56,7 @@ const NavLink = ({ label, url, sublinks, selected }: NavLinkProps) => {
             return (
               <Link
                 className='px-2 h-10 inline-flex items-center w-fit text-icon-grey hover:bg-icon-dark-grey hover:text-icon-white min-w-full transition-colors ease-out duration-150'
-                href={`${url}${subLink.url}`}
+                href={`${typeof url === 'string' ? url : url[1]}${subLink.url}`}
                 key={subLink.label}
               >
                 {subLink.label}
