@@ -13,6 +13,9 @@ const DateInput = ({ date, onDateChange: onChange, ...props }: DateInputProps) =
   return (
     <div className='relative inline-block bg-transparent text-icon-grey focus:text-icon-white'>
       <input
+        style={{
+          colorScheme: 'dark',
+        }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onChange={(e) => onChange(new Date(e.target.value))}
