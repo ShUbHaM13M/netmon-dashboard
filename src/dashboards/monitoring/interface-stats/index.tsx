@@ -55,6 +55,10 @@ const InterfaceStats = () => {
   }, [deviceOptions]);
 
   useEffect(() => {
+    if (colorOptions) setSelectedColor(colorOptions[0]);
+  }, [colorOptions]);
+
+  useEffect(() => {
     if (percentileOptions) setSelectedPercentile(percentileOptions[0]);
   }, [percentileOptions]);
 
@@ -116,7 +120,6 @@ const InterfaceStats = () => {
                 title: 'All good here',
                 subtitle: 'No link down',
               }}
-              showStatus={false}
             />
           </StatPanelContainer>
         </div>
@@ -133,7 +136,6 @@ const InterfaceStats = () => {
                 title: 'All good here',
                 subtitle: 'No link down',
               }}
-              showStatus={false}
             />
           </StatPanelContainer>
         </div>
@@ -150,7 +152,6 @@ const InterfaceStats = () => {
                 title: 'All good here',
                 subtitle: 'No link down',
               }}
-              showStatus={false}
             />
           </StatPanelContainer>
         </div>
