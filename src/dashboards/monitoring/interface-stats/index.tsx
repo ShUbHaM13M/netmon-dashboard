@@ -9,7 +9,7 @@ import Like from '../../../assets/images/like.svg';
 const siteOptionURL = `${API_URL}/vars?name=site&filter-name=site-name&filter-value=All`;
 
 const InterfaceStats = () => {
-  const { refetch } = useUserContext();
+  const { refetch, timestamp } = useUserContext();
 
   const [selectedSite, setSelectedSite] = useState<FetchData>();
   const [selectedDevice, setSelectedDevice] = useState<FetchData>();
@@ -37,13 +37,14 @@ const InterfaceStats = () => {
     selectedDevice?.Text
   }&color=${
     selectedColor?.Text
-  }&from=1681929000000&to=1682015399000&start_hrs=00:00:00&end_hrs=23:59:59&percentile=${
+  }&from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&start_hrs=00:00:00&end_hrs=23:59:59&percentile=${
     selectedPercentile?.Value || 95
   }&holidays=`;
   const { data: interfaceStatsData } = useFetch<FetchPanelData>(
     interfaceSummaryURL,
     { headers },
     refetch,
+    !(selectedSite && selectedDevice && selectedColor && selectedPercentile),
   );
 
   useEffect(() => {
