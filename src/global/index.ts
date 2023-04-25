@@ -77,3 +77,12 @@ export function getFormatedDate(timeInEpoch: number) {
   ).toLocaleTimeString('en-GB')}`;
   return formattedDate;
 }
+
+export const dateFormatter = new Intl.DateTimeFormat('en', {
+  day: '2-digit',
+  month: '2-digit',
+  year: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});

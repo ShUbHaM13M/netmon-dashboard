@@ -1,11 +1,30 @@
+import { useState } from 'react';
 import { IconCalendar } from '../../assets/icons';
+import { useUserContext } from '../../context/UserContext';
+import DateInput from './DateInput';
+import { createPortal } from 'react-dom';
 
 const Datepicker = () => {
+  const { timestamp, setTimestamp } = useUserContext();
+  const [showMobileDatePicker, setShowMobileDatePicker] = useState(false);
+
   return (
     <div className='px-2 flex items-center gap-1.5'>
-      <IconCalendar />
+      <button className='' onClick={() => setShowMobileDatePicker((prev) => !prev)}>
+        <IconCalendar />
+      </button>
       <div className='hidden sm:flex p-2 bg-card-light rounded-sm items-center'>
-        <span className=' text-icon-grey text-sm'>24/04/23, 16:23 - 25/04/23, 16:23</span>
+        <div className='flex flex-row text-icon-grey text-sm gap-1'>
+          <DateInput
+            date={timestamp.from}
+            onDateChange={(date) => setTimestamp((prev) => ({ ...prev, from: date }))}
+          />
+          -
+          <DateInput
+            date={timestamp.to}
+            onDateChange={(date) => setTimestamp((prev) => ({ ...prev, to: date }))}
+          />
+        </div>
         <svg
           width='20'
           height='21'
@@ -21,6 +40,41 @@ const Datepicker = () => {
           />
         </svg>
       </div>
+      {createPortal(
+        showMobileDatePicker ? (
+          <div
+            role='presentation'
+            onMouseDown={(e) => {
+              e.stopPropagation();
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowMobileDatePicker(false);
+            }}
+            className='flex md:hidden fixed h-screen w-full top-0 left-0 z-30 bg-[#2E2F33CC] text-icon-white items-center justify-center'
+          >
+            <div
+              role='presentation'
+              onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              className='flex flex-row text-icon-grey text-base gap-1'
+            >
+              <DateInput
+                date={timestamp.from}
+                onDateChange={(date) => setTimestamp((prev) => ({ ...prev, from: date }))}
+              />
+              -
+              <DateInput
+                date={timestamp.to}
+                onDateChange={(date) => setTimestamp((prev) => ({ ...prev, to: date }))}
+              />
+            </div>
+          </div>
+        ) : null,
+        document.body,
+      )}
     </div>
   );
 };
