@@ -41,7 +41,7 @@ const Nav = () => {
   }, [showSideMenu]);
 
   return (
-    <header className='bg-card-grey text-icon-white w-full'>
+    <header className='sticky top-0 z-50 bg-card-grey text-icon-white w-full'>
       <nav className='flex px-4 xl:px-8 py-3 sm:py-0 sm:justify-center w-full'>
         <img className='py-3 hidden xl:block' src={Logo} alt='Inniti' />
 

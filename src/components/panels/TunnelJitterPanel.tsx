@@ -1,7 +1,7 @@
 import StatPanelContainer from './StatPanelContainer';
 import Table from '../table/Table';
 import Like from '../../assets/images/like.svg';
-import { API_URL, FetchPanelData, getFormatedDate, headers } from '../../global';
+import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 import { useUserContext } from '../../context/UserContext';
 
@@ -19,13 +19,6 @@ const TunnelJitterPanel = () => {
 
   if (!tunnelJitterData) return null;
 
-  const data = tunnelJitterData.data.map((d) => {
-    return {
-      ...d,
-      summary_time: getFormatedDate(d.summary_time),
-    };
-  });
-
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
@@ -34,13 +27,12 @@ const TunnelJitterPanel = () => {
       <div className='mt-4'></div>
       <Table
         headers={tunnelJitterData.columns}
-        data={data}
+        data={tunnelJitterData.data}
         emptyStateData={{
           icon: Like,
           title: 'All good here',
           subtitle: 'No link down',
         }}
-        showStatus={false}
       />
     </StatPanelContainer>
   );

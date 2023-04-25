@@ -3,29 +3,22 @@ import { TableHeadType } from '../../global';
 import TableHeadItem from './TableHeadItem';
 import TableRowItem from './TableRowItem';
 
+export type Row = { [key: string]: any };
+
+export type ColumnFormatter = (value: any, dataType: string, row: Row) => JSX.Element;
+
 interface ITableProps {
   headers: TableHeadType[];
   data: any[];
-  showStatusChip?: boolean;
-  showStatus?: boolean;
   emptyStateData: {
     icon: string;
     title: string;
     subtitle: string;
   };
-  status?: { [key: string]: string };
-  showPercentage?: boolean;
+  columnFormatters?: { [columnName: string]: ColumnFormatter };
 }
 
-const Table = ({
-  headers,
-  data,
-  emptyStateData,
-  showStatusChip,
-  showStatus,
-  status,
-  showPercentage = false,
-}: ITableProps) => {
+const Table = ({ headers, data, emptyStateData, columnFormatters }: ITableProps) => {
   const [filteredData, setFilteredData] = useState(data);
   const cachedData = useRef(data);
 
@@ -80,7 +73,7 @@ const Table = ({
     >
       <div className='inline-block min-w-full'>
         <table className='min-w-full text-left font-light'>
-          <thead className='font-semibold'>
+          <thead className='font-semibold sticky top-0 bg-card-grey'>
             <tr>
               {headers.map((data) => (
                 <TableHeadItem key={data.title} {...data} onSortOptionClick={onSortOptionClick} />
@@ -88,19 +81,18 @@ const Table = ({
             </tr>
           </thead>
           {filteredData.length ? (
-            <tbody className='mt-2'>
-              {filteredData.map((row, index) => (
-                <TableRowItem
-                  showStatusChip={showStatusChip}
-                  data={row}
-                  key={index}
-                  showBorder={index % 2 === 0}
-                  showStatus={showStatus}
-                  status={status}
-                  showPercentage={showPercentage}
-                  headers={headers}
-                />
-              ))}
+            <tbody className='mt-2 overflow-y-auto'>
+              {filteredData.map((row, index) => {
+                return (
+                  <TableRowItem
+                    key={index}
+                    headers={headers}
+                    row={row}
+                    showBorder={index % 2 === 0}
+                    columnFormatters={columnFormatters}
+                  />
+                );
+              })}
             </tbody>
           ) : (
             ''
