@@ -1,11 +1,11 @@
 import { Fragment } from 'react';
 import { LazyExoticComponent, lazy } from 'react';
-import { Switch, Route, useLocation } from 'wouter';
+import { Switch, Route, useLocation, Path } from 'wouter';
 import { BreadCrumb } from '../components';
 
 export type RouteType = {
   label: string;
-  url: string;
+  url: Path | Path[];
   sublinks?: RouteType[];
   Component?: LazyExoticComponent<() => JSX.Element>;
 };
@@ -14,7 +14,7 @@ export type RouteType = {
 export const routes: RouteType[] = [
   {
     label: 'Monitoring',
-    url: '/monitoring',
+    url: ['/', '/monitoring'],
     // Lazy loading the components for
     Component: lazy(() => import('./monitoring/dashboard-1')),
     sublinks: [
@@ -26,6 +26,7 @@ export const routes: RouteType[] = [
       {
         label: 'Application Usage By App',
         url: '/application-usage-by-app',
+        Component: lazy(() => import('./monitoring/application-usage-by-app')),
       },
       {
         label: 'Application Usage By Device',
@@ -46,6 +47,7 @@ export const routes: RouteType[] = [
       {
         label: 'Alarm Details',
         url: '/alarm-details',
+        Component: lazy(() => import('./monitoring/alarm-details')),
       },
       {
         label: 'Realtime Tunnel Stats',
@@ -140,7 +142,12 @@ const Dashboards = () => {
                 {route.sublinks &&
                   route.sublinks.map((subLink) => {
                     return (
-                      <Route key={subLink.label} path={route.url + subLink.url}>
+                      <Route
+                        key={subLink.label}
+                        path={
+                          (typeof route.url === 'string' ? route.url : route.url[1]) + subLink.url
+                        }
+                      >
                         {/* Currently checking if component is null as not all the routes are defined */}
                         {subLink.Component ? (
                           <subLink.Component />
