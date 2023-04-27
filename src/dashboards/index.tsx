@@ -82,6 +82,7 @@ export const routes: RouteType[] = [
       {
         label: 'Link Downtime Report',
         url: '/link-downtime-report',
+        Component: lazy(() => import('./reporting/link-downtime-report')),
       },
       {
         label: 'Link Utilization Report',
