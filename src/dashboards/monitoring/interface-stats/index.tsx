@@ -39,7 +39,7 @@ const InterfaceStats = () => {
     selectedColor?.Text
   }&from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&start_hrs=00:00:00&end_hrs=23:59:59&percentile=${
     selectedPercentile?.Value || 95
-  }&holidays=`;
+  }&holidays=&ver=v2`;
   const { data: interfaceStatsData } = useFetch<FetchPanelData>(
     interfaceSummaryURL,
     { headers },
