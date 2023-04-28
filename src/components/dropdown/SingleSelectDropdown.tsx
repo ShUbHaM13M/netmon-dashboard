@@ -118,7 +118,7 @@ const SingleSelectDropdown = ({
           style={{
             maxHeight: 210,
           }}
-          className={`flex-col bg-card-grey rounded-lg w-full pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex 
+          className={`flex-col bg-card-grey rounded-lg w-full pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex z-10
           ${showSearchbar ? 'p-2.5' : 'p-0'}`}
         >
           {showSearchbar ? (
