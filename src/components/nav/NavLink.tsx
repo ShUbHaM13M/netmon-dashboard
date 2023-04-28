@@ -1,7 +1,7 @@
 import { Link } from 'wouter';
 import { IconArrowDown } from '../../assets/icons';
 import { RouteType } from '../../dashboards';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface NavLinkProps extends RouteType {
   selected?: boolean;
@@ -9,11 +9,15 @@ interface NavLinkProps extends RouteType {
 
 const NavLink = ({ label, url, sublinks, selected }: NavLinkProps) => {
   const [showSublinks, setShowSublinks] = useState(false);
+  const containerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = () => {
-      setShowSublinks(false);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowSublinks(false);
+      }
     };
+
     document.addEventListener('click', handleClickOutside, true);
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
@@ -27,23 +31,32 @@ const NavLink = ({ label, url, sublinks, selected }: NavLinkProps) => {
       transition-colors ease-out duration-150
       ${selected ? 'text-brand-orange stroke-brand-orange' : 'text-icon-grey stroke-icon-white'}`}
     >
-      <Link className='uppercase' href={typeof url === 'string' ? url : url[1]}>
-        {label}
-      </Link>
-      <button
-        title='Show Sublinks'
-        type='button'
-        onClick={() => {
-          setShowSublinks((prev) => {
-            return !prev;
-          });
-        }}
-        className={`${
-          showSublinks ? 'rotate-180' : 'rotate-0'
-        } transition-transform ease-out duration-200`}
-      >
-        <IconArrowDown />
-      </button>
+      {sublinks ? (
+        <button
+          ref={containerRef}
+          title='Show Sublinks'
+          type='button'
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowSublinks((prev) => !prev);
+          }}
+          className='uppercase flex'
+        >
+          {label}
+          <div
+            className={`${
+              showSublinks ? 'rotate-180' : 'rotate-0'
+            } transition-transform ease-out duration-200`}
+          >
+            <IconArrowDown />
+          </div>
+        </button>
+      ) : (
+        <Link className='uppercase' href={url}>
+          {label}
+        </Link>
+      )}
+
       {sublinks && showSublinks ? (
         <div
           style={{

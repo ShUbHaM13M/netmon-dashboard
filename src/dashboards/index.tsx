@@ -5,19 +5,31 @@ import { BreadCrumb } from '../components';
 
 export type RouteType = {
   label: string;
-  url: Path | Path[];
+  url: Path;
   sublinks?: RouteType[];
   Component?: LazyExoticComponent<() => JSX.Element>;
+  hidden?: boolean;
 };
 
 // All routes defined here
 export const routes: RouteType[] = [
   {
+    label: 'Main',
+    url: '/',
+    Component: lazy(() => import('./monitoring/dashboard-1')),
+    hidden: true,
+  },
+  {
     label: 'Monitoring',
-    url: ['/', '/monitoring'],
+    url: '/monitoring',
     // Lazy loading the components for
     Component: lazy(() => import('./monitoring/dashboard-1')),
     sublinks: [
+      {
+        label: 'NoC View',
+        url: '/noc-view',
+        Component: lazy(() => import('./monitoring/dashboard-1')),
+      },
       {
         label: 'Interface Stats',
         url: '/interface-stats',
