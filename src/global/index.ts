@@ -100,3 +100,5 @@ export const multipathMatcher: MatcherFn = (patterns: Path, path: Path) => {
 
   return [false, null];
 };
+
+export const getArrayAsString = (arr: any[], key: string) => arr.map((v) => v[key]).join(',');
