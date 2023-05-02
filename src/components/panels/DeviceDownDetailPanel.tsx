@@ -1,5 +1,5 @@
 import { API_URL, FetchPanelData, headers } from '../../global';
-import Table from '../table/NewTable';
+import Table from '../table/Table';
 import StatPanelContainer from './StatPanelContainer';
 import Like from '../../assets/images/like.svg';
 import useFetch from '../../hooks/useFetch';

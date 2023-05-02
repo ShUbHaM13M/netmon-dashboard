@@ -1,5 +1,5 @@
 import { IconCritical, IconSafe } from '../../assets/icons';
-import { Row } from '../table/NewTable';
+import { Row } from '../table/Table';
 
 const StatusFormatter = (value: any, _dataType: string, _row: Row) => {
   let statusStyles = 'bg-status-safe bg-opacity-10 border-status-safe text-status-safe'; // Safe Style

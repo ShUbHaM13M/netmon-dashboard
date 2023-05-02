@@ -32,7 +32,9 @@ const TableHeadItem = ({
       ref={containerRef}
       onClick={onClick}
       scope='col'
-      className={'px-4 py-3 caps-2 cursor-pointer relative transition-colors ease-out duration-150'}
+      className={
+        'px-4 py-3 caps-2 cursor-pointer relative transition-colors ease-out duration-150 whitespace-nowrap'
+      }
     >
       <span className='caps-2-bold flex justify-between items-center gap-2.5 text-icon-grey'>
         {title}

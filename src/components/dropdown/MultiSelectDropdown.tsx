@@ -40,7 +40,10 @@ const MultiSelectDropdown = ({
   const [modalFullScreen, setModalFullScreen] = useState(false);
 
   useEffect(() => {
-    setFilteredOptions(options);
+    if (options.length) {
+      setSelectedOption([options[0]]);
+      setFilteredOptions(options);
+    }
   }, [options]);
 
   const selectedOptionLabel = selectedOption.reduce((acc, curr) => {
@@ -136,7 +139,7 @@ const MultiSelectDropdown = ({
           style={{
             height: 210,
           }}
-          className='flex-col bg-card-grey rounded-lg w-full p-2.5 pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex'
+          className='flex-col bg-card-grey rounded-lg w-full p-2.5 pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex z-50'
         >
           <div className='bg-card-light px-2 py-2.5 rounded-sm border-disabled border flex gap-1 items-center'>
             <IconSearch />

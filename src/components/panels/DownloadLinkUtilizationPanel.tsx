@@ -4,6 +4,7 @@ import Like from '../../assets/images/like.svg';
 import { API_URL, FetchPanelData, headers } from '../../global';
 import useFetch from '../../hooks/useFetch';
 import { useUserContext } from '../../context/UserContext';
+import PercentFormatter from '../formatter/PercentFormatter';
 
 const DownloadLinkUtilizationPanel = ({ percentile }: { percentile: number }) => {
   const { refetch } = useUserContext();
@@ -22,6 +23,7 @@ const DownloadLinkUtilizationPanel = ({ percentile }: { percentile: number }) =>
   const hasError = downloadLinkUtilizationData.data.find((d) => {
     return d[downloadLinkUtilizationData.columns[0].property] > 80;
   });
+  console.log(downloadLinkUtilizationData);
 
   return (
     <StatPanelContainer
@@ -38,8 +40,7 @@ const DownloadLinkUtilizationPanel = ({ percentile }: { percentile: number }) =>
           title: 'All good here',
           subtitle: 'No link down',
         }}
-        showStatusChip={false}
-        showPercentage
+        columnFormatters={{ pct_util: PercentFormatter }}
       ></Table>
     </StatPanelContainer>
   );

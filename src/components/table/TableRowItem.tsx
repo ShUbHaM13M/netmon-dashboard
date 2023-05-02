@@ -1,93 +1,37 @@
-import { IconCritical, IconSafe } from '../../assets/icons';
-import {
-  Criticality,
-  TableDataType,
-  getCriticalityFromValue,
-  stringToCriticality,
-} from '../../global';
+import { TableHeadType, getFormatedDate } from '../../global';
+import { ColumnFormatter, Row } from './Table';
 
 interface ITableRowItemProps {
-  showBorder?: boolean;
-  data: any[];
-  showStatusChip?: boolean;
-  showStatus?: boolean;
-  status?: { [key: string]: string };
-  showPercentage?: boolean;
-  data_type?: string;
+  headers: TableHeadType[];
+  row: Row;
+  showBorder: boolean;
+  columnFormatters?: { [columnName: string]: ColumnFormatter };
 }
 
-const TableRowItemFormatter = ({
-  data,
-  showStatusChip = false,
-  data_type: data_type,
-  showPercentage,
-}: {
-  data: any;
-  showStatusChip: boolean;
-  data_type?: TableDataType;
-  showPercentage: boolean;
-}) => {
-  switch (data_type) {
-    case 'STATUS': {
-      let statusStyles = '';
-      if (data.criticality === Criticality.CRITICAL) {
-        if (showStatusChip) {
-          statusStyles = 'bg-status-critical border-transparent';
-        } else {
-          statusStyles = 'border-transparent text-status-critical text-xs';
-        }
-      } else if (data.criticality === Criticality.SAFE) {
-        if (showStatusChip) {
-          statusStyles = 'bg-status-safe bg-opacity-10 border-status-safe text-status-safe';
-        } else {
-          statusStyles = 'border-transparent text-status-safe text-xs';
-        }
-      } else if (data.criticality === Criticality.MAJOR) {
-        if (showStatusChip)
-          statusStyles = 'bg-status-major bg-opacity-10 border-status-major text-status-major';
-        else statusStyles = 'border-transparent text-status-major text-xs';
-      } else if (data.criticality === Criticality.MEDIUM) {
-        if (showStatusChip) {
-          statusStyles = 'bg-status-medium bg-opacity-10 border-status-medium text-status-medium';
-        } else statusStyles = 'border-transparent text-status-major text-xs';
-      } else {
-        statusStyles = 'border-transparent text-sm';
-      }
-
-      return (
-        <span
-          className={`uppercase py-1.5 px-3 rounded-full 
-          flex gap-1 items-center 
-          border-2 border-solid text-icon-white max-w-fit font-semibold text-[10px]
-          ${statusStyles}
-			`}
-        >
-          {showStatusChip && data.criticality === Criticality.CRITICAL && <IconCritical />}
-          {showStatusChip && data.criticality === Criticality.SAFE && <IconSafe />}
-          {data.value}
-          {showPercentage ? '%' : ''}
-        </span>
-      );
-    }
-    case 'INT':
-      return <>{data.value}</>;
-    case 'FLOAT':
-      return <>{data.value}</>;
-    case 'STRING':
-      return <>{data.value}</>;
-    default:
-      return <>{data.value}</>;
+const defaultFormatter = (value: any, dataType: string) => {
+  let formattedValue = value;
+  if (dataType === 'epoch_ms') {
+    formattedValue = getFormatedDate(value);
   }
+  return <>{formattedValue}</>;
+};
+
+const getColumnFormatter = (
+  header: TableHeadType,
+  columnFormatters?: { [columnName: string]: ColumnFormatter },
+) => {
+  return columnFormatters
+    ? columnFormatters[header.property] === undefined
+      ? defaultFormatter
+      : columnFormatters[header.property]
+    : defaultFormatter;
 };
 
 const TableRowItem = ({
+  headers,
+  row,
   showBorder = false,
-  data,
-  showStatusChip = false,
-  showStatus = true,
-  status,
-  showPercentage = false,
-  data_type,
+  columnFormatters,
 }: ITableRowItemProps) => {
   return (
     <tr
@@ -97,20 +41,11 @@ const TableRowItem = ({
           : 'bg-transparent border-b border-transparent'
       }`}
     >
-      {Object.entries(data).map(([key, value], index) => {
+      {headers.map((header, _i) => {
+        const colFormatter = getColumnFormatter(header, columnFormatters);
         return (
-          <td className='whitespace-nowrap px-4 py-2' key={key}>
-            <TableRowItemFormatter
-              data_type={showStatus && index === 0 ? 'STATUS' : data_type}
-              data={{
-                value,
-                criticality: status
-                  ? stringToCriticality(status[value])
-                  : getCriticalityFromValue(value),
-              }}
-              showStatusChip={showStatusChip}
-              showPercentage={showPercentage}
-            />
+          <td className='whitespace-nowrap px-4 py-2' key={header.property}>
+            {colFormatter(row[header.property], header.data_type, row)}
           </td>
         );
       })}

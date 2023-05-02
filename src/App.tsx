@@ -1,23 +1,21 @@
-import { BreadCrumb, Nav } from './components';
-import NoCView from './dashboards/monitoring/dashboard-1';
+import { Suspense } from 'react';
+import { Nav } from './components';
 import UserContextProvider from './context/UserContext';
+import { Router } from 'wouter';
+import Dashboards from './dashboards';
+import { multipathMatcher } from './global';
 
 function App() {
   return (
     <UserContextProvider>
       <div className='app bg-card-dark flex flex-col gap-4 min-h-screen'>
-        <Nav />
-        <div className='px-4 sm:px-8'>
-          <BreadCrumb
-            links={[
-              { label: 'Monitoring', url: '' },
-              { label: 'NoC View', url: '' },
-            ]}
-          />
-        </div>
-        <div className='px-4 sm:px-8'>
-          <NoCView />
-        </div>
+        {/* Suspense for showing fallback loading component while the lazy components loaded */}
+        <Suspense fallback={<h1 className='text-icon-white'>Loading...</h1>}>
+          <Nav />
+          <Router matcher={multipathMatcher}>
+            <Dashboards />
+          </Router>
+        </Suspense>
       </div>
     </UserContextProvider>
   );

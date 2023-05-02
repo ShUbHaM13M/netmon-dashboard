@@ -39,6 +39,7 @@ const SingleSelectDropdown = ({
   const mobileModalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    setSelectedOption(options[0]);
     setFilteredOptions(options);
   }, [options]);
 
@@ -117,7 +118,7 @@ const SingleSelectDropdown = ({
           style={{
             maxHeight: 210,
           }}
-          className={`flex-col bg-card-grey rounded-lg w-full pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex 
+          className={`flex-col bg-card-grey rounded-lg w-full pb-0 absolute top-full gap-1.5 shadow-medium hidden md:flex z-10
           ${showSearchbar ? 'p-2.5' : 'p-0'}`}
         >
           {showSearchbar ? (
@@ -184,7 +185,7 @@ const SingleSelectDropdown = ({
                 <DropDownOption
                   onClick={() => onOptionClick(item)}
                   label={item.Text}
-                  isSelected={selectedOption.Value === item.Value}
+                  isSelected={selectedOption?.Value === item.Value}
                   key={item.Value}
                   bgTransparent
                 />

@@ -17,6 +17,7 @@ function useFetch<T = unknown>(
   url?: string,
   options?: RequestInit,
   reload?: boolean,
+  skip?: boolean,
   cacheResults?: boolean,
 ): State<T> {
   const cache = useRef<Cache<T>>({});
@@ -45,7 +46,7 @@ function useFetch<T = unknown>(
   const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   useEffect(() => {
-    if (!url) return;
+    if (!url || skip) return;
 
     cancelRequest.current = false;
 
@@ -84,7 +85,7 @@ function useFetch<T = unknown>(
       cancelRequest.current = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url, reload]);
+  }, [url, reload, skip]);
 
   return state;
 }
