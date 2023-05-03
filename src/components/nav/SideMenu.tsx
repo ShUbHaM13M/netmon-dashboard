@@ -114,7 +114,7 @@ const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
 
       <button
         onClick={handleSignout}
-        className='flex uppercase text-icon-white px-2 py-5 gap-2 font-semibold text-lg items-center'
+        className='flex uppercase text-icon-white px-2 py-5 gap-2 font-semibold text-sm items-center'
       >
         <IconSignout /> Logout
       </button>
