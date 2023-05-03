@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IconHam, IconRefresh, IconSignout } from '../../assets/icons';
 import Logo from '../../assets/images/logo.svg';
 import Datepicker from '../datapicker/Datepicker';
@@ -8,9 +8,10 @@ import SideMenu from './SideMenu';
 import useFetch from '../../hooks/useFetch';
 import { API_URL, FetchData, headers } from '../../global';
 import { useUserContext } from '../../context/UserContext';
-import { routes } from '../../dashboards';
+import { routes as _routes } from '../../dashboards';
 import NavLink from './NavLink';
 import { useLocation } from 'wouter';
+import { setItem as setCookie } from '../../hooks/useCookie';
 
 const autoRefreshOptions: IDropdownOption[] = [
   { Text: '1 m', Value: 1 },
@@ -24,12 +25,26 @@ const URL = `${API_URL}/vars?name=config&filter-value=cust_shortname`;
 
 const Nav = () => {
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const { setRefetch, setRefetchInterval } = useUserContext();
+  const { setRefetch, setRefetchInterval, setCurrentUser, currentUser } = useUserContext();
   const [location] = useLocation();
+
+  const routes = useMemo(() => {
+    if (!currentUser) return _routes;
+    return _routes.filter((route) => {
+      let currentPath = route.url.split('/')[1];
+      currentPath = currentPath ? currentPath : 'monitoring';
+      return currentUser.allowed_dashboards.includes(currentPath);
+    });
+  }, [currentUser]);
 
   const { data: clientData } = useFetch<FetchData[]>(URL, {
     headers,
   });
+
+  const handleSignout = useCallback(() => {
+    setCurrentUser(null);
+    setCookie('xAuthToken', null);
+  }, [setCurrentUser]);
 
   useEffect(() => {
     if (showSideMenu) {
@@ -92,7 +107,7 @@ const Nav = () => {
         </div>
 
         <div className='hidden xl:flex px-4 items-center'>
-          <button>
+          <button onClick={handleSignout}>
             <IconSignout />
           </button>
         </div>

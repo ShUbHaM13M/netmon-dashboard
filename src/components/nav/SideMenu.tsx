@@ -2,7 +2,9 @@ import { Link } from 'wouter';
 import { IconArrowDown, IconClose, IconSignout } from '../../assets/icons';
 import Logo from '../../assets/images/logo.svg';
 import { RouteType } from '../../dashboards';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useUserContext } from '../../context/UserContext';
+import { setItem as setCookie } from '../../hooks/useCookie';
 
 interface ISideMenuProps {
   navLinks: RouteType[];
@@ -12,6 +14,13 @@ interface ISideMenuProps {
 
 const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
   const [activeSublinkIndex, setActiveSublinkIndex] = useState(-1);
+  const { setCurrentUser } = useUserContext();
+
+  const handleSignout = useCallback(() => {
+    setCurrentUser(null);
+    setCookie('xAuthToken', null);
+    setShowMenu(false);
+  }, [setCurrentUser, setShowMenu]);
 
   return (
     <div
@@ -86,9 +95,7 @@ const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
                     <Link
                       onClick={() => setShowMenu(false)}
                       className='pl-4 pr-2 py-3 text-icon-grey text-sm w-full'
-                      href={`${typeof route.url === 'string' ? route.url : route.url[1]}${
-                        subLink.url
-                      }`}
+                      href={route.url + subLink.url}
                       key={subLink.label}
                     >
                       {subLink.label}
@@ -105,7 +112,10 @@ const SideMenu = ({ setShowMenu, showMenu, navLinks }: ISideMenuProps) => {
 
       <hr className='my-3 border-icon-grey bg-icon-grey opacity-50' />
 
-      <button className='flex uppercase text-icon-white px-2 py-5 gap-2 font-semibold text-lg items-center'>
+      <button
+        onClick={handleSignout}
+        className='flex uppercase text-icon-white px-2 py-5 gap-2 font-semibold text-lg items-center'
+      >
         <IconSignout /> Logout
       </button>
     </div>
