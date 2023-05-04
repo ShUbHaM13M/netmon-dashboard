@@ -1,13 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { IconAlertCritical, IconArrowRight, IconInfo } from '../../assets/icons';
+import { API_URL, FetchPanelData, headers } from '../../global';
+import useFetch from '../../hooks/useFetch';
+import { useUserContext } from '../../context/UserContext';
 
-interface INotificationAlertProps {
-  totalCriticalAlerts: number;
-}
-
-const NotificationAlert = ({ totalCriticalAlerts }: INotificationAlertProps) => {
-  const [show, setShow] = useState(false);
+const NotificationAlert = () => {
+  const { refetch, timestamp } = useUserContext();
+  const [show, setShow] = useState(true);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const alarmDataURL = `${API_URL}/panel/alarm/summary?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
+  const { data: alarmData } = useFetch<FetchPanelData>(
+    alarmDataURL,
+    {
+      headers,
+    },
+    refetch,
+  );
+
+  const totalCriticalAlerts =
+    alarmData?.data.reduce((count, d) => {
+      if (d.severity === 'Critical') return count + d.count;
+      return count;
+    }, 0) || 0;
 
   const width = (totalCriticalAlerts * 100) / 100;
 
@@ -98,7 +113,9 @@ const NotificationAlert = ({ totalCriticalAlerts }: INotificationAlertProps) => 
               style={{
                 width: `${width}%`,
               }}
-              className='absolute top-0 left-0 w-1/4 h-full border border-status-critical bg-status-critical rounded-full transition-all ease-out duration-150'
+              className={`absolute top-0 left-0 w-1/4 h-full border border-status-critical bg-status-critical rounded-full transition-all ease-out duration-150
+              ${totalCriticalAlerts ? 'opacity-100' : 'opacity-0'}
+              `}
             ></div>
           </div>
           <div className='flex gap-1 items-center'>
