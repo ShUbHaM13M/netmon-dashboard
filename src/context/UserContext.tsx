@@ -58,7 +58,7 @@ export default function UserContextProvider({ children }: { children: React.Reac
     if (!userLoggedIn) {
       setLocation('/login');
     }
-    setHeaders('X-Auth-Token', getCookie('xAuthToken'));
+    getCookie('xAuthToken') && setHeaders('X-Auth-Token', getCookie('xAuthToken'));
   }, [userLoggedIn, setLocation]);
 
   const [timestamp, setTimestamp] = useState<Timestamp>({
