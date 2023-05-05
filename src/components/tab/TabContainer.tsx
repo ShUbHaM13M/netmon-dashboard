@@ -5,6 +5,7 @@ import SingleSelectDropdown from '../dropdown/SingleSelectDropdown';
 
 interface ITabContainerProps {
   children: React.ReactElement<ITabLabelProps>[];
+  showAutoPlay?: boolean;
 }
 
 const autoplayOptions = [
@@ -16,7 +17,7 @@ const autoplayOptions = [
   { Text: '550 s', Value: 500 },
 ];
 
-const TabContainer = ({ children }: ITabContainerProps) => {
+const TabContainer = ({ children, showAutoPlay = true }: ITabContainerProps) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [enableAutoplay, setEnableAutoplay] = useState(false);
   const [autoplayDuration, setAutoplayDuration] = useState(autoplayOptions[0].Value);
@@ -54,22 +55,26 @@ const TabContainer = ({ children }: ITabContainerProps) => {
             );
           })}
         </div>
-        <div className='flex items-center gap-2 mt-4 md:mt-0 border-l-0 md:border-l border-card-light px-2'>
-          <ToggleButton
-            label='Autoplay'
-            defaultValue={enableAutoplay}
-            onValueChange={(value) => setEnableAutoplay(value)}
-          />
-          <SingleSelectDropdown
-            disabled={!enableAutoplay}
-            options={autoplayOptions}
-            onValueChange={(event) => setAutoplayDuration(event.Value)}
-            defaultValue={autoplayOptions[0]}
-            label='Autoplay'
-            showLabelInDesktop={false}
-            showSearchbar={false}
-          />
-        </div>
+        {showAutoPlay ? (
+          <div className='flex items-center gap-2 mt-4 md:mt-0 border-l-0 md:border-l border-card-light px-2'>
+            <ToggleButton
+              label='Autoplay'
+              defaultValue={enableAutoplay}
+              onValueChange={(value) => setEnableAutoplay(value)}
+            />
+            <SingleSelectDropdown
+              disabled={!enableAutoplay}
+              options={autoplayOptions}
+              onValueChange={(event) => setAutoplayDuration(event.Value)}
+              defaultValue={autoplayOptions[0]}
+              label='Autoplay'
+              showLabelInDesktop={false}
+              showSearchbar={false}
+            />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
       {children[selectedTab]}
     </div>

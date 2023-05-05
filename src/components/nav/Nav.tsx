@@ -34,6 +34,7 @@ const Nav = () => {
     return _routes.filter((route) => {
       let currentPath = route.url.split('/')[1];
       currentPath = currentPath ? currentPath : 'monitoring';
+      if (currentPath === 'admin' && currentUser.roles.includes('admin')) return true;
       return currentUser.allowed_dashboards.includes(currentPath);
     });
   }, [currentUser]);

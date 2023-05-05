@@ -15,6 +15,11 @@ export type RouteType = {
 // All routes defined here
 export const routes: RouteType[] = [
   {
+    label: 'Admin',
+    url: '/admin',
+    Component: lazy(() => import('./admin')),
+  },
+  {
     label: 'Login',
     url: '/login',
     Component: lazy(() => import('./login')),
@@ -145,10 +150,17 @@ const Dashboards = () => {
   const { userLoggedIn, currentUser } = useUserContext();
 
   useEffect(() => {
+    if (!currentUser) return;
     let currentPath = location.split('/')[1];
     currentPath = currentPath ? currentPath : 'monitoring';
+
+    if (currentPath === 'admin') {
+      if (currentUser.roles.includes('admin')) return;
+      setLocation('/not-authorized');
+    }
+
     // Getting the current route and checking if the user is allowed to access the route
-    if (currentUser && !currentUser.allowed_dashboards.includes(currentPath)) {
+    if (!currentUser.allowed_dashboards.includes(currentPath)) {
       // Checking if the route exists, and redirecting to /not-authorized
       if (routes.find((route) => route.url === '/' + currentPath)) {
         setLocation('/not-authorized');
