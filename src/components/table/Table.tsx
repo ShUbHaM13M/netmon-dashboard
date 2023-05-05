@@ -100,7 +100,7 @@ const Table = ({ headers, data, emptyStateData, columnFormatters }: ITableProps)
         </table>
       </div>
       {!data.length && (
-        <div className='flex min-h-fit sticky flex-col gap-1 sm:gap-5 items-center left-2/4 -translate-x-2/4 translate-y-1/4'>
+        <div className='flex min-h-fit sticky flex-col gap-1 sm:gap-5 items-center translate-y-1/4'>
           <img className='h-12 sm:h-20' src={emptyStateData.icon} alt={emptyStateData.title} />
           <div>
             <h5>{emptyStateData.title}</h5>

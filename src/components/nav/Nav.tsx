@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IconHam, IconRefresh, IconSignout } from '../../assets/icons';
 import Logo from '../../assets/images/logo.svg';
 import Datepicker from '../datapicker/Datepicker';
@@ -8,9 +8,11 @@ import SideMenu from './SideMenu';
 import useFetch from '../../hooks/useFetch';
 import { API_URL, FetchData, headers } from '../../global';
 import { useUserContext } from '../../context/UserContext';
-import { routes } from '../../dashboards';
+import { routes as _routes } from '../../dashboards';
 import NavLink from './NavLink';
 import { useLocation } from 'wouter';
+import { setItem as setCookie } from '../../hooks/useCookie';
+import Clock from './Clock';
 
 const autoRefreshOptions: IDropdownOption[] = [
   { Text: '1 m', Value: 1 },
@@ -20,16 +22,30 @@ const autoRefreshOptions: IDropdownOption[] = [
   { Text: '12 m', Value: 12 },
 ];
 
-const URL = `${API_URL}/vars?name=config&filter-value=cust_shortname`;
+const clientDataURL = `${API_URL}/vars?name=config&filter-value=cust_shortname`;
 
 const Nav = () => {
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const { setRefetch, setRefetchInterval } = useUserContext();
+  const { setRefetch, setRefetchInterval, setCurrentUser, currentUser } = useUserContext();
   const [location] = useLocation();
 
-  const { data: clientData } = useFetch<FetchData[]>(URL, {
+  const routes = useMemo(() => {
+    if (!currentUser) return _routes;
+    return _routes.filter((route) => {
+      let currentPath = route.url.split('/')[1];
+      currentPath = currentPath ? currentPath : 'monitoring';
+      return currentUser.allowed_dashboards.includes(currentPath);
+    });
+  }, [currentUser]);
+
+  const { data: clientData } = useFetch<FetchData[]>(clientDataURL, {
     headers,
   });
+
+  const handleSignout = useCallback(() => {
+    setCurrentUser(null);
+    setCookie('xAuthToken', null);
+  }, [setCurrentUser]);
 
   useEffect(() => {
     if (showSideMenu) {
@@ -55,7 +71,7 @@ const Nav = () => {
 
         <div className='flex flex-col gap-1.5 xl:gap-2 border-l-2 sm:border-x-2 border-card-light sm:ml-6 px-1.5 sm:px-3 sm:py-2.5 my-1'>
           <span className='caps-1-bold'>{clientData ? clientData[0].Value : ''}</span>
-          <span className='text-icon-grey text-[10px] xl:text-xs'>24/4/23, 16:23</span>
+          <Clock />
         </div>
         <div className='hidden xl:flex self-center'>
           {routes.map((link) => {
@@ -70,7 +86,7 @@ const Nav = () => {
           })}
         </div>
         <div className='flex px-1.5 xl:px-2 sm:my-1 ml-auto sm:ml-0 sm:py-2.5 border-l-0 border-r-2 xl:border-x-2 border-card-light items-center'>
-          <NotificationAlert totalCriticalAlerts={9} />
+          <NotificationAlert />
         </div>
 
         <Datepicker />
@@ -92,7 +108,7 @@ const Nav = () => {
         </div>
 
         <div className='hidden xl:flex px-4 items-center'>
-          <button>
+          <button onClick={handleSignout}>
             <IconSignout />
           </button>
         </div>

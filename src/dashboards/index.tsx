@@ -1,7 +1,8 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { LazyExoticComponent, lazy } from 'react';
 import { Switch, Route, useLocation, Path } from 'wouter';
-import { BreadCrumb } from '../components';
+import { BreadCrumb, Nav } from '../components';
+import { useUserContext } from '../context/UserContext';
 
 export type RouteType = {
   label: string;
@@ -13,6 +14,12 @@ export type RouteType = {
 
 // All routes defined here
 export const routes: RouteType[] = [
+  {
+    label: 'Login',
+    url: '/login',
+    Component: lazy(() => import('./login')),
+    hidden: true,
+  },
   {
     label: 'Main',
     url: '/',
@@ -126,7 +133,7 @@ export const routes: RouteType[] = [
 ];
 
 const Dashboards = () => {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const locationLinks = location
     .split('/')
     .slice(1)
@@ -135,11 +142,31 @@ const Dashboards = () => {
       return { label: link, url: `${base ? '/' + base : ''}/${link}` };
     });
 
+  const { userLoggedIn, currentUser } = useUserContext();
+
+  useEffect(() => {
+    let currentPath = location.split('/')[1];
+    currentPath = currentPath ? currentPath : 'monitoring';
+    // Getting the current route and checking if the user is allowed to access the route
+    if (currentUser && !currentUser.allowed_dashboards.includes(currentPath)) {
+      // Checking if the route exists, and redirecting to /not-authorized
+      if (routes.find((route) => route.url === '/' + currentPath)) {
+        setLocation('/not-authorized');
+      }
+    }
+  }, [location, currentUser, setLocation]);
+
   return (
     <>
-      <div className='px-4 sm:px-8'>
-        <BreadCrumb links={locationLinks} />
-      </div>
+      {/* Shifted Nav to dashboard to only render if user is logged in */}
+      {userLoggedIn && (
+        <>
+          <Nav />
+          <div className='px-4 sm:px-8'>
+            <BreadCrumb links={locationLinks} />
+          </div>
+        </>
+      )}
       <div className='px-4 sm:px-8'>
         <Switch>
           {routes.map(({ Component, ...route }) => {
@@ -156,12 +183,7 @@ const Dashboards = () => {
                 {route.sublinks &&
                   route.sublinks.map((subLink) => {
                     return (
-                      <Route
-                        key={subLink.label}
-                        path={
-                          (typeof route.url === 'string' ? route.url : route.url[1]) + subLink.url
-                        }
-                      >
+                      <Route key={subLink.label} path={route.url + subLink.url}>
                         {/* Currently checking if component is null as not all the routes are defined */}
                         {subLink.Component ? (
                           <subLink.Component />
@@ -174,6 +196,9 @@ const Dashboards = () => {
               </Fragment>
             );
           })}
+          <Route path='/not-authorized'>
+            <h3 className='text-icon-white'>{`Error 401, You are not authorized to view the current page!`}</h3>
+          </Route>
           {/* 404 page if routes not defined */}
           <Route path='/:rest*'>
             {(params) => (

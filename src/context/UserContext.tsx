@@ -1,5 +1,8 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import useInterval from '../hooks/useInterval';
+import { User, setHeaders } from '../global';
+import { useLocation } from 'wouter';
+import useCookie, { getItem as getCookie } from '../hooks/useCookie';
 
 const defaultRefrestInterval = 60000;
 
@@ -14,6 +17,9 @@ interface DefaultProps {
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
   timestamp: Timestamp;
   setTimestamp: React.Dispatch<React.SetStateAction<Timestamp>>;
+  currentUser: User | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+  userLoggedIn: boolean;
 }
 
 const UserContext = createContext<DefaultProps>({
@@ -26,6 +32,9 @@ const UserContext = createContext<DefaultProps>({
     to: defaultTo,
   },
   setTimestamp: () => ({}),
+  currentUser: null,
+  setCurrentUser: () => ({}),
+  userLoggedIn: false,
 });
 
 export function useUserContext() {
@@ -38,8 +47,19 @@ type Timestamp = {
 };
 
 export default function UserContextProvider({ children }: { children: React.ReactNode }) {
+  const [_, setLocation] = useLocation();
+  const [currentUser, setCurrentUser] = useCookie('user', null);
   const [refetchInterval, setRefetchInterval] = useState(defaultRefrestInterval);
   const [refetch, setRefetch] = useState(false);
+
+  const userLoggedIn = !!currentUser;
+
+  useEffect(() => {
+    if (!userLoggedIn) {
+      setLocation('/login');
+    }
+    getCookie('xAuthToken') && setHeaders('X-Auth-Token', getCookie('xAuthToken'));
+  }, [userLoggedIn, setLocation]);
 
   const [timestamp, setTimestamp] = useState<Timestamp>({
     from: defaultFrom,
@@ -57,6 +77,9 @@ export default function UserContextProvider({ children }: { children: React.Reac
     setRefetch,
     timestamp,
     setTimestamp,
+    currentUser,
+    setCurrentUser,
+    userLoggedIn,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

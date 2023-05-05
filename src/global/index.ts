@@ -54,11 +54,16 @@ export type TableRowItemType = { value: any; type: TableDataType; criticality?: 
 export type TableRowDataType = { [key: string]: TableRowItemType }[];
 
 export const API_URL = import.meta.env.VITE_API_URL;
+export const API_BASE = import.meta.env.VITE_API_BASE;
 export const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN;
 
-export const headers = {
-  Authorization: `Basic ${AUTH_TOKEN}`,
+export const headers: { [key: string]: string } = {
+  'Content-Type': 'application/json',
 };
+
+export function setHeaders(key: string, value: string) {
+  headers[key] = value;
+}
 
 export interface FetchData {
   Text: string;
@@ -102,3 +107,11 @@ export const multipathMatcher: MatcherFn = (patterns: Path, path: Path) => {
 };
 
 export const getArrayAsString = (arr: any[], key: string) => arr.map((v) => v[key]).join(',');
+
+export type User = {
+  allowed_dashboards: string[];
+  allowed_devices: string[];
+  last_activity: Date;
+  roles: string;
+  username: string;
+};
