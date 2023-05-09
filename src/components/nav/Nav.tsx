@@ -8,7 +8,7 @@ import SideMenu from './SideMenu';
 import useFetch from '../../hooks/useFetch';
 import { API_URL, FetchData, headers } from '../../global';
 import { useUserContext } from '../../context/UserContext';
-import { routes as _routes } from '../../dashboards';
+import { routes as _routes } from '../../dashboards/routes';
 import NavLink from './NavLink';
 import { useLocation } from 'wouter';
 import { setItem as setCookie } from '../../hooks/useCookie';
