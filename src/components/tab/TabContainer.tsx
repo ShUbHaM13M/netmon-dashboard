@@ -6,6 +6,8 @@ import SingleSelectDropdown from '../dropdown/SingleSelectDropdown';
 interface ITabContainerProps {
   children: React.ReactElement<ITabLabelProps>[];
   showAutoPlay?: boolean;
+  defaultSelectedTab?: number;
+  onTabClick?: (tabTitle: string) => void;
 }
 
 const autoplayOptions = [
@@ -17,8 +19,13 @@ const autoplayOptions = [
   { Text: '550 s', Value: 500 },
 ];
 
-const TabContainer = ({ children, showAutoPlay = true }: ITabContainerProps) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+const TabContainer = ({
+  children,
+  showAutoPlay = true,
+  defaultSelectedTab = 0,
+  onTabClick,
+}: ITabContainerProps) => {
+  const [selectedTab, setSelectedTab] = useState(defaultSelectedTab);
   const [enableAutoplay, setEnableAutoplay] = useState(false);
   const [autoplayDuration, setAutoplayDuration] = useState(autoplayOptions[0].Value);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -50,7 +57,10 @@ const TabContainer = ({ children, showAutoPlay = true }: ITabContainerProps) => 
                 title={tab.props.title}
                 icon={tab.props.icon}
                 selected={index === selectedTab}
-                onClick={() => setSelectedTab(index)}
+                onClick={() => {
+                  setSelectedTab(index);
+                  onTabClick && onTabClick(tab.props.title);
+                }}
               />
             );
           })}
