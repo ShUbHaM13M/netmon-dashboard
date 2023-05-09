@@ -18,7 +18,7 @@ const Login = () => {
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const [submitDisabled, setSubmitDisabled] = useState(true);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
   const [message, setMessage] = useState<Message | null>(null);
 
   useEffect(() => {
@@ -29,10 +29,10 @@ const Login = () => {
   }, [message]);
 
   const onInputChange = useCallback(() => {
-    if (!usernameInputRef.current || !passwordInputRef.current) return;
+    if (!usernameInputRef.current || !passwordInputRef.current || !submitButtonRef.current) return;
     if (usernameInputRef.current.value.length && passwordInputRef.current.value.length)
-      setSubmitDisabled(false);
-    else setSubmitDisabled(true);
+      submitButtonRef.current.removeAttribute('disabled');
+    else submitButtonRef.current.setAttribute('disabled', 'true');
   }, []);
 
   const loginUser = useCallback(
@@ -95,6 +95,12 @@ const Login = () => {
             id='username'
             placeholder='Enter username'
             name='username'
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                passwordInputRef.current?.focus();
+              }
+            }}
           />
         </div>
         <div className='w-full sm:w-[340px]'>
@@ -109,9 +115,15 @@ const Login = () => {
             className='mt-1.5 w-full bg-card-light rounded-sm py-1.5 pl-2 hover:bg-[#3E404D] text-sm text-icon-grey outline-none placeholder:text-icon-dark-grey'
             id='password'
             placeholder='Enter password'
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                submitButtonRef.current?.focus();
+              }
+            }}
           />
         </div>
-        <Button primary type='submit' title='Login' disabled={submitDisabled}>
+        <Button ref={submitButtonRef} primary type='submit' title='Login' disabled>
           Login
         </Button>
       </form>
@@ -120,6 +132,7 @@ const Login = () => {
         style={{
           borderColor: message?.criticality,
           backgroundColor: message?.criticality + '1A',
+          maxWidth: '320px',
         }}
         className={`absolute w-full sm:w-2/4 right-0 border p-2 sm:right-4 rounded-md transition-all text-sm ease-out duration-200 text-icon-white select-none ${
           message ? 'bottom-16 opacity-100' : '-bottom-6 opacity-0'
