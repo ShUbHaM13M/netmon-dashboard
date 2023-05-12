@@ -4,7 +4,7 @@ import { Button } from '../../../components';
 import { API_URL, headers } from '../../../global';
 import { useUserContext } from '../../../context/UserContext';
 
-const createTeamURL = `${API_URL}/admin/team`;
+const createTeamURL = `${API_URL}/admin/team?ver=v2`;
 
 interface CreateTeamFormProps {
   showForm: boolean;

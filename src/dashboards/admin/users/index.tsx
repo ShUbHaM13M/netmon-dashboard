@@ -1,30 +1,41 @@
 import { StatPanelContainer, Table } from '../../../components';
-// import { API_URL, headers } from '../../../global';
-// import useFetch from '../../../hooks/useFetch';
+import { API_URL, FetchPanelData, headers } from '../../../global';
+import useFetch from '../../../hooks/useFetch';
 import Like from '../../../assets/images/like.svg';
+import { useLocation } from 'wouter';
+import ActiveStatusFormatter from '../../../components/formatter/ActiveStateFormatter';
 
-// const userDataURL = `${API_URL}/admin/users`;
-const userTabHeaders = [
-  { title: 'Username', data_type: 'string', property: 'username' },
-  { title: 'Roles', property: 'roles', data_type: 'string' },
-];
+type UserData = {
+  username: string;
+  roles: [string];
+};
+
+const userDataURL = `${API_URL}/admin/users?ver=v2`;
 
 const UsersTab = () => {
-  // const { data: userData } = useFetch(userDataURL, {
-  //   headers,
-  // });
+  const [_, setLocation] = useLocation();
+  const { data: userData, loading } = useFetch<FetchPanelData>(userDataURL, {
+    headers,
+  });
+
+  if (loading) return <div>Loading...</div>;
+  if (!userData) return null;
 
   return (
     <div className='flex flex-col gap-4 sm:gap-6'>
       <div className='h-[410px]'>
         <StatPanelContainer label='Users' description='List of all the users'>
           <Table
-            headers={userTabHeaders}
-            data={[]}
+            headers={userData.columns}
+            data={userData.data}
             emptyStateData={{
               icon: Like,
               title: 'No Users Found',
               subtitle: 'No users were found',
+            }}
+            columnFormatters={{ active: ActiveStatusFormatter }}
+            onRowClick={(row) => {
+              setLocation(`/admin/users/${(row as UserData).username}`);
             }}
           />
         </StatPanelContainer>

@@ -1,10 +1,11 @@
 import { Button, StatPanelContainer, Table } from '../../../components';
-import { API_URL, headers } from '../../../global';
+import { API_URL, FetchPanelData, headers } from '../../../global';
 import useFetch from '../../../hooks/useFetch';
 import Like from '../../../assets/images/like.svg';
 import { useState } from 'react';
 import CreateTeamForm from './CreateTeamForm';
-import { Link, useLocation } from 'wouter';
+import { useLocation } from 'wouter';
+import IconEdit from '../../../assets/icons/edit';
 
 export type TeamData = {
   id: number;
@@ -16,25 +17,17 @@ export type TeamData = {
   action?: any;
 };
 
-const teamsDataURL = `${API_URL}/admin/teams`;
-const teamsTabHeaders = [
-  { title: 'ID', data_type: 'int', property: 'id' },
-  { title: 'Name', data_type: 'string', property: 'name' },
-  { title: 'Description', data_type: 'string', property: 'desc' },
-  { title: 'last updated', data_type: 'epoch_ms', property: 'last_updated' },
-  { title: 'last updated user', data_type: 'string', property: 'last_updated_user' },
-  { title: 'actions', sortable: false, data_type: 'string', property: 'action' },
-];
+const teamsDataURL = `${API_URL}/admin/teams?ver=v2`;
 
 const TeamActionFormatter = (value: any) => {
   return (
-    <Link
+    <a
+      className='stroke-icon-white hover:stroke-brand-orange w-10 h-8 flex items-center justify-center'
       onClick={(e) => e.stopPropagation()}
-      className='underline'
       href={`/admin/teams/edit/${value}`}
     >
-      Edit
-    </Link>
+      <IconEdit />
+    </a>
   );
 };
 
@@ -43,7 +36,7 @@ const TeamsTab = () => {
   const [refetchTeamData, setRefetchTeamData] = useState(false);
   const [_, setLocation] = useLocation();
 
-  const { data: teamsData } = useFetch<TeamData[]>(
+  const { data: teamsData, loading } = useFetch<FetchPanelData>(
     teamsDataURL,
     {
       headers,
@@ -51,8 +44,11 @@ const TeamsTab = () => {
     refetchTeamData,
   );
 
-  teamsData?.forEach((data, index) => {
-    teamsData[index]['action'] = data.name;
+  if (loading) return <div>Loading...</div>;
+  if (!teamsData) return null;
+
+  teamsData.data.forEach((data, index) => {
+    teamsData.data[index]['action'] = data.name;
   });
 
   return (
@@ -65,8 +61,11 @@ const TeamsTab = () => {
       <div className='h-[410px]'>
         <StatPanelContainer label='Teams' description='List of all the teams'>
           <Table
-            headers={teamsTabHeaders}
-            data={teamsData || []}
+            headers={[
+              ...teamsData.columns,
+              { title: 'actions', sortable: false, data_type: 'string', property: 'action' },
+            ]}
+            data={teamsData.data}
             emptyStateData={{
               icon: Like,
               title: 'No Teams Found',

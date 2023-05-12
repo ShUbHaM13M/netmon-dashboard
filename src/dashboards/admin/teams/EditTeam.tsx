@@ -1,6 +1,5 @@
-import { API_URL, headers } from '../../../global';
+import { API_URL, FetchPanelData, headers } from '../../../global';
 import useFetch from '../../../hooks/useFetch';
-import { TeamData } from '.';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Button, SingleSelectDropdown } from '../../../components';
 import { useUserContext } from '../../../context/UserContext';
@@ -15,34 +14,39 @@ const teamStatusOptions = [
   { Text: 'Inactive', Value: false },
 ];
 
-const editTeamURL = `${API_URL}/admin/team`;
+const editTeamURL = `${API_URL}/admin/team?ver=v2`;
 
 const EditTeam = ({ params }: { params: ParamType }) => {
   const { currentUser } = useUserContext();
   const [_, setLocation] = useLocation();
 
-  const teamDataURL = `${API_URL}/admin/team?team-name=${params.name}`;
-  const { data: teamData, loading, error } = useFetch<TeamData[]>(teamDataURL, { headers });
+  const teamDataURL = `${API_URL}/admin/team?team-name=${params.name}&ver=v2`;
+  const { data: teamData, loading, error } = useFetch<FetchPanelData>(teamDataURL, { headers });
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const [teamActive, setTeamActive] = useState(true);
 
   useEffect(() => {
-    if (!teamData?.length) return;
-    setTeamActive(teamData[0].active);
+    if (!teamData?.data.length) return;
+    setTeamActive(teamData.data[0].active);
   }, [teamData]);
 
   const handleEditTeamSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!nameInputRef.current || !descriptionRef.current || !currentUser || !teamData?.length)
+      if (
+        !nameInputRef.current ||
+        !descriptionRef.current ||
+        !currentUser ||
+        !teamData?.data.length
+      )
         return;
 
       const res = await fetch(editTeamURL, {
         method: 'PUT',
         body: JSON.stringify({
-          id: teamData![0].id,
+          id: teamData.data[0].id,
           name: nameInputRef.current.value,
           desc: descriptionRef.current.value,
           active: teamActive,
@@ -85,7 +89,7 @@ const EditTeam = ({ params }: { params: ParamType }) => {
             id='name'
             placeholder='Enter name'
             name='name'
-            defaultValue={teamData[0].name}
+            defaultValue={teamData.data[0].name}
           />
         </div>
 
@@ -103,7 +107,7 @@ const EditTeam = ({ params }: { params: ParamType }) => {
             id='description'
             placeholder='Enter description'
             name='description'
-            defaultValue={teamData[0].desc}
+            defaultValue={teamData.data[0].desc}
           ></textarea>
         </div>
 
