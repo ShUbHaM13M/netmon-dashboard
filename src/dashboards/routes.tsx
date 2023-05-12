@@ -37,6 +37,12 @@ export const routes: RouteType[] = [
     hidden: true,
   },
   {
+    label: 'User Detail',
+    url: '/admin/users/:username',
+    Component: lazy(() => import('./admin/users/UserDetail')),
+    hidden: true,
+  },
+  {
     label: 'Device Detail',
     url: '/admin/devices/:device_id',
     Component: lazy(() => import('./admin/devices/DeviceDetail')),
