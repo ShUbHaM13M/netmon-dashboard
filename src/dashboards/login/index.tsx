@@ -77,7 +77,7 @@ const Login = () => {
   );
 
   return (
-    <div className='flex flex-col pb-6 h-screen sm:items-center justify-center relative'>
+    <div className='flex flex-col pb-6 h-screen sm:items-center justify-center relative overflow-y-hidden'>
       <form
         onSubmit={loginUser}
         className='bg-card-grey p-6 rounded-md flex flex-col gap-6 shadow-medium'
