@@ -5,8 +5,8 @@ import ApplicationGraph from './ApplicationGraph';
 import StatPanelContainer from './StatPanelContainer';
 
 const TopApplicationsPanel = () => {
-  const { refetch } = useUserContext();
-  const topApplicationPanelURL = `${API_URL}/panel/apps/usage?from=1681669800000&to=1681842599000&limit=10&ver=v2`;
+  const { refetch, timestamp } = useUserContext();
+  const topApplicationPanelURL = `${API_URL}/panel/apps/usage?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&limit=10&ver=v2`;
 
   const { data: topApplicationPanelData } = useFetch<FetchPanelData>(
     topApplicationPanelURL,

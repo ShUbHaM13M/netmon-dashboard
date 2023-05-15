@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
-function convertValue(valueInMB: number): string {
+function defaultConvertValue(valueInMB: number): string {
   const TB = valueInMB / (1000 * 1000);
   const GB = valueInMB / 1000;
 
@@ -13,7 +13,7 @@ function convertValue(valueInMB: number): string {
   }
 }
 
-function getWidth(unit: string, value: number, maxValue: number): number {
+function defaultGetWidth(unit: string, value: number, maxValue: number): number {
   if (unit === 'MB') {
     return value / maxValue;
   }
@@ -29,9 +29,11 @@ interface IApplicationGraphProps {
     value: number;
     unit: string;
   }[];
+  convertValue?: (value: number) => string;
+  getWidth?: (unit: string, value: number, maxValue: number) => number;
 }
 
-const ApplicationGraph = ({ data }: IApplicationGraphProps) => {
+const ApplicationGraph = ({ data, convertValue, getWidth }: IApplicationGraphProps) => {
   const maxValue = useMemo(() => Math.max(...data.map((d) => d.value)), [data]);
 
   return (
@@ -42,7 +44,12 @@ const ApplicationGraph = ({ data }: IApplicationGraphProps) => {
             key={data.name}
             name={data.name}
             value={data.value}
-            width={getWidth(data.unit, data.value, maxValue) * 100}
+            width={
+              getWidth
+                ? getWidth(data.unit, data.value, maxValue) * 100
+                : defaultGetWidth(data.unit, data.value, maxValue) * 100
+            }
+            convertValue={convertValue}
           />
         );
       })}
@@ -54,9 +61,10 @@ interface IGraphBarItemProps {
   name: string;
   value: number;
   width: number;
+  convertValue?: (value: number) => string;
 }
 
-const GraphBarItem = ({ name, value, width }: IGraphBarItemProps) => {
+const GraphBarItem = ({ name, value, width, convertValue }: IGraphBarItemProps) => {
   const [initialWidth, setInitialWidth] = useState(0);
 
   useEffect(() => {
@@ -109,7 +117,7 @@ const GraphBarItem = ({ name, value, width }: IGraphBarItemProps) => {
           }}
           className='text-xs'
         >
-          {convertValue(value)}
+          {convertValue ? convertValue(value) : defaultConvertValue(value)}
         </p>
       </div>
     </div>

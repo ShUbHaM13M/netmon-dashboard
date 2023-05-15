@@ -84,18 +84,22 @@ export const routes: RouteType[] = [
       {
         label: 'Application Usage By Device',
         url: '/application-usage-by-device',
+        Component: lazy(() => import('./monitoring/application-usage-by-device')),
       },
       {
         label: 'Device Details',
         url: '/device-details',
+        Component: lazy(() => import('./monitoring/device-details')),
       },
       {
         label: 'Certificate Details',
         url: '/certificate-details',
+        Component: lazy(() => import('./monitoring/certificate-details')),
       },
       {
         label: 'License Details',
         url: '/license-details',
+        Component: lazy(() => import('./monitoring/license-details')),
       },
       {
         label: 'Alarm Details',

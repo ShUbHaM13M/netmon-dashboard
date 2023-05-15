@@ -29,7 +29,7 @@ const AlarmDetails = () => {
   const [impactedEntities, setImpactedEntities] = useState('');
   const debouncedImpactedEntities = useDebouce(impactedEntities);
 
-  const nameOptionURL = `${API_URL}/vars?name=alarm-name&from=100&to=1682101799000`;
+  const nameOptionURL = `${API_URL}/vars?name=alarm-name&from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}`;
   const { data: nameOptions, loading } = useFetch<FetchData[]>(nameOptionURL, { headers });
 
   const alarmStatsURL = `${API_URL}/panel/alarm/stats?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
