@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
+  @apply bg-card-dark;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -65,13 +66,15 @@ body {
   }
 
   *::-webkit-scrollbar {
-    width: 6px;
-    width: 6px;
+    --size: 8px;
+    width: var(--size);
+    height: var(--size);
   }
 
   *::-webkit-scrollbar-track {
     border-radius: 0px;
     background-color: #ffffff00;
+    padding-inline: 2px;
   }
 
   *::-webkit-scrollbar-track:hover {
@@ -85,6 +88,7 @@ body {
   *::-webkit-scrollbar-thumb {
     border-radius: 6px;
     background-color: #141518;
+    border: 1px solid #595d66;
   }
 
   *::-webkit-scrollbar-thumb:hover {
@@ -93,6 +97,10 @@ body {
 
   *::-webkit-scrollbar-thumb:active {
     background-color: #141518;
+  }
+
+  *::-webkit-scrollbar-corner {
+    background-color: transparent;
   }
 
   input[type='time']::-webkit-calendar-picker-indicator,

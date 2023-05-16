@@ -6,6 +6,7 @@ interface ITableRowItemProps {
   row: Row;
   showBorder: boolean;
   columnFormatters?: { [columnName: string]: ColumnFormatter };
+  onRowClick?: (row: Row) => void;
 }
 
 const defaultFormatter = (value: any, dataType: string) => {
@@ -32,14 +33,16 @@ const TableRowItem = ({
   row,
   showBorder = false,
   columnFormatters,
+  onRowClick,
 }: ITableRowItemProps) => {
   return (
     <tr
+      onClick={() => onRowClick && onRowClick(row)}
       className={` ${
         showBorder
           ? 'bg-card-light border-b border-dashed border-icon-dark-grey'
           : 'bg-transparent border-b border-transparent'
-      }`}
+      } ${onRowClick ? 'cursor-pointer' : 'cursor-auto'}`}
     >
       {headers.map((header, _i) => {
         const colFormatter = getColumnFormatter(header, columnFormatters);

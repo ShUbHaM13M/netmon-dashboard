@@ -16,9 +16,10 @@ interface ITableProps {
     subtitle: string;
   };
   columnFormatters?: { [columnName: string]: ColumnFormatter };
+  onRowClick?: (row: Row) => void;
 }
 
-const Table = ({ headers, data, emptyStateData, columnFormatters }: ITableProps) => {
+const Table = ({ headers, data, emptyStateData, columnFormatters, onRowClick }: ITableProps) => {
   const [filteredData, setFilteredData] = useState(data);
   const cachedData = useRef(data);
 
@@ -90,6 +91,7 @@ const Table = ({ headers, data, emptyStateData, columnFormatters }: ITableProps)
                     row={row}
                     showBorder={index % 2 === 0}
                     columnFormatters={columnFormatters}
+                    onRowClick={onRowClick}
                   />
                 );
               })}

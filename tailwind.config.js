@@ -39,6 +39,15 @@ export default {
         medium: '0px 24px 24px -16px #0F0F0F33',
         dark: '0px 27px 24px -5px #0F0F0F33',
       },
+      keyframes: {
+        'in-right': {
+          from: { transform: 'translateX(100%)' },
+          to: { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        'in-right': 'in-right .5s',
+      },
     },
   },
   plugins: [],

@@ -33,6 +33,8 @@ import BfdConnectivityPanel from './panels/BfdConnectivityPanel';
 import CertificatePanel from './panels/CertificatePanel';
 import ControlStatusPanel from './panels/ControlStatusPanel';
 import LicensePanel from './panels/LicensePanel';
+import Modal from './modal/modal';
+import Toast from './toast';
 
 export {
   SingleSelectDropdown,
@@ -70,4 +72,6 @@ export {
   BfdConnectivityPanel,
   ControlStatusPanel,
   LicensePanel,
+  Modal,
+  Toast,
 };
