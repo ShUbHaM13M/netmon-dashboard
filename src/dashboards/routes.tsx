@@ -109,14 +109,17 @@ export const routes: RouteType[] = [
       {
         label: 'Realtime Tunnel Stats',
         url: '/realtime-tunnel-stats',
+        Component: lazy(() => import('./monitoring/realtime-tunnel-stats')),
       },
       {
         label: 'Device Status',
         url: '/device-status',
+        Component: lazy(() => import('./monitoring/device-status')),
       },
       {
         label: 'Network Status',
         url: '/network-status',
+        Component: lazy(() => import('./monitoring/network-status')),
       },
     ],
   },
