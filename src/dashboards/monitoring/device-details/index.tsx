@@ -109,16 +109,16 @@ const DeviceDetails = () => {
 
   return (
     <div className='flex flex-col pb-6 gap-6 h-full text-icon-white'>
-      <div className='flex flex-col xl:flex-row gap-4 sm:gap-6 z-10 text-icon-white'>
-        <div className='flex gap-6 flex-col sm:flex-row'>
-          <div className='w-full sm:w-[140px]'>
+      <div className='flex flex-col md:flex-row gap-4 sm:gap-6 z-10 text-icon-white flex-wrap'>
+        <div className='flex gap-6 flex-row'>
+          <div className='w-2/4 sm:w-[140px]'>
             <SingleSelectDropdown
               label='Site'
               options={siteOptions || []}
               onValueChange={(data) => setSelectedSite(data)}
             />
           </div>
-          <div className='w-full sm:w-[240px]'>
+          <div className='w-2/4 sm:w-[240px]'>
             <MultiSelectDropdown
               label='Device'
               options={deviceOptions || []}
@@ -126,28 +126,28 @@ const DeviceDetails = () => {
             />
           </div>
         </div>
-        <div className='flex gap-6 flex-col sm:flex-row'>
-          <div className='w-full sm:w-[140px]'>
+        <div className='flex gap-6 flex-row'>
+          <div className='w-2/4 sm:w-[140px]'>
             <MultiSelectDropdown
               label='Device Type'
               options={deviceTypeOptions || []}
               onValueChange={(data) => setSelectedDeviceType(data)}
             />
           </div>
-          <div className='w-full sm:w-[240px]'>
+          <div className='w-2/4 sm:w-[240px]'>
             <MultiSelectDropdown
               label='Control Status'
               options={controlStatusOptions || []}
               onValueChange={(data) => setSelectedControlStatus(data)}
             />
           </div>
-          <div className='w-full sm:w-[240px]'>
-            <MultiSelectDropdown
-              label='BFD Status'
-              options={bfdStatusOptions || []}
-              onValueChange={(data) => setSelectedBFDStatus(data)}
-            />
-          </div>
+        </div>
+        <div className='w-full sm:w-[140px]'>
+          <MultiSelectDropdown
+            label='BFD Status'
+            options={bfdStatusOptions || []}
+            onValueChange={(data) => setSelectedBFDStatus(data)}
+          />
         </div>
       </div>
       <div className='h-[510px]'>
