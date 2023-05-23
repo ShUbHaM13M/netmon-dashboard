@@ -134,6 +134,7 @@ export const routes: RouteType[] = [
       {
         label: 'Generate Utilization and Uptime Report',
         url: '/generate-utilization-and-uptime-report',
+        Component: lazy(() => import('./reporting/generate-utilization-and-uptime-report')),
       },
       {
         label: 'Interface Stats By Service Hours',
@@ -152,6 +153,7 @@ export const routes: RouteType[] = [
       {
         label: 'Top Talkers Report',
         url: '/top-talkers-report',
+        Component: lazy(() => import('./reporting/top-talkers-report')),
       },
       {
         label: 'Tunnel Stats',
