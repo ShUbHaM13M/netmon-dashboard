@@ -130,6 +130,7 @@ export const routes: RouteType[] = [
       {
         label: 'DPI On-Demand Troubleshooting',
         url: '/dpi-on-demand-troubleshooting',
+        Component: lazy(() => import('./reporting/dpi-on-demand-troubleshooting')),
       },
       {
         label: 'Generate Utilization and Uptime Report',
