@@ -115,3 +115,22 @@ export type User = {
   roles: string;
   username: string;
 };
+
+export function getTimeInSeconds(epoch_ms: number): number {
+  return Math.floor(epoch_ms / 1000);
+}
+
+/**
+ * @param filename Specifiy the filename for saving the csv file as
+ * @param data CSV string
+ */
+export function downloadDataAsCSV(filename: string, data: string) {
+  const anchor = document.createElement('a');
+  anchor.setAttribute('href', 'data:attachement/csv;charset=utf-8,' + encodeURI(data));
+  anchor.setAttribute('target', '_blank');
+  anchor.setAttribute('download', filename);
+  anchor.style.display = 'none';
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+}
