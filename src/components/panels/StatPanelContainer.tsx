@@ -93,7 +93,7 @@ const StatPanelContainer = ({
       <hr className='border-card-light' />
       {subtitle ? (
         <div className='p-4 flex gap-1 items-center'>
-          <span className='caps-2-bold text-icon-dark-grey'>Duration</span>
+          {/* <span className='caps-2-bold text-icon-dark-grey'>Duration</span> */}
           <h6 className='text-icon-grey'>{subtitle}</h6>
         </div>
       ) : (

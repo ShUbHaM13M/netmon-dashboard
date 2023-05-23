@@ -147,6 +147,7 @@ export const routes: RouteType[] = [
       {
         label: 'Link Utilization Report',
         url: '/link-utilization-report',
+        Component: lazy(() => import('./reporting/link-utilization-report')),
       },
       {
         label: 'Top Talkers Report',
