@@ -159,6 +159,7 @@ export const routes: RouteType[] = [
       {
         label: 'Tunnel Stats',
         url: '/tunnel-stats',
+        Component: lazy(() => import('./reporting/tunnel-stats')),
       },
       {
         label: 'Uptime Report',
