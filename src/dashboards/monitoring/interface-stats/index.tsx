@@ -16,7 +16,7 @@ const InterfaceStats = () => {
   const [selectedColor, setSelectedColor] = useState<FetchData>();
   const [selectedPercentile, setSelectedPercentile] = useState<FetchData>();
 
-  const { data: siteOptions, loading } = useFetch<FetchData[]>(siteOptionURL, {
+  const { data: siteOptions } = useFetch<FetchData[]>(siteOptionURL, {
     headers,
   });
 
@@ -40,7 +40,7 @@ const InterfaceStats = () => {
   }&from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&start_hrs=00:00:00&end_hrs=23:59:59&percentile=${
     selectedPercentile?.Value || 95
   }&holidays=&ver=v2`;
-  const { data: interfaceStatsData } = useFetch<FetchPanelData>(
+  const { data: interfaceStatsData, loading } = useFetch<FetchPanelData>(
     interfaceSummaryURL,
     { headers },
     refetch,
@@ -62,8 +62,6 @@ const InterfaceStats = () => {
   useEffect(() => {
     if (percentileOptions) setSelectedPercentile(percentileOptions[0]);
   }, [percentileOptions]);
-
-  if (loading || !siteOptions) return <div>Loading...</div>;
 
   const { interfaceSummaryData, rxUtilData, txUtilData } =
     getInterfaceStatsSummary(interfaceStatsData);
@@ -112,6 +110,7 @@ const InterfaceStats = () => {
           <StatPanelContainer
             label={`${selectedSite?.Text} Interface Summary`}
             description={`Shows the summary of ${selectedSite?.Text}`}
+            loading={loading}
           >
             <Table
               headers={interfaceSummaryData?.columns || []}
@@ -128,6 +127,7 @@ const InterfaceStats = () => {
           <StatPanelContainer
             label={`RX Utilization (${selectedPercentile?.Value} Percentile)`}
             description={`Shows the RX Utilization of ${selectedSite?.Text}`}
+            loading={loading}
           >
             <Table
               headers={rxUtilData?.columns || []}
@@ -144,6 +144,7 @@ const InterfaceStats = () => {
           <StatPanelContainer
             label={`TX Utilization (${selectedPercentile?.Value} Percentile)`}
             description={`Shows the TX Utilization of ${selectedSite?.Text}`}
+            loading={loading}
           >
             <Table
               headers={txUtilData?.columns || []}

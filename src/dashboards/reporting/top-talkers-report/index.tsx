@@ -47,7 +47,7 @@ const TopTalkersReport = () => {
   const topTalkersDataURL = `${API_URL}/panel/apps/top-talker?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&hostname=${
     selectedDevice?.Value
   }&ver=v2`;
-  const { data: topTakersData } = useFetch<FetchPanelData>(
+  const { data: topTakersData, loading: loadingTopTalkersData } = useFetch<FetchPanelData>(
     topTalkersDataURL,
     requestOptions,
     refetch || valuesChanged,
@@ -57,7 +57,7 @@ const TopTalkersReport = () => {
   const topTakersIPDataURL = `${API_URL}/panel/apps/top-talker/ip?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&hostname=${
     selectedDevice?.Value
   }&ver=v2`;
-  const { data: topTalkersByIPData } = useFetch<FetchPanelData>(
+  const { data: topTalkersByIPData, loading: loadingTalkersByIPData } = useFetch<FetchPanelData>(
     topTakersIPDataURL,
     requestOptions,
     refetch || valuesChanged,
@@ -104,6 +104,7 @@ const TopTalkersReport = () => {
             timestamp.from,
           )} to ${dateFormatter.format(timestamp.to)}`}
           description='This panel shows the Top Talkers of the selected Apps'
+          loading={loadingTopTalkersData}
         >
           <Table
             headers={topTakersData?.columns || []}
@@ -123,6 +124,7 @@ const TopTalkersReport = () => {
             timestamp.from,
           )} to ${dateFormatter.format(timestamp.to)}`}
           description='This panel shows the Top Talkers by IP of the selected Apps'
+          loading={loadingTalkersByIPData}
         >
           <Table
             headers={topTalkersByIPData?.columns || []}

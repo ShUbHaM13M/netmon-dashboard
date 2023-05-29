@@ -8,7 +8,7 @@ const controllerPanelURL = `${API_URL}/panel/device/connection/summary?device-ty
 
 const ControllerPanel = () => {
   const { refetch } = useUserContext();
-  const { data: controllerPanelData } = useFetch<FetchPanelData>(
+  const { data: controllerPanelData, loading } = useFetch<FetchPanelData>(
     controllerPanelURL,
     {
       headers,
@@ -16,11 +16,9 @@ const ControllerPanel = () => {
     refetch,
   );
 
-  if (!controllerPanelData) return null;
-
   let reachableDevices = 0;
   let unReachableDevices = 0;
-  controllerPanelData.data.forEach((d) => {
+  controllerPanelData?.data.forEach((d) => {
     if (d.reachability === 'reachable') {
       reachableDevices += d.count;
     } else {
@@ -33,6 +31,7 @@ const ControllerPanel = () => {
       description='This will show reachable and unreachable out off total devices'
       label='Controllers'
       showError={!!unReachableDevices}
+      loading={loading}
     >
       <DeviceStatus
         reachableDevices={reachableDevices}

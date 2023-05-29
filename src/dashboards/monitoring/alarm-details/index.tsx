@@ -30,11 +30,11 @@ const AlarmDetails = () => {
   const debouncedImpactedEntities = useDebouce(impactedEntities);
 
   const nameOptionURL = `${API_URL}/vars?name=alarm-name&from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}`;
-  const { data: nameOptions, loading } = useFetch<FetchData[]>(nameOptionURL, { headers });
+  const { data: nameOptions } = useFetch<FetchData[]>(nameOptionURL, { headers });
 
   const alarmStatsURL = `${API_URL}/panel/alarm/stats?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
 
-  const { data: alarmStatsData } = useFetch<FetchPanelData>(
+  const { data: alarmStatsData, loading } = useFetch<FetchPanelData>(
     alarmStatsURL,
     {
       method: 'POST',
@@ -53,8 +53,6 @@ const AlarmDetails = () => {
   useEffect(() => {
     setValuesChanged((prev) => !prev);
   }, [selectedActive, selectedName, selectedSeverity, debouncedImpactedEntities]);
-
-  if (loading && !nameOptions) return <div>Loading...</div>;
 
   return (
     <div className='flex flex-col pb-6 gap-6 h-full'>
@@ -106,6 +104,7 @@ const AlarmDetails = () => {
         <StatPanelContainer
           label={`Alarm Details from ${timestamp.from.toLocaleString()} to ${timestamp.to.toLocaleString()}`}
           description='Showing Alarm Details'
+          loading={loading}
         >
           <Table
             headers={alarmStatsData?.columns || []}

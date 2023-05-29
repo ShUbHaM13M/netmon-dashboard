@@ -8,7 +8,7 @@ const wanEdgePanelURL = `${API_URL}/panel/device/connection/summary?device-type=
 
 const WanEdgePanel = () => {
   const { refetch } = useUserContext();
-  const { data: wanEdgePanelData } = useFetch<FetchPanelData>(
+  const { data: wanEdgePanelData, loading } = useFetch<FetchPanelData>(
     wanEdgePanelURL,
     {
       headers,
@@ -16,16 +16,15 @@ const WanEdgePanel = () => {
     refetch,
   );
 
-  if (!wanEdgePanelData) return null;
-
-  const reachableDevices = wanEdgePanelData.data.find((d) => d.reachability === 'reachable');
-  const unReachableDevices = wanEdgePanelData.data.find((d) => d.reachability === 'unreachable');
+  const reachableDevices = wanEdgePanelData?.data.find((d) => d.reachability === 'reachable');
+  const unReachableDevices = wanEdgePanelData?.data.find((d) => d.reachability === 'unreachable');
 
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
       label='WAN Edge'
       showError={!!unReachableDevices?.count}
+      loading={loading}
     >
       <DeviceStatus
         label='Total devices'

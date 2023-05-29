@@ -12,7 +12,7 @@ const SiteDowntime = () => {
   const { reportKeys, selectedSite } = useContext(UptimeReportContext);
 
   const siteDowntimeURL = `${API_URL}/panel/report/downtime/site/details?site-name=${selectedSite?.Text}&site-report-key=${reportKeys?.reportSiteKey}&ver=v2`;
-  const { data: siteDowntimeData } = useFetch<FetchPanelData>(
+  const { data: siteDowntimeData, loading } = useFetch<FetchPanelData>(
     siteDowntimeURL,
     { headers },
     refetch,
@@ -20,7 +20,11 @@ const SiteDowntime = () => {
   );
 
   return (
-    <StatPanelContainer label='Site Downtime' description='This panel shows the Site Downtime'>
+    <StatPanelContainer
+      label='Site Downtime'
+      description='This panel shows the Site Downtime'
+      loading={loading}
+    >
       <Table
         headers={siteDowntimeData?.columns || []}
         data={siteDowntimeData?.data || []}

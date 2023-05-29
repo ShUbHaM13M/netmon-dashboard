@@ -12,14 +12,16 @@ const LicenseDetails = () => {
     error,
   } = useFetch<FetchPanelData>(licenseDetailsURL, { headers });
 
-  if (loading) return <div className='text-icon-white'>Loading...</div>;
-
   if (error || !licenseData)
     return <div className='text-icon-white'>Failed to fetch license details.</div>;
 
   return (
     <div className='h-[510px] mt-4'>
-      <StatPanelContainer label={licenseData.title} description='Showing license data'>
+      <StatPanelContainer
+        label={licenseData.title}
+        description='Showing license data'
+        loading={loading}
+      >
         <Table
           headers={licenseData.columns}
           data={licenseData.data}

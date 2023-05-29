@@ -8,7 +8,7 @@ const certificatePanelURL = `${API_URL}/panel/device/certificate/summary?ver=v2`
 
 const CertificatePanel = () => {
   const { refetch } = useUserContext();
-  const { data: certificatePanelData } = useFetch<FetchPanelData>(
+  const { data: certificatePanelData, loading } = useFetch<FetchPanelData>(
     certificatePanelURL,
     {
       headers,
@@ -16,16 +16,15 @@ const CertificatePanel = () => {
     refetch,
   );
 
-  if (!certificatePanelData) return null;
-
-  const total = certificatePanelData.data.find((d) => d['expiration-status'] === 'normal');
-  const expired = certificatePanelData.data.find((d) => d['expiration-status'] === 'expired');
+  const total = certificatePanelData?.data.find((d) => d['expiration-status'] === 'normal');
+  const expired = certificatePanelData?.data.find((d) => d['expiration-status'] === 'expired');
 
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
-      label={certificatePanelData.title}
+      label={certificatePanelData?.title || 'Certificates'}
       showError={!!expired?.count}
+      loading={loading}
     >
       <StackedGraph
         criticalCount={expired?.count}

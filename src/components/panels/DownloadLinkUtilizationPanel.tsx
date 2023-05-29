@@ -10,7 +10,7 @@ const DownloadLinkUtilizationPanel = ({ percentile }: { percentile: number }) =>
   const { refetch } = useUserContext();
   const downloadLinkUtilURL = `${API_URL}/panel/interface/utilization/service-window?direction=download&percentile=${percentile}&start-hrs=09:00:00&end-hrs=21:00:00&tz-offset=%2B5:30&ver=v2`;
 
-  const { data: downloadLinkUtilizationData } = useFetch<FetchPanelData>(
+  const { data: downloadLinkUtilizationData, loading } = useFetch<FetchPanelData>(
     downloadLinkUtilURL,
     {
       headers,
@@ -18,23 +18,22 @@ const DownloadLinkUtilizationPanel = ({ percentile }: { percentile: number }) =>
     refetch,
   );
 
-  if (!downloadLinkUtilizationData) return null;
-
-  const hasError = downloadLinkUtilizationData.data.find((d) => {
+  const hasError = downloadLinkUtilizationData?.data.find((d) => {
     return d[downloadLinkUtilizationData.columns[0].property] > 80;
   });
   console.log(downloadLinkUtilizationData);
 
   return (
     <StatPanelContainer
-      subtitle={downloadLinkUtilizationData.sub_title}
+      subtitle={downloadLinkUtilizationData?.sub_title}
       description='Data about link down details'
-      label={downloadLinkUtilizationData.title}
+      label={downloadLinkUtilizationData?.title || 'Download Link Utilization'}
       showError={!!hasError}
+      loading={loading}
     >
       <Table
-        data={downloadLinkUtilizationData.data}
-        headers={downloadLinkUtilizationData.columns}
+        data={downloadLinkUtilizationData?.data || []}
+        headers={downloadLinkUtilizationData?.columns || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

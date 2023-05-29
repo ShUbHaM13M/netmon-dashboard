@@ -8,7 +8,7 @@ const TopApplicationsPanel = () => {
   const { refetch, timestamp } = useUserContext();
   const topApplicationPanelURL = `${API_URL}/panel/apps/usage?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&limit=10&ver=v2`;
 
-  const { data: topApplicationPanelData } = useFetch<FetchPanelData>(
+  const { data: topApplicationPanelData, loading } = useFetch<FetchPanelData>(
     topApplicationPanelURL,
     {
       headers,
@@ -16,9 +16,7 @@ const TopApplicationsPanel = () => {
     refetch,
   );
 
-  if (!topApplicationPanelData) return null;
-
-  const data = topApplicationPanelData.data.map((d) => ({
+  const data = topApplicationPanelData?.data.map((d) => ({
     name: d.app,
     value: d.usage,
     unit: 'MB',
@@ -28,8 +26,9 @@ const TopApplicationsPanel = () => {
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
       label='Top Applications'
+      loading={loading}
     >
-      <ApplicationGraph data={data} />
+      <ApplicationGraph data={data || []} />
     </StatPanelContainer>
   );
 };

@@ -9,7 +9,7 @@ const TunnelJitterPanel = () => {
   const { refetch } = useUserContext();
   const tunnelJitterURL = `${API_URL}/approute/tunnels/summary?type=jitter&limit=10&ver=v2`;
 
-  const { data: tunnelJitterData } = useFetch<FetchPanelData>(
+  const { data: tunnelJitterData, loading } = useFetch<FetchPanelData>(
     tunnelJitterURL,
     {
       headers,
@@ -17,17 +17,16 @@ const TunnelJitterPanel = () => {
     refetch,
   );
 
-  if (!tunnelJitterData) return null;
-
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
       label='Tunnel Jitter'
+      loading={loading}
     >
       <div className='mt-4'></div>
       <Table
-        headers={tunnelJitterData.columns}
-        data={tunnelJitterData.data}
+        headers={tunnelJitterData?.columns || []}
+        data={tunnelJitterData?.data || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

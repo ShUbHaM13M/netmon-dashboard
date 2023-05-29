@@ -20,7 +20,7 @@ const LinkDowntime = () => {
 
   const skipFetching = !(selectedSite && reportKeys?.reportLinkKey);
 
-  const { data: linkDowntimeData } = useFetch<FetchPanelData>(
+  const { data: linkDowntimeData, loading } = useFetch<FetchPanelData>(
     linkDowntimeURL,
     {
       method: 'POST',
@@ -36,7 +36,11 @@ const LinkDowntime = () => {
   );
 
   return (
-    <StatPanelContainer label='Link Downtime' description='This panel shows the Link Downtime'>
+    <StatPanelContainer
+      label='Link Downtime'
+      description='This panel shows the Link Downtime'
+      loading={loading}
+    >
       <Table
         headers={linkDowntimeData?.columns || []}
         data={linkDowntimeData?.data || []}

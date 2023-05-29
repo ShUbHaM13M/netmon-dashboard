@@ -8,7 +8,7 @@ const bfdPanelURL = `${API_URL}/panel/bfd/summary?ver=v2`;
 
 const BfdConnectivityPanel = () => {
   const { refetch } = useUserContext();
-  const { data: bfdPanelData } = useFetch<FetchPanelData>(
+  const { data: bfdPanelData, loading } = useFetch<FetchPanelData>(
     bfdPanelURL,
     {
       headers,
@@ -16,16 +16,15 @@ const BfdConnectivityPanel = () => {
     refetch,
   );
 
-  if (!bfdPanelData) return null;
-
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
-      label={bfdPanelData.title}
-      showError={!!bfdPanelData.data.find((d) => d.name === 'unavailable')?.count}
+      label={bfdPanelData?.title || 'BFD Connectivity'}
+      showError={!!bfdPanelData?.data.find((d) => d.name === 'unavailable')?.count}
+      loading={loading}
     >
-      <div className='flex flex-col sm:flex-row w-full pt-4 sm:pt-6 px-4 py-4 gap-3 sm:gap-4'>
-        {bfdPanelData.data.map((d) => {
+      <div className='min-h-[250px] md:min-h-[105px] flex flex-col sm:flex-row w-full pt-4 sm:pt-6 px-4 py-4 gap-3 sm:gap-4'>
+        {bfdPanelData?.data.map((d) => {
           return (
             <div className='flex-1' key={d.name}>
               <Status

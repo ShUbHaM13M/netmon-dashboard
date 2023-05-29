@@ -11,7 +11,7 @@ const SiteAvailability = () => {
   const { reportKeys, selectedSite } = useContext(UptimeReportContext);
 
   const siteAvailabilityURL = `${API_URL}/panel/report/uptime/site/summary?site-name=${selectedSite?.Text}&site-report-key=${reportKeys?.reportSiteKey}&ver=v2`;
-  const { data: siteAvailabilityData } = useFetch<FetchPanelData>(
+  const { data: siteAvailabilityData, loading } = useFetch<FetchPanelData>(
     siteAvailabilityURL,
     { headers },
     refetch,
@@ -22,6 +22,7 @@ const SiteAvailability = () => {
     <StatPanelContainer
       label='Site Availability'
       description='This panel shows the Site Availability'
+      loading={loading}
     >
       <Table
         headers={siteAvailabilityData?.columns || []}

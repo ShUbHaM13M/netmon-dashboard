@@ -27,7 +27,7 @@ const DropDownModal = forwardRef<HTMLDivElement, IDropDownModal>(function DropDo
           e.stopPropagation();
           props.setShowModal(false);
         }}
-        className={`fixed top-0 left-0 h-screen w-full bg-[#2E2F33CC] z-30 block md:hidden ${
+        className={`fixed top-0 left-0 h-screen w-full bg-[#2E2F33CC] z-50 block md:hidden ${
           props.showModal ? 'opacity-100' : 'opacity-0'
         }`}
       >

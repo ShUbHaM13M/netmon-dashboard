@@ -37,7 +37,7 @@ const ApplicationUsageByDevice = () => {
   const topDevicesDataURL = `${API_URL}/panel/apps/usage/device?limit=15&app-name=${
     selectedApp?.Text
   }&from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
-  const { data: topDevicesData } = useFetch<FetchPanelData>(
+  const { data: topDevicesData, loading } = useFetch<FetchPanelData>(
     topDevicesDataURL,
     { headers },
     refetch,
@@ -64,6 +64,7 @@ const ApplicationUsageByDevice = () => {
         <StatPanelContainer
           label='Top Devices Using the App'
           description='This will show the top devices using the App'
+          loading={loading}
         >
           <ApplicationGraph data={data} convertValue={convertValue} getWidth={getWidth} />
         </StatPanelContainer>

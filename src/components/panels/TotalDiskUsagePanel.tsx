@@ -9,7 +9,7 @@ const TotalDiskUsagePanel = () => {
   const { refetch } = useUserContext();
   const diskUsageURL = `${API_URL}/panel/device/disk/usage?ver=v2`;
 
-  const { data: diskUsageData } = useFetch<FetchPanelData>(
+  const { data: diskUsageData, loading } = useFetch<FetchPanelData>(
     diskUsageURL,
     {
       headers,
@@ -17,14 +17,16 @@ const TotalDiskUsagePanel = () => {
     refetch,
   );
 
-  if (!diskUsageData) return null;
-
   return (
-    <StatPanelContainer description='Data about total disk usage' label={diskUsageData.title}>
+    <StatPanelContainer
+      description='Data about total disk usage'
+      label={diskUsageData?.title || 'Top Disk Usage'}
+      loading={loading}
+    >
       <div className='mt-4'></div>
       <Table
-        data={diskUsageData.data}
-        headers={diskUsageData.columns}
+        data={diskUsageData?.data || []}
+        headers={diskUsageData?.columns || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

@@ -11,7 +11,7 @@ const ReportSummary = () => {
   const { reportKeys } = useContext(UptimeReportContext);
 
   const reportSummaryURL = `${API_URL}/panel/report/uptime/summary?site-report-key=${reportKeys?.reportSiteKey}&ver=v2`;
-  const { data: reportSummaryData } = useFetch<FetchPanelData>(
+  const { data: reportSummaryData, loading } = useFetch<FetchPanelData>(
     reportSummaryURL,
     { headers },
     refetch,
@@ -19,7 +19,11 @@ const ReportSummary = () => {
   );
 
   return (
-    <StatPanelContainer label='Report Summary' description='This panel shows the Report Summary'>
+    <StatPanelContainer
+      label='Report Summary'
+      description='This panel shows the Report Summary'
+      loading={loading}
+    >
       <Table
         headers={reportSummaryData?.columns || []}
         data={reportSummaryData?.data || []}

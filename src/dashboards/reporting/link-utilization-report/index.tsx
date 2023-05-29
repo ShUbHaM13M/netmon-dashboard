@@ -65,7 +65,7 @@ const LinkUtilizationReport = () => {
     selectedPercentile?.Value
   }&ver=v2`;
 
-  const { data: statsData } = useFetch<FetchPanelData>(
+  const { data: statsData, loading } = useFetch<FetchPanelData>(
     statsURL,
     { headers },
     refetch,
@@ -143,6 +143,7 @@ const LinkUtilizationReport = () => {
           <StatPanelContainer
             label={`${selectedSite?.Text} / ${selectedColor?.Text} RX`}
             description='This panel shows the RX'
+            loading={loading}
           >
             <Table
               headers={RX_HEADERS}
@@ -159,6 +160,7 @@ const LinkUtilizationReport = () => {
           <StatPanelContainer
             label={`${selectedSite?.Text} / ${selectedColor?.Text} TX`}
             description='This panel shows the TX'
+            loading={loading}
           >
             <Table
               headers={TX_HEADERS}

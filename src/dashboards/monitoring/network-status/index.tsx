@@ -8,14 +8,14 @@ const NetworkStatus = () => {
   const { refetch, timestamp } = useUserContext();
 
   const rebootSummaryDataURL = `${API_URL}/panel/network/reboot/summary?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
-  const { data: rebootSummaryData } = useFetch<FetchPanelData>(
+  const { data: rebootSummaryData, loading: loadingRebootSummaryData } = useFetch<FetchPanelData>(
     rebootSummaryDataURL,
     { headers },
     refetch,
   );
 
   const rebootDetailsDataURL = `${API_URL}/panel/network/reboot/details?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
-  const { data: rebootDetailsData } = useFetch<FetchPanelData>(
+  const { data: rebootDetailsData, loading: loadingRebootDetailsData } = useFetch<FetchPanelData>(
     rebootDetailsDataURL,
     { headers },
     refetch,
@@ -29,6 +29,7 @@ const NetworkStatus = () => {
             timestamp.from,
           )} to ${dateFormatter.format(timestamp.to)}`}
           description='Showing the reboot summary'
+          loading={loadingRebootSummaryData}
         >
           <Table
             headers={rebootSummaryData ? rebootSummaryData.columns : []}
@@ -45,6 +46,7 @@ const NetworkStatus = () => {
         <StatPanelContainer
           label='Reboot Details'
           description='This panel shows the Reboot details'
+          loading={loadingRebootDetailsData}
         >
           <Table
             headers={rebootDetailsData?.columns || []}

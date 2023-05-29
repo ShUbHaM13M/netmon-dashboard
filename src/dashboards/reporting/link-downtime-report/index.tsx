@@ -14,7 +14,7 @@ const LinkDowntimeReport = () => {
   const [selectedProviders, setSelectedProviders] = useState<FetchData[]>();
 
   const siteOptionsURL = `${API_URL}/vars?name=site&filter-name=site-name&filter-value=All`;
-  const { data: siteOptions, loading } = useFetch<FetchData[]>(siteOptionsURL, { headers });
+  const { data: siteOptions } = useFetch<FetchData[]>(siteOptionsURL, { headers });
 
   const deviceOptionsURL = `${API_URL}/vars?name=device&filter-name=site-name&filter-value=${'All'}`;
   const { data: deviceOptions } = useFetch<FetchData[]>(deviceOptionsURL, { headers });
@@ -40,16 +40,17 @@ const LinkDowntimeReport = () => {
   );
 
   const totalLinkDowntimeURL = `${API_URL}/panel/link/down/total?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
-  const { data: totalLinkDowntimeData } = useFetch<FetchPanelData>(
-    totalLinkDowntimeURL,
-    fetchOptions,
-    refetch || valuesChanged,
-    skipFetching,
-    false,
-  );
+  const { data: totalLinkDowntimeData, loading: totalLinkDowntimeLoading } =
+    useFetch<FetchPanelData>(
+      totalLinkDowntimeURL,
+      fetchOptions,
+      refetch || valuesChanged,
+      skipFetching,
+      false,
+    );
 
   const linkDowntimeURL = `${API_URL}/panel/link/down/details?from=${timestamp.from.getTime()}&to=${timestamp.to.getTime()}&ver=v2`;
-  const { data: linkDowntimeData } = useFetch<FetchPanelData>(
+  const { data: linkDowntimeData, loading: linkDowntimeLoading } = useFetch<FetchPanelData>(
     linkDowntimeURL,
     fetchOptions,
     refetch || valuesChanged,
@@ -60,8 +61,6 @@ const LinkDowntimeReport = () => {
   useEffect(() => {
     setValuesChanged((prev) => !prev);
   }, [selectedDevices, selectedSites, selectedProviders]);
-
-  if (loading && !siteOptions) return <div>Loading...</div>;
 
   return (
     <div className='flex flex-col pb-6 gap-6 h-full'>
@@ -94,6 +93,7 @@ const LinkDowntimeReport = () => {
             label='Total Link Downtime'
             description={`Showing Total Link Downtime from 
             ${dateFormatter.format(timestamp.from)} - ${dateFormatter.format(timestamp.to)}`}
+            loading={totalLinkDowntimeLoading}
           >
             <Table
               headers={totalLinkDowntimeData?.columns || []}
@@ -111,6 +111,7 @@ const LinkDowntimeReport = () => {
             label='Link Downtime Details'
             description={`Showing Link Downtime Details from 
             ${dateFormatter.format(timestamp.from)} - ${dateFormatter.format(timestamp.to)}`}
+            loading={linkDowntimeLoading}
           >
             <Table
               headers={linkDowntimeData?.columns || []}

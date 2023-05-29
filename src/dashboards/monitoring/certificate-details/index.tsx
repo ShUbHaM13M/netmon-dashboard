@@ -11,14 +11,16 @@ const CertificateDetails = () => {
     error,
   } = useFetch<FetchPanelData>(licenseDetailsURL, { headers });
 
-  if (loading) return <div className='text-icon-white'>Loading...</div>;
-
   if (error || !certificateDetails)
     return <div className='text-icon-white'>Failed to fetch certificate details.</div>;
 
   return (
     <div className='h-[510px] mt-4'>
-      <StatPanelContainer label={certificateDetails.title} description='Showing certificate data'>
+      <StatPanelContainer
+        label={certificateDetails.title}
+        description='Showing certificate data'
+        loading={loading}
+      >
         <Table
           headers={certificateDetails.columns}
           data={certificateDetails.data}

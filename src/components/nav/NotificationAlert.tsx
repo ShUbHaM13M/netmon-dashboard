@@ -96,7 +96,7 @@ const NotificationAlert = () => {
         ${show ? 'block' : 'hidden md:block'}`}
       >
         <div className='flex md:hidden gap-0.5 items-center justify-between'>
-          <div className='flex items-center'>
+          <div className='flex items-center stroke-icon-grey fill-none'>
             <IconInfo />
             <span className='caps-1 text-icon-dark-grey'>Active alarms</span>
             <span className='caps-1 text-icon-grey'>({totalCriticalAlerts})</span>

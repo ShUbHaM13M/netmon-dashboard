@@ -11,7 +11,7 @@ const LinkDownDetailsPanel = () => {
   const { refetch } = useUserContext();
   const linkDownDetailURl = `${API_URL}/panel/link/down/service-window?start-hrs=09:00:00&end-hrs=21:00:00&tz-offset=%2B5:30&ver=v2`;
 
-  const { data: linkDownDetailData } = useFetch<FetchPanelData>(
+  const { data: linkDownDetailData, loading } = useFetch<FetchPanelData>(
     linkDownDetailURl,
     {
       headers,
@@ -19,11 +19,9 @@ const LinkDownDetailsPanel = () => {
     refetch,
   );
 
-  if (!linkDownDetailData) return null;
-
   let criticalWord = '';
   const status: { [key: string]: string } = {};
-  linkDownDetailData.status.map((s) => {
+  linkDownDetailData?.status.map((s) => {
     if (s.criticality === 'CRITICAL') criticalWord = s.value;
     status[s.value] = s.criticality;
     return status;
@@ -31,14 +29,15 @@ const LinkDownDetailsPanel = () => {
 
   return (
     <StatPanelContainer
-      subtitle={linkDownDetailData.sub_title}
+      subtitle={linkDownDetailData?.sub_title}
       description='Data about link down details'
-      label={linkDownDetailData.title}
-      showError={!!linkDownDetailData.data.find((d) => d.status === criticalWord)}
+      label={linkDownDetailData?.title || 'Link Down Details'}
+      showError={!!linkDownDetailData?.data.find((d) => d.status === criticalWord)}
+      loading={loading}
     >
       <Table
-        data={linkDownDetailData.data}
-        headers={linkDownDetailData.columns}
+        data={linkDownDetailData?.data || []}
+        headers={linkDownDetailData?.columns || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

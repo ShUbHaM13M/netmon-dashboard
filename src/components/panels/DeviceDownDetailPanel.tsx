@@ -10,7 +10,7 @@ const DeviceDownDetailPanel = () => {
   const { refetch } = useUserContext();
   const deviceDownDetailURL = `${API_URL}/panel/device/unreachable/details?ver=v2`;
 
-  const { data: deviceDownDetailData } = useFetch<FetchPanelData>(
+  const { data: deviceDownDetailData, loading } = useFetch<FetchPanelData>(
     deviceDownDetailURL,
     {
       headers,
@@ -18,11 +18,9 @@ const DeviceDownDetailPanel = () => {
     refetch,
   );
 
-  if (!deviceDownDetailData) return null;
-
   let criticalWord = '';
   const status: { [key: string]: string } = {};
-  deviceDownDetailData.status.map((s) => {
+  deviceDownDetailData?.status.map((s) => {
     if (s.criticality === 'CRITICAL') criticalWord = s.value;
     status[s.value] = s.criticality;
     return status;
@@ -31,13 +29,14 @@ const DeviceDownDetailPanel = () => {
   return (
     <StatPanelContainer
       description='Data about device down details'
-      label={deviceDownDetailData.title}
-      showError={!!deviceDownDetailData.data.find((d) => d.status === criticalWord)}
+      label={deviceDownDetailData?.title || 'Device Down Details'}
+      showError={!!deviceDownDetailData?.data.find((d) => d.status === criticalWord)}
+      loading={loading}
     >
       <div className='mt-4 sm:mt-[26px]'></div>
       <Table
-        data={deviceDownDetailData.data}
-        headers={deviceDownDetailData.columns}
+        data={deviceDownDetailData?.data || []}
+        headers={deviceDownDetailData?.columns || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

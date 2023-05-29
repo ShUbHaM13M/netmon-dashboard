@@ -9,7 +9,7 @@ const TunnelLossPanel = () => {
   const { refetch } = useUserContext();
   const tunnelLossPanel = `${API_URL}/approute/tunnels/summary?type=loss&limit=10&ver=v2`;
 
-  const { data: tunnelLossData } = useFetch<FetchPanelData>(
+  const { data: tunnelLossData, loading } = useFetch<FetchPanelData>(
     tunnelLossPanel,
     {
       headers,
@@ -17,17 +17,16 @@ const TunnelLossPanel = () => {
     refetch,
   );
 
-  if (!tunnelLossData) return null;
-
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
       label='Tunnel Loss'
+      loading={loading}
     >
       <div className='mt-4'></div>
       <Table
-        headers={tunnelLossData.columns}
-        data={tunnelLossData.data}
+        headers={tunnelLossData?.columns || []}
+        data={tunnelLossData?.data || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

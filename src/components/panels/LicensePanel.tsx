@@ -8,7 +8,7 @@ const licensePanelURL = `${API_URL}/panel/device/license/summary?ver=v2`;
 
 const LicensePanel = () => {
   const { refetch } = useUserContext();
-  const { data: licensePanelData } = useFetch<FetchPanelData>(
+  const { data: licensePanelData, loading } = useFetch<FetchPanelData>(
     licensePanelURL,
     {
       headers,
@@ -16,18 +16,17 @@ const LicensePanel = () => {
     refetch,
   );
 
-  if (!licensePanelData) return null;
-
-  const total = licensePanelData.data.find((d) => d['status'] === 'subscribed');
-  const notSubscribed = licensePanelData.data.find((d) => d['status'] === 'not-subscribed') || {
+  const total = licensePanelData?.data.find((d) => d['status'] === 'subscribed');
+  const notSubscribed = licensePanelData?.data.find((d) => d['status'] === 'not-subscribed') || {
     count: 0,
   };
 
   return (
     <StatPanelContainer
       description='This will show reachable and unreachable out off total devices'
-      label={licensePanelData.title}
+      label={licensePanelData?.title || 'License'}
       showError={!!notSubscribed?.count}
+      loading={loading}
     >
       <StackedGraph
         criticalCount={notSubscribed?.count}

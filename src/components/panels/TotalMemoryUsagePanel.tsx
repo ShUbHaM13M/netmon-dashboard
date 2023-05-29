@@ -9,7 +9,7 @@ const TotalMemoryUsagePanel = () => {
   const { refetch } = useUserContext();
   const memoryUsageURL = `${API_URL}/panel/device/mem/usage?ver=v2`;
 
-  const { data: memoryUsageData } = useFetch<FetchPanelData>(
+  const { data: memoryUsageData, loading } = useFetch<FetchPanelData>(
     memoryUsageURL,
     {
       headers,
@@ -17,14 +17,16 @@ const TotalMemoryUsagePanel = () => {
     refetch,
   );
 
-  if (!memoryUsageData) return null;
-
   return (
-    <StatPanelContainer description='Data about total memory usage' label={memoryUsageData.title}>
+    <StatPanelContainer
+      description='Data about total memory usage'
+      label={memoryUsageData?.title || 'Top Memory Usage'}
+      loading={loading}
+    >
       <div className='mt-4'></div>
       <Table
-        data={memoryUsageData.data}
-        headers={memoryUsageData.columns}
+        data={memoryUsageData?.data || []}
+        headers={memoryUsageData?.columns || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

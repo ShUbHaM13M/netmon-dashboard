@@ -31,7 +31,7 @@ const LinkAvailability = () => {
     selectedProviders?.length
   );
 
-  const { data: linkAvailabilityData } = useFetch<FetchPanelData>(
+  const { data: linkAvailabilityData, loading } = useFetch<FetchPanelData>(
     linkAvailabilityURL,
     { headers },
     refetch,
@@ -42,6 +42,7 @@ const LinkAvailability = () => {
     <StatPanelContainer
       label='Link Availability'
       description='This panel shows the Link Availability'
+      loading={loading}
     >
       <Table
         headers={linkAvailabilityData?.columns || []}

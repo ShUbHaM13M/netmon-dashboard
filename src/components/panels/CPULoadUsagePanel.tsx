@@ -9,7 +9,7 @@ const CPULoadUsagePanel = () => {
   const { refetch } = useUserContext();
   const cpuLoadUsageURL = `${API_URL}/panel/device/cpu-load/usage?ver=v2`;
 
-  const { data: cpuLoadUsageData } = useFetch<FetchPanelData>(
+  const { data: cpuLoadUsageData, loading } = useFetch<FetchPanelData>(
     cpuLoadUsageURL,
     {
       headers,
@@ -17,14 +17,16 @@ const CPULoadUsagePanel = () => {
     refetch,
   );
 
-  if (!cpuLoadUsageData) return null;
-
   return (
-    <StatPanelContainer description='Data about top CPU usage' label={cpuLoadUsageData.title}>
+    <StatPanelContainer
+      description='Data about top CPU usage'
+      label={cpuLoadUsageData?.title || 'Top CPU Load'}
+      loading={loading}
+    >
       <div className='mt-4'></div>
       <Table
-        data={cpuLoadUsageData.data}
-        headers={cpuLoadUsageData.columns}
+        data={cpuLoadUsageData?.data || []}
+        headers={cpuLoadUsageData?.columns || []}
         emptyStateData={{
           icon: Like,
           title: 'All good here',

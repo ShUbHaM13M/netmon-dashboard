@@ -87,7 +87,7 @@ const DeviceDetails = () => {
 
   const deviceDetailsURL = `${API_URL}/panel/device/details?ver=v2`;
 
-  const { data: deviceDetailsData } = useFetch<FetchPanelData>(
+  const { data: deviceDetailsData, loading } = useFetch<FetchPanelData>(
     deviceDetailsURL,
     {
       method: 'POST',
@@ -151,7 +151,11 @@ const DeviceDetails = () => {
         </div>
       </div>
       <div className='h-[510px]'>
-        <StatPanelContainer label='Device Details' description='Showing Device Details'>
+        <StatPanelContainer
+          label='Device Details'
+          description='Showing Device Details'
+          loading={loading}
+        >
           <Table
             headers={deviceDetailsData?.columns || []}
             data={deviceDetailsData?.data || []}
