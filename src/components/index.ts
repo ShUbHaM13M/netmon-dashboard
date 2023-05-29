@@ -35,6 +35,7 @@ import ControlStatusPanel from './panels/ControlStatusPanel';
 import LicensePanel from './panels/LicensePanel';
 import Modal from './modal/modal';
 import Toast from './toast';
+import Loader from './loader';
 
 export {
   SingleSelectDropdown,
@@ -74,4 +75,5 @@ export {
   LicensePanel,
   Modal,
   Toast,
+  Loader,
 };
