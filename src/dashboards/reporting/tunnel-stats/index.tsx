@@ -15,9 +15,9 @@ const TunnelStats = () => {
   });
 
   const [selectedHost, setSelectedHost] = useState<IDropdownOption>();
-  const [selectedTunnelLatencies, setSelectedTunnelLatencices] = useState<IDropdownOption[]>([]);
-  const [selectedTunnelLosses, setSelectedTunnelLosses] = useState<IDropdownOption[]>([]);
-  const [selectedTunnelJitters, setSelectedTunnelJitters] = useState<IDropdownOption[]>([]);
+  const [_selectedTunnelLatencies, setSelectedTunnelLatencices] = useState<IDropdownOption[]>([]);
+  const [_selectedTunnelLosses, setSelectedTunnelLosses] = useState<IDropdownOption[]>([]);
+  const [_selectedTunnelJitters, setSelectedTunnelJitters] = useState<IDropdownOption[]>([]);
 
   useEffect(() => {
     if (sourceHostOptions) setSelectedHost(sourceHostOptions[0]);

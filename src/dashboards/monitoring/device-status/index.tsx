@@ -14,7 +14,7 @@ const DeviceStatus = () => {
   const deviceOptionURL = `${API_URL}/vars?name=device&filter-name=site-name&filter-value=${selectedSite?.Text}`;
   const { data: deviceOptions } = useFetch<FetchData[]>(deviceOptionURL, { headers });
 
-  const [selectedDevice, setSelectedDevice] = useState<FetchData>();
+  const [_selectedDevice, setSelectedDevice] = useState<FetchData>();
 
   useEffect(() => {
     if (siteOptions) {

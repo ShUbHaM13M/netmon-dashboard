@@ -7,7 +7,7 @@ import { useUserContext } from '../../../context/UserContext';
 const ApplicationUsageByApp = () => {
   const { timestamp } = useUserContext();
   const [selectedSite, setSelectedSite] = useState<FetchData>();
-  const [selectedApplications, setSelectedApplications] = useState<FetchData[]>();
+  const [_selectedApplications, setSelectedApplications] = useState<FetchData[]>();
 
   const siteOptionURL = `${API_URL}/vars?name=site&filter-name=site-name&filter-value=All`;
   const { data: siteOptions, loading } = useFetch<FetchData[]>(siteOptionURL, { headers });
