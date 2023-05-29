@@ -54,7 +54,14 @@ const Tooltip = ({ title, description, show, setShow }: ITooltipProps) => {
       flex flex-col gap-2 items-start p-4 min-h-fit rounded-[4px]
       transition-opacity duration-150 ease-out'
       >
-        <h6>{title}</h6>
+        <h6
+          style={{
+            maxWidth: 230,
+          }}
+          className='whitespace-nowrap overflow-hidden text-ellipsis'
+        >
+          {title}
+        </h6>
         <p className='text-icon-grey text-sm text-left'>{description}</p>
       </div>
     </div>
