@@ -15,7 +15,6 @@ import { setItem as setCookie } from '../../hooks/useCookie';
 import Clock from './Clock';
 
 const autoRefreshOptions: IDropdownOption[] = [
-  { Text: '10 s', Value: 0.1 },
   { Text: '1 m', Value: 1 },
   { Text: '3 m', Value: 3 },
   { Text: '5 m', Value: 5 },
