@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { IconArrowDown } from '../../assets/icons';
-import { RouteType } from '../../dashboards';
+import { RouteType } from '../../dashboards/routes';
 import { useEffect, useRef, useState } from 'react';
 
 interface NavLinkProps extends RouteType {
